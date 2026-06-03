@@ -10,7 +10,7 @@ This repository stores Agent Skills in Git and publishes the same catalog throug
 - skills.sh discovery after skills from this repository are installed.
 - A Cloudflare Pages `/.well-known/agent-skills/` index generated from the repo.
 
-The initial catalog includes software workflow skills that can be used individually or composed into an enterprise delivery flow: intake, external project-language review, requirements capture, specification, acceptance design, Gherkin generation, scoped implementation, verification, release readiness, and changelog maintenance.
+The initial catalog includes software workflow skills that can be used individually or composed into an enterprise delivery flow: intake, external project-language review, requirements capture, specification, acceptance design, to-Gherkin scenario writing, scoped implementation, verification, release readiness, and changelog maintenance.
 
 ## Layout
 
@@ -79,7 +79,7 @@ https://skills.sh/adam-paterson/skills
 | `requirements-capture` | Persist clarified change requirements into `REQUIREMENTS.md` after project-language review. |
 | `spec-generation` | Create or update implementation-ready `SPEC.md` under `docs/specs/<spec-id>/`. |
 | `acceptance-design` | Refine package acceptance criteria with examples and automation targets before implementation. |
-| `gherkin-generation` | Write package Gherkin scenarios under `scenarios/acceptance.feature`. |
+| `to-gherkin` | Write package Gherkin scenarios under `scenarios/acceptance.feature` and assess BDD suite setup. |
 | `implement-spec` | Implement one ready spec package or slice with TDD and append command evidence. |
 | `verify-spec` | Map observed evidence to every acceptance criterion before marking the package verified. |
 | `release-readiness` | Check changelog, docs, rollout, rollback, observability, and review notes before shipping. |
@@ -97,7 +97,7 @@ delivery-workflow
 -> requirements-capture
 -> spec-generation
 -> acceptance-design
--> gherkin-generation
+-> to-gherkin
 -> implement-spec
 -> verify-spec
 -> release-readiness
@@ -105,6 +105,12 @@ delivery-workflow
 ```
 
 Use only the skills needed for the task. `setup-agent-workflow` is recommended once per repo, but the package-creating skills remain standalone. `property-testing` and `mutation-testing` are optional verification techniques selected by `TEST-PLAN.md`, not mandatory stages for every change.
+
+## Research Skills
+
+| Skill | Use |
+| --- | --- |
+| `skill-distillation` | Distill source materials, expert traces, corrections, and failure patterns into bounded, auditable skill updates before editing skill artifacts. |
 
 The shared package shape is:
 

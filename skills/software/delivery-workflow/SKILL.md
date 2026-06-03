@@ -1,6 +1,6 @@
 ---
 name: delivery-workflow
-description: Use as the enterprise software workflow router: inspect docs/agents/spec-workflow.md, external/skill-sources.json, docs/specs/<spec-id>/WORKFLOW.md, and package files; initialize safe setup when needed; then route to requirements-intake, external grill-with-docs, requirements-capture, spec-generation, acceptance-design, gherkin-generation, implement-spec, verify-spec, release-readiness, or changelog.
+description: Use as the enterprise software workflow router: inspect docs/agents/spec-workflow.md, external/skill-sources.json, docs/specs/<spec-id>/WORKFLOW.md, and package files; initialize safe setup when needed; then route to requirements-intake, external grill-with-docs, requirements-capture, spec-generation, acceptance-design, to-gherkin, implement-spec, verify-spec, release-readiness, or changelog.
 ---
 
 # Delivery Workflow
@@ -24,7 +24,7 @@ Route the user through the enterprise software workflow without duplicating the 
    - `requirements-capture` -> `requirements-capture`
    - `spec-generation` -> `spec-generation`
    - `acceptance-design` -> `acceptance-design`
-   - `gherkin-generation` -> `gherkin-generation`
+   - `to-gherkin` -> `to-gherkin`
    - `implement-spec` -> `implement-spec`
    - `verify-spec` -> `verify-spec`
    - `release-readiness` -> `release-readiness`

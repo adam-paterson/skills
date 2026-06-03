@@ -18,7 +18,7 @@ updated: {{UPDATED}}
 | requirements-capture | pending | requirements-capture |  |
 | spec-generation | pending | spec-generation |  |
 | acceptance-design | pending | acceptance-design |  |
-| gherkin-generation | pending | gherkin-generation |  |
+| to-gherkin | pending | to-gherkin |  |
 | implement-spec | pending | implement-spec |  |
 | verify-spec | pending | verify-spec |  |
 | release-readiness | pending | release-readiness |  |

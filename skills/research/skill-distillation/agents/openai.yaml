@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Distillation"
+  short_description: "Distill evidence into bounded skill updates"
+  default_prompt: "Use $skill-distillation to create or improve an agent skill from evidence, corrections, or repeated output failures."

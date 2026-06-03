@@ -9,7 +9,6 @@
         "acceptance-design",
         "changelog",
         "delivery-workflow",
-        "gherkin-generation",
         "implement-spec",
         "mutation-testing",
         "property-testing",
@@ -18,7 +17,15 @@
         "requirements-intake",
         "setup-agent-workflow",
         "spec-generation",
+        "to-gherkin",
         "verify-spec"
+      ]
+    },
+    {
+      "title": "Research",
+      "description": "Skills for evidence gathering, synthesis, competitive research, and decision support.",
+      "skills": [
+        "skill-distillation"
       ]
     }
   ]

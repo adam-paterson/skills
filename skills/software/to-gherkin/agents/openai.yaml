@@ -1,0 +1,4 @@
+interface:
+  display_name: "To Gherkin"
+  short_description: "Create precise Gherkin scenarios and assess BDD suite setup"
+  default_prompt: "Use $to-gherkin to write Gherkin scenarios for this behavior and assess BDD suite setup."

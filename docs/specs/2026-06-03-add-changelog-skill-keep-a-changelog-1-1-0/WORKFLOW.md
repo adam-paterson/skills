@@ -18,7 +18,7 @@ updated: 2026-06-03
 | requirements-capture | complete | requirements-capture | 2026-06-03 |
 | spec-generation | in-progress | spec-generation | 2026-06-03 |
 | acceptance-design | pending | acceptance-design |  |
-| gherkin-generation | pending | gherkin-generation |  |
+| to-gherkin | pending | to-gherkin |  |
 | implement-spec | pending | implement-spec |  |
 | verify-spec | pending | verify-spec |  |
 | release-readiness | pending | release-readiness |  |

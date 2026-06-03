@@ -19,7 +19,7 @@ const specPackageConsumers = [
 const workflowReferenceConsumers = [
   "skills/software/acceptance-design",
   "skills/software/delivery-workflow",
-  "skills/software/gherkin-generation",
+  "skills/software/to-gherkin",
   "skills/software/implement-spec",
   "skills/software/release-readiness",
   "skills/software/requirements-capture",

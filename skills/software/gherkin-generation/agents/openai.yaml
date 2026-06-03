@@ -1,4 +1,0 @@
-interface:
-  display_name: "Gherkin Generation"
-  short_description: "Create precise Gherkin scenarios from examples"
-  default_prompt: "Use $gherkin-generation to write Gherkin scenarios for this behavior."

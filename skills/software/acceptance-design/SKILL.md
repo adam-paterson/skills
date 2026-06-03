@@ -19,8 +19,8 @@ Shape acceptance criteria and behavior examples before implementation starts. Th
 8. Update `TEST-PLAN.md` only when automation targets or optional verification techniques change.
 9. Update `WORKFLOW.md`:
    - `acceptance-design` -> `complete`
-   - `gherkin-generation` -> `pending`
-   - `current_stage` -> `gherkin-generation`
+   - `to-gherkin` -> `pending`
+   - `current_stage` -> `to-gherkin`
 
 ## Scenario Quality
 
@@ -38,4 +38,4 @@ When handing back progress, include:
 - Acceptance criteria changed.
 - Examples or edge cases added.
 - Automation targets updated.
-- Whether Gherkin generation is ready.
+- Whether `to-gherkin` is ready.

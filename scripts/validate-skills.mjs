@@ -148,7 +148,7 @@ async function validateSpecPackages(root, errors) {
     "requirements-capture",
     "spec-generation",
     "acceptance-design",
-    "gherkin-generation",
+    "to-gherkin",
     "implement-spec",
     "verify-spec",
     "release-readiness"

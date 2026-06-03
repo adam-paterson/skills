@@ -12,7 +12,7 @@ Software agent skills live in `skills/software/<skill-name>/`.
 | `requirements-capture` | Persist clarified change requirements after external project-language review. |
 | `spec-generation` | Create or update implementation-ready design in `SPEC.md`. |
 | `acceptance-design` | Refine acceptance criteria and examples before implementation. |
-| `gherkin-generation` | Write package Gherkin scenarios from acceptance criteria. |
+| `to-gherkin` | Write package Gherkin scenarios from acceptance criteria and assess BDD suite setup. |
 | `implement-spec` | Implement one ready spec package or slice with TDD and evidence. |
 | `verify-spec` | Map observed evidence to every acceptance criterion. |
 | `release-readiness` | Check verified packages for changelog, docs, rollout, rollback, observability, and review readiness. |

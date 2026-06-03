@@ -122,7 +122,7 @@ function skillForStage(stage) {
     "requirements-capture": "requirements-capture",
     "spec-generation": "spec-generation",
     "acceptance-design": "acceptance-design",
-    "gherkin-generation": "gherkin-generation",
+    "to-gherkin": "to-gherkin",
     "implement-spec": "implement-spec",
     "verify-spec": "verify-spec",
     "release-readiness": "release-readiness"

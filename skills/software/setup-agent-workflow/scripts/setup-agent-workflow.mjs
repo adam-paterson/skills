@@ -102,7 +102,7 @@ function renderAgentBlock() {
 
 Software requirements and specs live under \`docs/specs/\` and follow \`docs/agents/spec-workflow.md\`.
 
-Use \`delivery-workflow\` to route the enterprise workflow: \`requirements-intake\`, external \`grill-with-docs\`, \`requirements-capture\`, \`spec-generation\`, \`acceptance-design\`, \`gherkin-generation\`, \`implement-spec\`, \`verify-spec\`, \`release-readiness\`, and \`changelog\` as needed.
+Use \`delivery-workflow\` to route the enterprise workflow: \`requirements-intake\`, external \`grill-with-docs\`, \`requirements-capture\`, \`spec-generation\`, \`acceptance-design\`, \`to-gherkin\`, \`implement-spec\`, \`verify-spec\`, \`release-readiness\`, and \`changelog\` as needed.
 ${managedEnd}
 `;
 }

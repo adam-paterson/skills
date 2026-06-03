@@ -66,7 +66,7 @@ Use one of these values for each stage row in `WORKFLOW.md`:
 - `requirements-capture` owns change-specific `REQUIREMENTS.md` after upstream project-language review.
 - `spec-generation` creates the package and owns `SPEC.md`, initial `ACCEPTANCE.md`, initial `TEST-PLAN.md`, initial `DECISIONS.md`, and index updates.
 - `acceptance-design` refines behavior examples and acceptance criteria in `ACCEPTANCE.md`.
-- `gherkin-generation` writes or updates `scenarios/acceptance.feature`.
+- `to-gherkin` writes or updates `scenarios/acceptance.feature` and checks whether the target project has or should initialize a language-appropriate BDD suite.
 - `implement-spec` implements one ready package or slice at a time and owns `IMPLEMENTATION.md`.
 - `verify-spec` owns `VERIFY.md` and maps observed evidence to every acceptance criterion.
 - `release-readiness` owns `RELEASE.md` and decides whether `changelog` is needed.
