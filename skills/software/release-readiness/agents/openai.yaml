@@ -1,0 +1,4 @@
+interface:
+  display_name: "Release Readiness"
+  short_description: "Check verified specs before shipping"
+  default_prompt: "Use $release-readiness to decide whether this verified spec package is ready to ship or hand off."

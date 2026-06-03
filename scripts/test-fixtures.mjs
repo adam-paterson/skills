@@ -13,6 +13,8 @@ const tempRoot = await fs.mkdtemp(path.join(os.tmpdir(), "skills-fixtures-"));
 try {
   await runValidationFixtures();
   await runSpecPackageFixtures();
+  await runExternalManifestFixtures();
+  await runSetupWorkflowFixture();
   await runBuildFixtures();
   console.log("Fixture tests passed.");
 } finally {
@@ -126,7 +128,7 @@ async function runSpecPackageFixtures() {
   const requirementsRoot = path.join(tempRoot, "requirements-package");
   await createBaseRepo(requirementsRoot);
   await execFileAsync("node", [
-    path.join(process.cwd(), "skills", "software", "discuss-requirements", "scripts", "init-requirements-session.mjs"),
+    path.join(process.cwd(), "skills", "software", "requirements-intake", "scripts", "init-requirements-intake.mjs"),
     "--root",
     requirementsRoot,
     "--title",
@@ -136,18 +138,25 @@ async function runSpecPackageFixtures() {
   ]);
   let requirementsResult = await validateCatalog(requirementsRoot);
   if (requirementsResult.errors.length > 0) {
-    throw new Error(`Generated requirements package should validate: ${requirementsResult.errors.join("; ")}`);
+    throw new Error(`Generated intake package should validate: ${requirementsResult.errors.join("; ")}`);
   }
-  const requirementsFile = path.join(
+  const intakeFile = path.join(
     requirementsRoot,
     "docs",
     "specs",
     "2026-06-02-clarify-billing-events",
-    "REQUIREMENTS.md"
+    "INTAKE.md"
   );
-  const requirementsContent = await fs.readFile(requirementsFile, "utf8");
-  if (!requirementsContent.includes("## Requirements Readiness")) {
-    throw new Error("Discuss requirements initializer should seed readiness section.");
+  const intakeContent = await fs.readFile(intakeFile, "utf8");
+  if (!intakeContent.includes("## Source Links")) {
+    throw new Error("Requirements intake initializer should seed source links.");
+  }
+  const workflowContent = await fs.readFile(
+    path.join(requirementsRoot, "docs", "specs", "2026-06-02-clarify-billing-events", "WORKFLOW.md"),
+    "utf8"
+  );
+  if (!workflowContent.includes("package_lifecycle: draft") || !workflowContent.includes("| project-language-review | pending | external:grill-with-docs |")) {
+    throw new Error("Requirements intake initializer should seed workflow state.");
   }
 
   const root = path.join(tempRoot, "spec-package");
@@ -164,10 +173,15 @@ async function runSpecPackageFixtures() {
 
   const specDir = path.join(root, "docs", "specs", "2026-06-02-add-billing-events");
   const requiredFiles = [
+    "WORKFLOW.md",
+    "INTAKE.md",
     "REQUIREMENTS.md",
     "SPEC.md",
     "ACCEPTANCE.md",
     "TEST-PLAN.md",
+    "IMPLEMENTATION.md",
+    "VERIFY.md",
+    "RELEASE.md",
     "DECISIONS.md",
     "EVIDENCE.md",
     path.join("scenarios", "acceptance.feature")
@@ -186,10 +200,89 @@ async function runSpecPackageFixtures() {
     throw new Error(`Generated spec package should validate: ${result.errors.join("; ")}`);
   }
 
-  await fs.rm(path.join(specDir, "EVIDENCE.md"));
+  const { stdout } = await execFileAsync("node", [
+    path.join(process.cwd(), "skills", "software", "delivery-workflow", "scripts", "inspect-workflow.mjs"),
+    "--root",
+    root,
+    "--spec",
+    "2026-06-02-add-billing-events"
+  ]);
+  const inspection = JSON.parse(stdout);
+  if (inspection.nextSkill !== "requirements-intake" || inspection.packageLifecycle !== "draft") {
+    throw new Error(`Workflow inspection returned unexpected state: ${stdout}`);
+  }
+
+  await fs.rm(path.join(specDir, "VERIFY.md"));
   result = await validateCatalog(root);
-  if (!result.errors.some((error) => error.includes("is missing EVIDENCE.md"))) {
+  if (!result.errors.some((error) => error.includes("is missing VERIFY.md"))) {
     throw new Error(`Broken spec package should fail validation: ${result.errors.join("; ")}`);
+  }
+}
+
+async function runExternalManifestFixtures() {
+  await assertValidation("valid external manifest passes", async (root) => {
+    await createBaseRepo(root);
+    await fs.mkdir(path.join(root, "external"), { recursive: true });
+    await fs.writeFile(
+      path.join(root, "external", "skill-sources.json"),
+      `${JSON.stringify({
+        sources: [
+          {
+            id: "mattpocock",
+            repo: "mattpocock/skills",
+            skills: [
+              {
+                name: "grill-with-docs",
+                stage: "project-language-review",
+                required: true,
+                reason: "Project language review."
+              }
+            ]
+          }
+        ]
+      }, null, 2)}\n`
+    );
+  }, true);
+
+  await assertValidation("invalid external manifest fails", async (root) => {
+    await createBaseRepo(root);
+    await fs.mkdir(path.join(root, "external"), { recursive: true });
+    await fs.writeFile(
+      path.join(root, "external", "skill-sources.json"),
+      `${JSON.stringify({ sources: [{ id: "Matt", repo: "not-a-repo", skills: [] }] }, null, 2)}\n`
+    );
+  }, false, "repo must be owner/repo");
+}
+
+async function runSetupWorkflowFixture() {
+  const root = path.join(tempRoot, "setup-agent-workflow");
+  await createBaseRepo(root);
+  await execFileAsync("node", [
+    path.join(process.cwd(), "skills", "software", "setup-agent-workflow", "scripts", "setup-agent-workflow.mjs"),
+    "--root",
+    root,
+    "--agent-file",
+    "AGENTS.md"
+  ]);
+
+  const workflowDoc = await fs.readFile(path.join(root, "docs", "agents", "spec-workflow.md"), "utf8");
+  if (!workflowDoc.includes("## Skill Ownership") || !workflowDoc.includes("release-readiness")) {
+    throw new Error("Setup workflow should write the shared spec workflow document.");
+  }
+
+  const index = await fs.readFile(path.join(root, "docs", "specs", "INDEX.md"), "utf8");
+  if (!index.includes("| Spec | Status | Updated |")) {
+    throw new Error("Setup workflow should initialize docs/specs/INDEX.md.");
+  }
+
+  const agents = await fs.readFile(path.join(root, "AGENTS.md"), "utf8");
+  if (!agents.includes("agent-skills-directory:start") || !agents.includes("delivery-workflow")) {
+    throw new Error("Setup workflow should add managed agent instructions.");
+  }
+
+  const result = await validateCatalog(root);
+  if (result.errors.length > 0) {
+    throw new Error(`Setup workflow fixture should validate: ${result.errors.join("; ")}`);
   }
 }
 

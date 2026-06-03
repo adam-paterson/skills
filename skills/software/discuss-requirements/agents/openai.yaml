@@ -1,4 +1,0 @@
-interface:
-  display_name: "Discuss Requirements"
-  short_description: "Extract requirements and cement project language"
-  default_prompt: "Use $discuss-requirements to extract real requirements and update the spec package."

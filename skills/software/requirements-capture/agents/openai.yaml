@@ -1,0 +1,4 @@
+interface:
+  display_name: "Requirements Capture"
+  short_description: "Persist clarified requirements into a spec package"
+  default_prompt: "Use $requirements-capture after grill-with-docs to write change-specific requirements into the spec package."

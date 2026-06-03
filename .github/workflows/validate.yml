@@ -32,10 +32,10 @@ jobs:
       - name: Fixture tests
         run: node scripts/test-fixtures.mjs
 
-      - name: Check generated skills.sh.json
+      - name: Check generated files
         run: |
-          if [ -n "$(git status --porcelain -- skills.sh.json)" ]; then
-            git status --short -- skills.sh.json
-            git diff -- skills.sh.json
+          if [ -n "$(git status --porcelain)" ]; then
+            git status --short
+            git diff
             exit 1
           fi

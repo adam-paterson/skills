@@ -91,6 +91,7 @@ export async function validateCatalog(root = repoRoot) {
   }
 
   await validateSpecPackages(root, errors);
+  await validateExternalSkillManifest(root, errors);
 
   return { errors, skillCount: skills.length };
 }
@@ -117,23 +118,41 @@ async function validateSpecPackages(root, errors) {
   }
 
   const requiredFiles = [
+    "WORKFLOW.md",
+    "INTAKE.md",
     "REQUIREMENTS.md",
     "SPEC.md",
     "ACCEPTANCE.md",
     "TEST-PLAN.md",
+    "IMPLEMENTATION.md",
+    "VERIFY.md",
+    "RELEASE.md",
     "DECISIONS.md",
     "EVIDENCE.md",
     path.join("scenarios", "acceptance.feature")
   ];
   const specIdPattern = /^\d{4}-\d{2}-\d{2}-[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/;
-  const statuses = new Set([
+  const packageLifecycles = new Set([
     "draft",
-    "reviewed",
     "ready-for-implementation",
     "in-progress",
+    "implemented",
     "verified",
+    "release-ready",
     "archived"
   ]);
+  const stageStatuses = new Set(["pending", "in-progress", "complete", "blocked", "skipped"]);
+  const requiredStages = [
+    "requirements-intake",
+    "project-language-review",
+    "requirements-capture",
+    "spec-generation",
+    "acceptance-design",
+    "gherkin-generation",
+    "implement-spec",
+    "verify-spec",
+    "release-readiness"
+  ];
 
   for (const entry of specDirs) {
     const specId = entry.name;
@@ -158,17 +177,113 @@ async function validateSpecPackages(root, errors) {
         if (frontmatter.id !== specId) {
           errors.push(`${relativeSpecDir}/SPEC.md frontmatter id must match folder name.`);
         }
-        if (!statuses.has(frontmatter.status)) {
-          errors.push(`${relativeSpecDir}/SPEC.md has invalid status: ${frontmatter.status ?? "(missing)"}.`);
+        if (frontmatter.status && !packageLifecycles.has(frontmatter.status)) {
+          errors.push(`${relativeSpecDir}/SPEC.md has invalid legacy status: ${frontmatter.status}.`);
         }
       } else {
         errors.push(`${relativeSpecDir}/SPEC.md must include YAML frontmatter.`);
       }
     }
 
+    const workflowPath = path.join(specDir, "WORKFLOW.md");
+    if (await exists(workflowPath)) {
+      const workflow = await fs.readFile(workflowPath, "utf8");
+      const frontmatter = extractSpecFrontmatter(workflow);
+      if (frontmatter) {
+        if (frontmatter.id !== specId) {
+          errors.push(`${relativeSpecDir}/WORKFLOW.md frontmatter id must match folder name.`);
+        }
+        if (!packageLifecycles.has(frontmatter.package_lifecycle)) {
+          errors.push(`${relativeSpecDir}/WORKFLOW.md has invalid package_lifecycle: ${frontmatter.package_lifecycle ?? "(missing)"}.`);
+        }
+        if (!requiredStages.includes(frontmatter.current_stage)) {
+          errors.push(`${relativeSpecDir}/WORKFLOW.md has invalid current_stage: ${frontmatter.current_stage ?? "(missing)"}.`);
+        }
+      } else {
+        errors.push(`${relativeSpecDir}/WORKFLOW.md must include YAML frontmatter.`);
+      }
+
+      const stages = extractWorkflowStages(workflow);
+      for (const stage of requiredStages) {
+        if (!stages.has(stage)) {
+          errors.push(`${relativeSpecDir}/WORKFLOW.md is missing stage row: ${stage}.`);
+          continue;
+        }
+        const status = stages.get(stage);
+        if (!stageStatuses.has(status)) {
+          errors.push(`${relativeSpecDir}/WORKFLOW.md has invalid status "${status}" for stage ${stage}.`);
+        }
+      }
+    }
+
     const indexNeedle = `](./${specId}/SPEC.md)`;
     if (indexContent && !indexContent.includes(indexNeedle)) {
       errors.push(`docs/specs/INDEX.md is missing an entry for ${specId}.`);
+    }
+  }
+}
+
+async function validateExternalSkillManifest(root, errors) {
+  const manifestPath = path.join(root, "external", "skill-sources.json");
+  if (!(await exists(manifestPath))) {
+    return;
+  }
+
+  let manifest;
+  try {
+    manifest = JSON.parse(await fs.readFile(manifestPath, "utf8"));
+  } catch (error) {
+    errors.push(`external/skill-sources.json is invalid JSON: ${error.message}`);
+    return;
+  }
+
+  if (!Array.isArray(manifest.sources)) {
+    errors.push("external/skill-sources.json must define sources[].");
+    return;
+  }
+
+  const sourceIds = new Set();
+  for (const [sourceIndex, source] of manifest.sources.entries()) {
+    const sourceLabel = `external/skill-sources.json sources[${sourceIndex}]`;
+    if (!source?.id || !skillNamePattern.test(source.id)) {
+      errors.push(`${sourceLabel}.id must be lowercase kebab-case.`);
+    } else if (sourceIds.has(source.id)) {
+      errors.push(`${sourceLabel}.id is duplicated: ${source.id}`);
+    } else {
+      sourceIds.add(source.id);
+    }
+
+    if (!source?.repo || !/^[A-Za-z0-9_.-]+\/[A-Za-z0-9_.-]+$/.test(source.repo)) {
+      errors.push(`${sourceLabel}.repo must be owner/repo.`);
+    }
+
+    if (!Array.isArray(source?.skills) || source.skills.length === 0) {
+      errors.push(`${sourceLabel}.skills must contain at least one skill.`);
+      continue;
+    }
+
+    const skillNames = new Set();
+    for (const [skillIndex, skill] of source.skills.entries()) {
+      const skillLabel = `${sourceLabel}.skills[${skillIndex}]`;
+      try {
+        assertSkillName(skill?.name, `${skillLabel}.name`);
+      } catch (error) {
+        errors.push(error.message);
+      }
+      if (skill?.name && skillNames.has(skill.name)) {
+        errors.push(`${skillLabel}.name is duplicated: ${skill.name}`);
+      } else if (skill?.name) {
+        skillNames.add(skill.name);
+      }
+      if (!skill?.stage || !skillNamePattern.test(skill.stage)) {
+        errors.push(`${skillLabel}.stage must be lowercase kebab-case.`);
+      }
+      if (typeof skill?.required !== "boolean") {
+        errors.push(`${skillLabel}.required must be boolean.`);
+      }
+      if (!normalizeDescription(skill?.reason)) {
+        errors.push(`${skillLabel}.reason must be non-empty.`);
+      }
     }
   }
 }
@@ -190,6 +305,18 @@ function extractSpecFrontmatter(markdown) {
     }
   }
   return frontmatter;
+}
+
+function extractWorkflowStages(markdown) {
+  const stages = new Map();
+  for (const line of markdown.split(/\r?\n/)) {
+    const match = line.match(/^\|\s*([a-z0-9-]+)\s*\|\s*([a-z-]+)\s*\|\s*[^|]+\|\s*[^|]*\|$/);
+    if (!match || match[1] === "Stage") {
+      continue;
+    }
+    stages.set(match[1], match[2]);
+  }
+  return stages;
 }
 
 async function exists(filePath) {

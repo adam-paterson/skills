@@ -6,13 +6,19 @@
       "title": "Software",
       "description": "Skills for software engineering, architecture, testing, release work, and developer operations.",
       "skills": [
-        "bdd",
-        "discuss-requirements",
+        "acceptance-design",
+        "changelog",
+        "delivery-workflow",
         "gherkin-generation",
+        "implement-spec",
         "mutation-testing",
         "property-testing",
+        "release-readiness",
+        "requirements-capture",
+        "requirements-intake",
+        "setup-agent-workflow",
         "spec-generation",
-        "tdd"
+        "verify-spec"
       ]
     }
   ]

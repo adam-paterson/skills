@@ -1,0 +1,19 @@
+{
+  "$schema": "../schemas/external-skills.schema.json",
+  "sources": [
+    {
+      "id": "mattpocock",
+      "repo": "mattpocock/skills",
+      "url": "https://github.com/mattpocock/skills",
+      "relationship": "upstream",
+      "skills": [
+        {
+          "name": "grill-with-docs",
+          "stage": "project-language-review",
+          "required": true,
+          "reason": "Challenges plans against project language, updates CONTEXT.md, and proposes ADRs before requirements are captured into the spec package."
+        }
+      ]
+    }
+  ]
+}

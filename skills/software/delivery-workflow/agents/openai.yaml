@@ -1,0 +1,4 @@
+interface:
+  display_name: "Delivery Workflow"
+  short_description: "Route enterprise spec packages to the next stage"
+  default_prompt: "Use $delivery-workflow to inspect this repo and route the current spec package to the next workflow stage."

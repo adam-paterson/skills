@@ -1,0 +1,4 @@
+interface:
+  display_name: "Setup Agent Workflow"
+  short_description: "Configure repo-local spec workflow docs"
+  default_prompt: "Use $setup-agent-workflow to configure this repository for the software workflow skills."

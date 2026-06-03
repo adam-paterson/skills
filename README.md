@@ -10,11 +10,18 @@ This repository stores Agent Skills in Git and publishes the same catalog throug
 - skills.sh discovery after skills from this repository are installed.
 - A Cloudflare Pages `/.well-known/agent-skills/` index generated from the repo.
 
-The initial catalog includes software workflow skills that can be used individually or composed into an OpenSpec-like delivery flow: requirements discussion, spec generation, BDD, Gherkin generation, TDD, property testing, and mutation testing.
+The initial catalog includes software workflow skills that can be used individually or composed into an enterprise delivery flow: intake, external project-language review, requirements capture, specification, acceptance design, Gherkin generation, scoped implementation, verification, release readiness, and changelog maintenance.
 
 ## Layout
 
 ```text
+kits/
+  spec-package/
+    spec-workflow.md
+    templates/
+    scripts/
+external/
+  skill-sources.json
 skills/
   software/
     <skill-name>/
@@ -65,21 +72,39 @@ https://skills.sh/adam-paterson/skills
 
 | Skill | Use |
 | --- | --- |
-| `discuss-requirements` | Extract real requirements, cement project language, update `CONTEXT.md`, and seed `REQUIREMENTS.md`. |
-| `spec-generation` | Create a git-tracked spec package under `docs/specs/<spec-id>/`. |
-| `bdd` | Refine package acceptance criteria with examples and automation targets. |
+| `delivery-workflow` | Inspect the current repo/spec package and route to the next owned or external workflow stage. |
+| `setup-agent-workflow` | Configure a target repo with `docs/agents/spec-workflow.md`, `docs/specs/INDEX.md`, and agent instructions. |
+| `requirements-intake` | Create the initial enterprise spec package and capture source request, source links, actors, constraints, and unknowns. |
+| External `grill-with-docs` | Challenge project language, update `CONTEXT.md`, and propose ADRs from the upstream `mattpocock/skills` catalog. |
+| `requirements-capture` | Persist clarified change requirements into `REQUIREMENTS.md` after project-language review. |
+| `spec-generation` | Create or update implementation-ready `SPEC.md` under `docs/specs/<spec-id>/`. |
+| `acceptance-design` | Refine package acceptance criteria with examples and automation targets before implementation. |
 | `gherkin-generation` | Write package Gherkin scenarios under `scenarios/acceptance.feature`. |
-| `tdd` | Drive implementation through red-green-refactor and append command evidence. |
-| `property-testing` | Add invariant checks and append replayable property-test evidence. |
-| `mutation-testing` | Measure test strength and append mutation score evidence. |
+| `implement-spec` | Implement one ready spec package or slice with TDD and append command evidence. |
+| `verify-spec` | Map observed evidence to every acceptance criterion before marking the package verified. |
+| `release-readiness` | Check changelog, docs, rollout, rollback, observability, and review notes before shipping. |
+| `property-testing` | Optional verification technique for invariants, generators, state machines, and broad input spaces. |
+| `mutation-testing` | Optional verification technique for measuring test strength. |
+| `changelog` | Create and maintain a `CHANGELOG.md` to the Keep a Changelog 1.1.0 format. |
 
-A typical OpenSpec-like chain is:
+A typical enterprise software workflow is:
 
 ```text
-discuss-requirements -> spec-generation -> bdd -> gherkin-generation -> tdd -> property-testing -> mutation-testing
+delivery-workflow
+-> setup-agent-workflow
+-> requirements-intake
+-> external:grill-with-docs
+-> requirements-capture
+-> spec-generation
+-> acceptance-design
+-> gherkin-generation
+-> implement-spec
+-> verify-spec
+-> release-readiness
+-> changelog when needed
 ```
 
-Use only the skills needed for the task. For example, a small bug fix may only need `tdd`, while a broad feature may begin with `discuss-requirements` and end with mutation or property checks.
+Use only the skills needed for the task. `setup-agent-workflow` is recommended once per repo, but the package-creating skills remain standalone. `property-testing` and `mutation-testing` are optional verification techniques selected by `TEST-PLAN.md`, not mandatory stages for every change.
 
 The shared package shape is:
 
@@ -90,10 +115,15 @@ docs/
   specs/
     INDEX.md
     <spec-id>/
+      WORKFLOW.md
+      INTAKE.md
       REQUIREMENTS.md
       SPEC.md
       ACCEPTANCE.md
       TEST-PLAN.md
+      IMPLEMENTATION.md
+      VERIFY.md
+      RELEASE.md
       DECISIONS.md
       EVIDENCE.md
       scenarios/
@@ -108,12 +138,28 @@ node skills/software/spec-generation/scripts/init-spec-package.mjs \
   --title "Add agent skill catalog"
 ```
 
-Or start with requirements discussion:
+Or start with requirements intake:
 
 ```bash
-node skills/software/discuss-requirements/scripts/init-requirements-session.mjs \
+node skills/software/requirements-intake/scripts/init-requirements-intake.mjs \
   --root . \
   --title "Add agent skill catalog"
+```
+
+Inspect workflow state:
+
+```bash
+node skills/software/delivery-workflow/scripts/inspect-workflow.mjs \
+  --root . \
+  --spec 2026-06-03-example
+```
+
+Set up a target repo for the full workflow:
+
+```bash
+node skills/software/setup-agent-workflow/scripts/setup-agent-workflow.mjs \
+  --root . \
+  --agent-file AGENTS.md
 ```
 
 ## Codex Plugin
@@ -140,6 +186,16 @@ Deploy with the GitHub Actions workflow after adding these repository secrets:
 - `CLOUDFLARE_ACCOUNT_ID`
 
 ## Development
+
+The canonical spec package source lives in `kits/spec-package/`. Generated copies are committed inside individual skills so each skill remains installable by itself.
+
+External upstream skills are tracked in `external/skill-sources.json`. The v1 enterprise workflow treats `grill-with-docs` from `mattpocock/skills` as the project-language review stage instead of copying that skill into this catalog.
+
+Sync generated skill assets:
+
+```bash
+npm run sync:skill-assets
+```
 
 Create a draft skill:
 

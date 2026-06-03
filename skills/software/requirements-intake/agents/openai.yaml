@@ -1,0 +1,4 @@
+interface:
+  display_name: "Requirements Intake"
+  short_description: "Create the initial enterprise spec package"
+  default_prompt: "Use $requirements-intake to create a spec package and capture the source request before project-language review."

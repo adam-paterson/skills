@@ -1,0 +1,4 @@
+interface:
+  display_name: "Verify Spec"
+  short_description: "Map evidence to acceptance criteria"
+  default_prompt: "Use $verify-spec to prove this spec package against its acceptance criteria."

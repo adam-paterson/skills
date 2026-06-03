@@ -1,0 +1,4 @@
+interface:
+  display_name: "Acceptance Design"
+  short_description: "Refine acceptance criteria before implementation"
+  default_prompt: "Use $acceptance-design to refine acceptance criteria and behavior examples for this spec package."
