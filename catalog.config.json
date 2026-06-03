@@ -1,0 +1,48 @@
+{
+  "$schema": "./schemas/catalog.schema.json",
+  "repository": {
+    "owner": "adam-paterson",
+    "name": "skills",
+    "url": "https://github.com/adam-paterson/skills"
+  },
+  "plugin": {
+    "name": "agent-skills-directory",
+    "displayName": "Agent Skills Directory",
+    "description": "Work-domain Agent Skills catalog for software, marketing, sales, operations, and research agents."
+  },
+  "wellKnown": {
+    "schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+    "basePath": "/.well-known/agent-skills/"
+  },
+  "skillsSh": {
+    "schema": "https://skills.sh/schemas/skills.sh.schema.json",
+    "notGrouped": "bottom"
+  },
+  "domains": [
+    {
+      "id": "software",
+      "title": "Software",
+      "description": "Skills for software engineering, architecture, testing, release work, and developer operations."
+    },
+    {
+      "id": "marketing",
+      "title": "Marketing",
+      "description": "Skills for campaigns, positioning, content strategy, SEO, analytics, and go-to-market work."
+    },
+    {
+      "id": "sales",
+      "title": "Sales",
+      "description": "Skills for pipeline work, account research, CRM hygiene, prospecting, and sales operations."
+    },
+    {
+      "id": "operations",
+      "title": "Operations",
+      "description": "Skills for business operations, process design, reporting, vendor workflows, and internal systems."
+    },
+    {
+      "id": "research",
+      "title": "Research",
+      "description": "Skills for evidence gathering, synthesis, competitive research, and decision support."
+    }
+  ]
+}

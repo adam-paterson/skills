@@ -1,0 +1,4 @@
+interface:
+  display_name: "Spec Generation"
+  short_description: "Create git-tracked implementation specs"
+  default_prompt: "Use $spec-generation to create a git-tracked spec package for this software change."

@@ -1,0 +1,18 @@
+{
+  "name": "@adam-paterson/skills",
+  "version": "0.1.0",
+  "description": "Work-domain Agent Skills catalog for software, marketing, sales, operations, and research agents.",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-skills.mjs",
+    "build:skills-sh": "node scripts/build-skills-sh.mjs",
+    "build:well-known": "node scripts/build-well-known.mjs",
+    "build": "npm run build:skills-sh && npm run build:well-known",
+    "new-skill": "node scripts/new-skill.mjs",
+    "test": "npm run validate && node scripts/test-fixtures.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

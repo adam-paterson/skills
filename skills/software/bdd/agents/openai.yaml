@@ -1,0 +1,4 @@
+interface:
+  display_name: "BDD"
+  short_description: "Shape behavior with examples and acceptance checks"
+  default_prompt: "Use $bdd to turn this request into behavior examples and acceptance checks."

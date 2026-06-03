@@ -1,0 +1,41 @@
+name: Validate
+
+on:
+  pull_request:
+  push:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Validate
+        run: npm run validate
+
+      - name: Build
+        run: npm run build
+
+      - name: Fixture tests
+        run: node scripts/test-fixtures.mjs
+
+      - name: Check generated skills.sh.json
+        run: |
+          if [ -n "$(git status --porcelain -- skills.sh.json)" ]; then
+            git status --short -- skills.sh.json
+            git diff -- skills.sh.json
+            exit 1
+          fi

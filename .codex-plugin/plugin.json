@@ -1,0 +1,36 @@
+{
+  "name": "agent-skills-directory",
+  "version": "0.1.0",
+  "description": "Work-domain Agent Skills catalog for software, marketing, sales, operations, and research agents.",
+  "author": {
+    "name": "Adam Paterson",
+    "email": "hello@adampaterson.co.uk",
+    "url": "https://github.com/adam-paterson"
+  },
+  "homepage": "https://skills.sh/adam-paterson/skills",
+  "repository": "https://github.com/adam-paterson/skills",
+  "license": "MIT",
+  "keywords": [
+    "agent-skills",
+    "codex",
+    "skills",
+    "software",
+    "marketing"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Agent Skills Directory",
+    "shortDescription": "Work-domain agent skills catalog",
+    "longDescription": "A Git-hosted catalog of Agent Skills organized by software, marketing, sales, operations, and research domains.",
+    "developerName": "Adam Paterson",
+    "category": "Productivity",
+    "capabilities": [
+      "Write"
+    ],
+    "websiteURL": "https://skills.sh/adam-paterson/skills",
+    "defaultPrompt": [
+      "Use a skill from the Agent Skills Directory."
+    ],
+    "brandColor": "#2563EB"
+  }
+}

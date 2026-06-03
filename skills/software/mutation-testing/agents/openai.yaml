@@ -1,0 +1,4 @@
+interface:
+  display_name: "Mutation Testing"
+  short_description: "Measure and improve test-suite defect detection"
+  default_prompt: "Use $mutation-testing to assess and strengthen this test suite with mutation testing."

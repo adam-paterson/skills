@@ -1,0 +1,8 @@
+/.well-known/agent-skills/*
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET, HEAD, OPTIONS
+  Access-Control-Max-Age: 86400
+  Cache-Control: public, max-age=300
+
+/*.tar.gz
+  Cache-Control: public, max-age=31536000, immutable

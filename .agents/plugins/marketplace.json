@@ -1,0 +1,20 @@
+{
+  "name": "adam-paterson-skills",
+  "interface": {
+    "displayName": "Adam Paterson Skills"
+  },
+  "plugins": [
+    {
+      "name": "agent-skills-directory",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

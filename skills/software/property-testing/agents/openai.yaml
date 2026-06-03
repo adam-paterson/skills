@@ -1,0 +1,4 @@
+interface:
+  display_name: "Property Testing"
+  short_description: "Find invariants with generated test cases"
+  default_prompt: "Use $property-testing to add replayable property-based tests for this behavior."
