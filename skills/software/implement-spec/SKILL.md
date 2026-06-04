@@ -1,6 +1,6 @@
 ---
 name: implement-spec
-description: Use when implementing a ready enterprise spec package one slice at a time: enforce WORKFLOW.md package_lifecycle ready-for-implementation, drive code through TDD, keep scope tight, update IMPLEMENTATION.md, and append real evidence mapped to acceptance criteria.
+description: "Use when implementing a ready enterprise spec package one slice at a time: enforce WORKFLOW.md package_lifecycle ready-for-implementation, drive code through TDD, keep scope tight, update IMPLEMENTATION.md, and append real evidence mapped to acceptance criteria."
 ---
 
 # Implement Spec

@@ -1,6 +1,6 @@
 ---
 name: property-testing
-description: Use when TEST-PLAN.md selects property testing as an optional verification technique: identify invariants, generators, shrinking behavior, seeds, edge cases, and replayable randomized checks with tools such as fast-check, Hypothesis, jqwik, ScalaCheck, or proptest.
+description: "Use when TEST-PLAN.md selects property testing as an optional verification technique: identify invariants, generators, shrinking behavior, seeds, edge cases, and replayable randomized checks with tools such as fast-check, Hypothesis, jqwik, ScalaCheck, or proptest."
 ---
 
 # Property Testing

@@ -148,17 +148,28 @@ function parseSimpleYaml(text, filePath) {
       continue;
     }
 
-    result[key] = unquoteYamlString(rawValue.trim());
+    const trimmedValue = rawValue.trim();
+    if (!isQuotedYamlString(trimmedValue) && trimmedValue.includes(": ")) {
+      throw new Error(
+        `${filePath} frontmatter "${key}" value must be quoted when it contains ": ".`
+      );
+    }
+
+    result[key] = unquoteYamlString(trimmedValue);
   }
 
   return result;
 }
 
-function unquoteYamlString(value) {
-  if (
+function isQuotedYamlString(value) {
+  return (
     (value.startsWith("\"") && value.endsWith("\"")) ||
     (value.startsWith("'") && value.endsWith("'"))
-  ) {
+  );
+}
+
+function unquoteYamlString(value) {
+  if (isQuotedYamlString(value)) {
     return value.slice(1, -1);
   }
   return value;

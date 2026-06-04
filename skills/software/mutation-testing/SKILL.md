@@ -1,6 +1,6 @@
 ---
 name: mutation-testing
-description: Use when TEST-PLAN.md selects mutation testing as an optional verification technique: select the right tool, establish a baseline, interpret surviving mutants, add behavior-focused tests, and report mutation score evidence.
+description: "Use when TEST-PLAN.md selects mutation testing as an optional verification technique: select the right tool, establish a baseline, interpret surviving mutants, add behavior-focused tests, and report mutation score evidence."
 ---
 
 # Mutation Testing

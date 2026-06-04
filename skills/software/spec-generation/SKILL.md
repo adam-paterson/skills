@@ -1,6 +1,6 @@
 ---
 name: spec-generation
-description: Use after requirements-capture to create or update implementation-ready SPEC.md inside docs/specs/<spec-id>/: inspect current state, preserve requirements, define target behavior, interfaces, data flow, risks, initial acceptance/test strategy, and update WORKFLOW.md toward ready-for-implementation.
+description: "Use after requirements-capture to create or update implementation-ready SPEC.md inside docs/specs/<spec-id>/: inspect current state, preserve requirements, define target behavior, interfaces, data flow, risks, initial acceptance/test strategy, and update WORKFLOW.md toward ready-for-implementation."
 ---
 
 # Spec Generation

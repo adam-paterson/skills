@@ -1,6 +1,6 @@
 ---
 name: setup-agent-workflow
-description: Use when preparing a repository to use this catalog's enterprise software workflow: create docs/agents/spec-workflow.md, docs/specs/INDEX.md, and agent instructions so delivery-workflow, requirements-intake, requirements-capture, spec-generation, acceptance-design, to-gherkin, implement-spec, verify-spec, release-readiness, and changelog share one repo-local spec package convention.
+description: "Use when preparing a repository to use this catalog's enterprise software workflow: create docs/agents/spec-workflow.md, docs/specs/INDEX.md, and agent instructions so delivery-workflow, requirements-intake, requirements-capture, spec-generation, acceptance-design, to-gherkin, implement-spec, verify-spec, release-readiness, and changelog share one repo-local spec package convention."
 ---
 
 # Setup Agent Workflow

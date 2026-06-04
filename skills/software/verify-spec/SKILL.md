@@ -1,6 +1,6 @@
 ---
 name: verify-spec
-description: Use after implement-spec to verify an enterprise spec package: read ACCEPTANCE.md, TEST-PLAN.md, scenarios, EVIDENCE.md, and VERIFY.md; run or inspect real checks; map observed evidence to every acceptance criterion; and update WORKFLOW.md to verified only when proof is complete.
+description: "Use after implement-spec to verify an enterprise spec package: read ACCEPTANCE.md, TEST-PLAN.md, scenarios, EVIDENCE.md, and VERIFY.md; run or inspect real checks; map observed evidence to every acceptance criterion; and update WORKFLOW.md to verified only when proof is complete."
 ---
 
 # Verify Spec

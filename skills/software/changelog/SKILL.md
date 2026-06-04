@@ -1,6 +1,6 @@
 ---
 name: changelog
-description: Use when starting or maintaining a project CHANGELOG.md to the Keep a Changelog 1.1.0 format: create the file, add curated human-readable entries under the canonical change groups, normalize deviations strictly, and promote the Unreleased section into a dated release. Authoring and maintenance only — never tags releases, bumps versions, or publishes.
+description: "Use when starting or maintaining a project CHANGELOG.md to the Keep a Changelog 1.1.0 format: create the file, add curated human-readable entries under the canonical change groups, normalize deviations strictly, and promote the Unreleased section into a dated release. Authoring and maintenance only — never tags releases, bumps versions, or publishes."
 ---
 
 # Changelog

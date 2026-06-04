@@ -1,6 +1,6 @@
 ---
 name: requirements-capture
-description: Use after external grill-with-docs has clarified durable project language: write change-specific requirements into docs/specs/<spec-id>/REQUIREMENTS.md, preserve CONTEXT.md/ADR decisions as references only, update traceability and WORKFLOW.md readiness, and gate spec-generation.
+description: "Use after external grill-with-docs has clarified durable project language: write change-specific requirements into docs/specs/<spec-id>/REQUIREMENTS.md, preserve CONTEXT.md/ADR decisions as references only, update traceability and WORKFLOW.md readiness, and gate spec-generation."
 ---
 
 # Requirements Capture

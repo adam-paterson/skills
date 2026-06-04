@@ -1,6 +1,6 @@
 ---
 name: skill-distillation
-description: Use when creating, updating, or auditing an agent skill from source materials, expert traces, user corrections, prior outputs, or repeated failure patterns: distill bounded capability rules, behavior constraints, evidence limits, correction records, and validation prompts before editing skill artifacts.
+description: "Use when creating, updating, or auditing an agent skill from source materials, expert traces, user corrections, prior outputs, or repeated failure patterns: distill bounded capability rules, behavior constraints, evidence limits, correction records, and validation prompts before editing skill artifacts."
 ---
 
 # Skill Distillation

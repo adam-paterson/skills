@@ -1,6 +1,6 @@
 ---
 name: acceptance-design
-description: Use after spec-generation and before implementation to refine docs/specs/<spec-id>/ACCEPTANCE.md from requirements and SPEC.md: identify actors, rules, examples, edge cases, acceptance criteria, and automation targets without writing production code.
+description: "Use after spec-generation and before implementation to refine docs/specs/<spec-id>/ACCEPTANCE.md from requirements and SPEC.md: identify actors, rules, examples, edge cases, acceptance criteria, and automation targets without writing production code."
 ---
 
 # Acceptance Design

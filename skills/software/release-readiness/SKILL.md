@@ -1,6 +1,6 @@
 ---
 name: release-readiness
-description: Use after verify-spec to decide whether a verified enterprise spec package is safe to ship or hand off: update RELEASE.md with changelog need, docs, rollout, rollback, observability, review notes, and move WORKFLOW.md to release-ready only when those checks are complete.
+description: "Use after verify-spec to decide whether a verified enterprise spec package is safe to ship or hand off: update RELEASE.md with changelog need, docs, rollout, rollback, observability, review notes, and move WORKFLOW.md to release-ready only when those checks are complete."
 ---
 
 # Release Readiness

@@ -1,6 +1,6 @@
 ---
 name: requirements-intake
-description: Use when starting an enterprise software workflow from a new request: create a docs/specs/<spec-id>/ package, record INTAKE.md with source request, source links, actors, constraints, and unknowns, initialize WORKFLOW.md, then route to external grill-with-docs for project-language review.
+description: "Use when starting an enterprise software workflow from a new request: create a docs/specs/<spec-id>/ package, record INTAKE.md with source request, source links, actors, constraints, and unknowns, initialize WORKFLOW.md, then route to external grill-with-docs for project-language review."
 ---
 
 # Requirements Intake
