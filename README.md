@@ -74,6 +74,7 @@ https://skills.sh/adam-paterson/skills
 | --- | --- |
 | `delivery-workflow` | Inspect the current repo/spec package and route to the next owned or external workflow stage. |
 | `setup-agent-workflow` | Configure a target repo with `docs/agents/spec-workflow.md`, `docs/specs/INDEX.md`, and agent instructions. |
+| `feature-discovery` | Discover feature opportunities from current product fit, user jobs, direct competitors, and adjacent tools. |
 | `requirements-intake` | Create the initial enterprise spec package and capture source request, source links, actors, constraints, and unknowns. |
 | External `grill-with-docs` | Challenge project language, update `CONTEXT.md`, and propose ADRs from the upstream `mattpocock/skills` catalog. |
 | `requirements-capture` | Persist clarified change requirements into `REQUIREMENTS.md` after project-language review. |

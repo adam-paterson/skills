@@ -9,6 +9,7 @@
         "acceptance-design",
         "changelog",
         "delivery-workflow",
+        "feature-discovery",
         "implement-spec",
         "mutation-testing",
         "property-testing",
