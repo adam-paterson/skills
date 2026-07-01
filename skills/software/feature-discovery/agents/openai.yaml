@@ -1,4 +1,4 @@
 interface:
   display_name: "Feature Discovery"
-  short_description: "Discover thoughtful feature opportunities"
-  default_prompt: "Use $feature-discovery to map this product, research direct and adjacent tools, and recommend a small set of feature opportunities."
+  short_description: "Discover fit-tested feature opportunities"
+  default_prompt: "Use $feature-discovery to map product truth, research direct and adjacent offerings, and produce opportunity dossiers with commercial canvases."
