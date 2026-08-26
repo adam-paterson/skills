@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "a7679fac-6dc1-42e8-af3b-946d36e9b60d",
+  "path": "skills/software/delivery-workflow",
+  "path_key": "skills/software/delivery-workflow",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "83e5b990-5338-449a-bbcc-5f44bc3f7d6e",
+  "path": "skills/software/implement-spec",
+  "path_key": "skills/software/implement-spec",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

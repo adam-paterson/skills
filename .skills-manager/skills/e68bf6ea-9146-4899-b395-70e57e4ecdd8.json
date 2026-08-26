@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "e68bf6ea-9146-4899-b395-70e57e4ecdd8",
+  "path": "skills/software/feature-discovery",
+  "path_key": "skills/software/feature-discovery",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}
