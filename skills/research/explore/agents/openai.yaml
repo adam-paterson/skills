@@ -1,0 +1,4 @@
+interface:
+  display_name: "Explore"
+  short_description: "Route and traverse an idea graph"
+  default_prompt: "Use $explore to choose the right graph method, state the choice and reason, then explore this question on my behalf."
