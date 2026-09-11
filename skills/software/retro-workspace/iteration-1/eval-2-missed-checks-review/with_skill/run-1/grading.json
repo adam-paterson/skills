@@ -1,0 +1,47 @@
+{
+  "expectations": [
+    {
+      "text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.",
+      "passed": true,
+      "evidence": "\"Critical \u2014 tenant authorization\" \u2014 Security ranked first, ahead of style/navigation/token concerns."
+    },
+    {
+      "text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.",
+      "passed": true,
+      "evidence": "\"Require a negative isolation test\" \u2014 Also recommends existing npm run typecheck in CI."
+    },
+    {
+      "text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.",
+      "passed": true,
+      "evidence": "\"Add concise reviewer standards for authorization/data isolation\" \u2014 Locates standards in CODING_STANDARDS.md/reviewer.md, not enlarged AGENTS.md."
+    },
+    {
+      "text": "Recommends removing or relocating repeated style instructions from AGENTS.md and identifies generic steering as a candidate for pruning.",
+      "passed": false,
+      "evidence": "\"Remove duplicated reviewer rules from `AGENTS.md`\" \u2014 Addresses duplication but never identifies generic steering (Think carefully/Write good code) as candidates for pruning."
+    },
+    {
+      "text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.",
+      "passed": true,
+      "evidence": "\"with explicit approval and redaction controls\" \u2014 Read-only sanitized logs; timeout remains unknown."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 5125
+  },
+  "eval_feedback": {
+    "overall": "Semantic assertions graded inline by benchmark author, not blinded. Clean-session case has an ambiguous absent CI result; pointer/reviewer criteria intentionally test retro policy, not universally necessary correctness. Compound pruning assertion masks partial credit."
+  }
+}

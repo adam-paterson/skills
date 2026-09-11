@@ -1,0 +1,46 @@
+{
+  "skill_name": "retro",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Conduct a retrospective on the coding session in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/navigation-tool-waste.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+      "expected_output": "Evidence-based navigation and tool-economy recommendations, reusing existing billing docs.",
+      "files": [
+        "evals/files/navigation-tool-waste.md"
+      ],
+      "assertions": [
+        "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.",
+        "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.",
+        "Grounds recommendations in observed session events and does not invent a testing or reviewer failure."
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Conduct a retrospective on the coding session in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/missed-checks-review.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+      "expected_output": "Prioritize tenant isolation; automate existing checks, improve review standards, reduce steering bloat, and address restricted logs safely.",
+      "files": [
+        "evals/files/missed-checks-review.md"
+      ],
+      "assertions": [
+        "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.",
+        "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.",
+        "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.",
+        "Recommends removing or relocating repeated style instructions from AGENTS.md and identifies generic steering as a candidate for pruning.",
+        "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause."
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Conduct a retrospective on the coding session in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/clean-session.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+      "expected_output": "Recognize no material environment changes are justified; avoid inventing problems.",
+      "files": [
+        "evals/files/clean-session.md"
+      ],
+      "assertions": [
+        "Explicitly concludes that no material environment changes are justified by this session.",
+        "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.",
+        "Grounds the conclusion in existing navigation, passing checks, and review evidence."
+      ]
+    }
+  ]
+}

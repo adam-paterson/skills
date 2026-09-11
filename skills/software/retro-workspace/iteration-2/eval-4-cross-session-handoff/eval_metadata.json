@@ -1,0 +1,14 @@
+{
+  "eval_id": 4,
+  "eval_name": "cross-session-handoff",
+  "prompt": "Conduct a retrospective on the coding sessions in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/cross-session-handoff.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+  "assertions": [
+    "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.",
+    "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.",
+    "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.",
+    "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.",
+    "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.",
+    "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.",
+    "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported."
+  ]
+}

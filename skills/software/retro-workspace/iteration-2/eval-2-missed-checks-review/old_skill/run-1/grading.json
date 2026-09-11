@@ -1,0 +1,57 @@
+{
+  "expectations": [
+    {
+      "text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.",
+      "passed": true,
+      "evidence": "\"Make tenant isolation a mandatory automated invariant\" \u2014 Ranks isolation first."
+    },
+    {
+      "text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.",
+      "passed": true,
+      "evidence": "\"run both `npm test` and `npm run typecheck`\" \u2014 Also requires tenant-isolation regression tests."
+    },
+    {
+      "text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.",
+      "passed": true,
+      "evidence": "\"Move authoritative review rules to `CODING_STANDARDS.md`\" \u2014 Locates security review policy in review guidance."
+    },
+    {
+      "text": "Recommends removing or relocating repeated style instructions from AGENTS.md.",
+      "passed": true,
+      "evidence": "\"150 lines duplicating reviewer style rules\" \u2014 Moves the authoritative rules out of the steering file."
+    },
+    {
+      "text": "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.",
+      "passed": true,
+      "evidence": "\"delete the generic no-op instructions\" \u2014 Names Think carefully/Write good code. No experimental result is claimed, though ineffectiveness is asserted more strongly than established."
+    },
+    {
+      "text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.",
+      "passed": true,
+      "evidence": "\"approved read-only support path for sanitized export-job logs\" \u2014 Retains approval, least privilege, and unknown timeout cause."
+    },
+    {
+      "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+      "passed": false,
+      "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+    }
+  ],
+  "summary": {
+    "passed": 6,
+    "failed": 1,
+    "total": 7,
+    "pass_rate": 0.8571428571428571
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 3596
+  },
+  "eval_feedback": {
+    "overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."
+  }
+}

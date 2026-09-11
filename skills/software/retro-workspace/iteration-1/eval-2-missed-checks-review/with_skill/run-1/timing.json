@@ -1,0 +1,6 @@
+{
+  "total_tokens": 31882,
+  "duration_ms": 41313,
+  "total_duration_seconds": 41.313,
+  "token_accounting": "Sum of assistant usage.totalTokens from persisted Pi transcript, including cached input; duration from workflow step."
+}

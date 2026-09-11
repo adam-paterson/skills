@@ -1,0 +1,47 @@
+{
+  "expectations": [
+    {
+      "text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.",
+      "passed": true,
+      "evidence": "\"Critical \u2014 fictional `handler`\" \u2014 Cross-tenant exposure first."
+    },
+    {
+      "text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.",
+      "passed": true,
+      "evidence": "\"CI should run typecheck and lint\" \u2014 Also requires negative authorization testing."
+    },
+    {
+      "text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.",
+      "passed": false,
+      "evidence": "\"put short, high-priority trust-boundary rules near the top\" \u2014 Updates reviewer guidance but also expands always-loaded AGENTS.md with security/validation policy."
+    },
+    {
+      "text": "Recommends removing or relocating repeated style instructions from AGENTS.md and identifies generic steering as a candidate for pruning.",
+      "passed": false,
+      "evidence": "\"Reduce duplicated guidance\" \u2014 No identification of generic steering as no-op/pruning candidate."
+    },
+    {
+      "text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.",
+      "passed": true,
+      "evidence": "\"only after explicit approval\" \u2014 Sanitized read-only access and unknown timeout cause preserved."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 2,
+    "total": 5,
+    "pass_rate": 0.6
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 1,
+      "write": 1
+    },
+    "total_tool_calls": 2,
+    "errors_encountered": 0,
+    "output_chars": 4917
+  },
+  "eval_feedback": {
+    "overall": "Semantic assertions graded inline by benchmark author, not blinded. Clean-session case has an ambiguous absent CI result; pointer/reviewer criteria intentionally test retro policy, not universally necessary correctness. Compound pruning assertion masks partial credit."
+  }
+}

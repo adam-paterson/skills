@@ -1,0 +1,10 @@
+## Changes
+### Project changes
+1. **Add a targeted billing-doc pointer to `AGENTS.md` (medium).** Evidence: the repository already had `docs/billing.md` identifying the shared retry policy and test command, but the agent ran the same repository-wide `rg retry .` twice, then reported it could not locate the policy until the user supplied the pointer. Problem: billing changes start with an avoidable, noisy search and waste turns. Smallest change: add a short conditional pointer in `AGENTS.md` such as “For billing or payment retry work, read `docs/billing.md` first.” Keep the detailed policy in `docs/billing.md`.
+
+No other project changes are supported. The existing test instruction was followed, and the shared-policy fix plus regression test passed.
+
+### Cross-session process changes
+1. **Improve search guidance or provide a narrow-search workflow (medium; hypothesis to test).** Evidence: `rg retry .` produced 28,400 lines including vendor and lock files, was truncated, and was repeated unchanged. Problem: the environment allowed an obviously low-signal search result to be repeated instead of steering toward indexed documentation and source directories. Smallest change: first check the coding environment’s existing search configuration/help for ignored-file defaults, truncation feedback, or repository documentation discovery; if none exists, add a user-controlled search wrapper/extension that (a) respects ignore/vendor/lock exclusions, (b) reports truncation with a suggested narrower scope, and (c) surfaces repository docs when a search is broad and noisy. Verify in future sessions by measuring whether the first search finds the documented implementation without a repeated identical call. Preserve normal permission and ignore-file behavior; do not broaden file access automatically.
+
+No automated-check change is supported: the relevant billing test was run and passed, and the regression test was added successfully. No coding-standard or steering-rule removal is supported; the evidence shows the existing test instruction had an identifiable effect.

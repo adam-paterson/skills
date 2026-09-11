@@ -1,0 +1,37 @@
+{
+  "expectations": [
+    {
+      "text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.",
+      "passed": true,
+      "evidence": "\"Add a compact task-oriented pointer to `AGENTS.md`\" \u2014 Routes to existing docs/billing.md; slightly ambiguous whether implementation paths belong in pointer."
+    },
+    {
+      "text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.",
+      "passed": true,
+      "evidence": "\"use targeted globs such as source and docs directories\" \u2014 Connects filtering to the repeated 28,400-line truncated output."
+    },
+    {
+      "text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.",
+      "passed": true,
+      "evidence": "\"no standards failure is evidenced\" \u2014 Retains successful checks and review; no invented defect."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 4411
+  },
+  "eval_feedback": {
+    "overall": "Semantic assertions graded inline by benchmark author, not blinded. Clean-session case has an ambiguous absent CI result; pointer/reviewer criteria intentionally test retro policy, not universally necessary correctness. Compound pruning assertion masks partial credit."
+  }
+}
