@@ -1,0 +1,37 @@
+{
+  "expectations": [
+    {
+      "text": "Explicitly concludes that no material environment changes are justified by this session.",
+      "passed": false,
+      "evidence": "\"Medium \u2014 incomplete CI verification\" \u2014 Does not conclude no change; infers a local full-suite requirement from CI requirements."
+    },
+    {
+      "text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.",
+      "passed": false,
+      "evidence": "\"Add a completion checklist\" \u2014 New checklist prescribed despite documented focused local checks being satisfied; CI outcome is not supplied."
+    },
+    {
+      "text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.",
+      "passed": true,
+      "evidence": "\"reading `AGENTS.md` and `docs/search.md` before editing\" \u2014 Discusses existing navigation, validation scope, and reviewer evidence; conclusion disputes interpretation rather than omitting evidence."
+    }
+  ],
+  "summary": {
+    "passed": 1,
+    "failed": 2,
+    "total": 3,
+    "pass_rate": 0.3333333333333333
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 1,
+      "write": 1
+    },
+    "total_tool_calls": 2,
+    "errors_encountered": 0,
+    "output_chars": 3235
+  },
+  "eval_feedback": {
+    "overall": "Semantic assertions graded inline by benchmark author, not blinded. Clean-session case has an ambiguous absent CI result; pointer/reviewer criteria intentionally test retro policy, not universally necessary correctness. Compound pruning assertion masks partial credit."
+  }
+}

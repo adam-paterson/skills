@@ -1,0 +1,11 @@
+{
+  "eval_id": 3,
+  "eval_name": "clean-session",
+  "prompt": "Conduct a retrospective on the coding session in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/clean-session-ci-confirmed.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+  "assertions": [
+    "Explicitly concludes that no material environment changes are justified by this session.",
+    "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.",
+    "Grounds the conclusion in existing navigation, passing checks, and review evidence.",
+    "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported."
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "expectations": [
+    {
+      "text": "Identifies existing global bounded-output mode as the first change rather than recommending a new custom plugin or project-by-project rules.",
+      "passed": true,
+      "evidence": "\"Change the global default\" \u2014 Uses existing bounded mode and explicitly rejects custom plugins."
+    },
+    {
+      "text": "Explains why the environment-level change applies across repositories using the two supplied output-flooding incidents.",
+      "passed": true,
+      "evidence": "\"This addresses both observed failures\" \u2014 Connects two different repositories to output handling in the environment."
+    },
+    {
+      "text": "Describes how to verify reduced context consumption or repeated work while preserving full-output retrieval and exit status.",
+      "passed": true,
+      "evidence": "\"Success criterion: verbose commands no longer consume\" \u2014 Observable reduced context cost with full retrieval and correct result, without rerunning."
+    },
+    {
+      "text": "Preserves private log access and retention controls, without inventing configuration keys or claiming changes were applied.",
+      "passed": true,
+      "evidence": "\"retain the existing permission and retention safeguards\" \u2014 Acknowledges missing option identifiers and privacy controls."
+    },
+    {
+      "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+      "passed": false,
+      "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 1,
+    "total": 5,
+    "pass_rate": 0.8
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 2643
+  },
+  "eval_feedback": {
+    "overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."
+  }
+}

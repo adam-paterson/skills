@@ -1,0 +1,37 @@
+{
+  "expectations": [
+    {
+      "text": "Explicitly concludes that no material environment changes are justified by this session.",
+      "passed": true,
+      "evidence": "\"No environment change recommended\" \u2014 Explicit no-change conclusion."
+    },
+    {
+      "text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.",
+      "passed": true,
+      "evidence": "\"does not justify adding tooling, instructions, or information access\" \u2014 No speculative new process."
+    },
+    {
+      "text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.",
+      "passed": true,
+      "evidence": "\"CI requires the broader test, typecheck, and lint checks\" \u2014 Also cites navigation pointers and successful review."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 0,
+    "total": 3,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 2392
+  },
+  "eval_feedback": {
+    "overall": "Semantic assertions graded inline by benchmark author, not blinded. Clean-session case has an ambiguous absent CI result; pointer/reviewer criteria intentionally test retro policy, not universally necessary correctness. Compound pruning assertion masks partial credit."
+  }
+}

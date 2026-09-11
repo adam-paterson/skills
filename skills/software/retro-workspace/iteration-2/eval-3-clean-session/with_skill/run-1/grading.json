@@ -1,0 +1,42 @@
+{
+  "expectations": [
+    {
+      "text": "Explicitly concludes that no material environment changes are justified by this session.",
+      "passed": true,
+      "evidence": "\"No environment changes are supported\" \u2014 Explicit no-change conclusion."
+    },
+    {
+      "text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.",
+      "passed": true,
+      "evidence": "\"Adding new rules or tooling would be speculative\" \u2014 No unsupported new process."
+    },
+    {
+      "text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.",
+      "passed": true,
+      "evidence": "\"Local checks and the full required CI suite passed\" \u2014 Also cites navigation and review criteria."
+    },
+    {
+      "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+      "passed": true,
+      "evidence": "Changes heading present; report identifies project/process changes or unsupported work."
+    }
+  ],
+  "summary": {
+    "passed": 4,
+    "failed": 0,
+    "total": 4,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 1112
+  },
+  "eval_feedback": {
+    "overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."
+  }
+}

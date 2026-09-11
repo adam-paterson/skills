@@ -1,0 +1,14 @@
+{
+  "baseline": "Original skill preserved before iteration 1; measures combined rewrite and cross-session additions, not extension text in isolation.",
+  "new_skill_sha256": "ce3b42a8136c22163eac68cbd001b6054b6e36f2346885ea8b46019d02f0a515",
+  "baseline_skill_sha256": "56f7af1af6f424689a6dfadc462e343d1e3d64c96fa92a798b1c51c3665d9346",
+  "repetitions_per_case": 1,
+  "grading": "Inline evidence-backed semantic grading, not blinded",
+  "acceptance": false,
+  "notes": [
+    "Synthetic fixtures are test scenarios, not evidence of actual user environment defects.",
+    "Fresh contexts; same model for both arms; unrelated skill discovery disabled.",
+    "No automatic triggering test because this skill is user-invoked.",
+    "Pi acceptance scaffolding disabled for both arms to remove the concrete-findings pressure observed in iteration 1."
+  ]
+}

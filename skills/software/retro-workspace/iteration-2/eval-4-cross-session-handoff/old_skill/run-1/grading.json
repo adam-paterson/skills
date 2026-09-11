@@ -1,0 +1,57 @@
+{
+  "expectations": [
+    {
+      "text": "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.",
+      "passed": true,
+      "evidence": "\"loss of validation scope, deferral, and freshness\" \u2014 Identifies a cross-session process cause despite existing project instructions."
+    },
+    {
+      "text": "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.",
+      "passed": true,
+      "evidence": "\"validation ledger to Workshop\" \u2014 Environment mechanism uses tool completion, local project state and resume messages."
+    },
+    {
+      "text": "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.",
+      "passed": true,
+      "evidence": "\"Treat a validation result as stale when the project changes\" \u2014 Preserves scope and deferred checks; acknowledges edit-observation uncertainty and proposes checkpoint fallback."
+    },
+    {
+      "text": "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.",
+      "passed": false,
+      "evidence": "\"This is a useful environment guard\" \u2014 Proposes mechanisms and desired effects, but gives no experiment, replay, or observable evaluation procedure for future sessions."
+    },
+    {
+      "text": "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.",
+      "passed": true,
+      "evidence": "\"Any extension must preserve command approval\" \u2014 Preserves approval, metadata-only retention, and user-inspectable/deletable local state."
+    },
+    {
+      "text": "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.",
+      "passed": true,
+      "evidence": "\"if Workshop cannot observe edits directly\" \u2014 Qualifies capability uncertainty and avoids fabricated API names or implementation claims."
+    },
+    {
+      "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+      "passed": false,
+      "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+    }
+  ],
+  "summary": {
+    "passed": 5,
+    "failed": 2,
+    "total": 7,
+    "pass_rate": 0.7142857142857143
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 3415
+  },
+  "eval_feedback": {
+    "overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."
+  }
+}

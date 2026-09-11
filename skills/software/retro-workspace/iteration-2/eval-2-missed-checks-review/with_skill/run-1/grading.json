@@ -1,0 +1,57 @@
+{
+  "expectations": [
+    {
+      "text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.",
+      "passed": true,
+      "evidence": "\"High \u2014 make tenant identity and authorization an explicit review invariant\" \u2014 Security precedes style/navigation as specified. Typecheck nevertheless comes first, an unscored prioritization concern."
+    },
+    {
+      "text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.",
+      "passed": true,
+      "evidence": "\"Add `npm run typecheck` to the existing CI workflow\" \u2014 Also requires a cross-tenant negative test."
+    },
+    {
+      "text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.",
+      "passed": true,
+      "evidence": "\"`reviewer.md` (or the existing reviewer standards entry point)\" \u2014 Places review policy in reviewer guidance, with a pointer to domain docs."
+    },
+    {
+      "text": "Recommends removing or relocating repeated style instructions from AGENTS.md.",
+      "passed": true,
+      "evidence": "\"Remove duplicated naming/import/comment/reviewer prose\" \u2014 Explicitly removes duplicated always-loaded guidance."
+    },
+    {
+      "text": "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.",
+      "passed": true,
+      "evidence": "\"replace vague always-loaded steering\" \u2014 Identifies Think carefully/Write good code as no-op candidates. Does not claim a controlled experiment; causal language is stronger than the evidence."
+    },
+    {
+      "text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.",
+      "passed": true,
+      "evidence": "\"use the approved sanitized read-only support path\" \u2014 Keeps access controls and leaves timeout cause unknown."
+    },
+    {
+      "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+      "passed": true,
+      "evidence": "Changes heading present; report identifies project/process changes or unsupported work."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 5116
+  },
+  "eval_feedback": {
+    "overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."
+  }
+}

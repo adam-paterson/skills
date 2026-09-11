@@ -1,0 +1,42 @@
+{
+  "expectations": [
+    {
+      "text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.",
+      "passed": true,
+      "evidence": "\"read `docs/billing.md` first\" \u2014 Provides a short conditional pointer; includes implementation paths but does not duplicate the full guide."
+    },
+    {
+      "text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.",
+      "passed": true,
+      "evidence": "\"widening only when necessary\" \u2014 Recommends source directories, exclusions and globs based on the noisy repeated search."
+    },
+    {
+      "text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.",
+      "passed": true,
+      "evidence": "\"No automated-check gap was demonstrated\" \u2014 Retains successful testing and review."
+    },
+    {
+      "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+      "passed": false,
+      "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+    }
+  ],
+  "summary": {
+    "passed": 3,
+    "failed": 1,
+    "total": 4,
+    "pass_rate": 0.75
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 2216
+  },
+  "eval_feedback": {
+    "overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."
+  }
+}

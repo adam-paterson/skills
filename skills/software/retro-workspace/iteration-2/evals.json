@@ -1,0 +1,87 @@
+{
+  "skill_name": "retro",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Conduct a retrospective on the coding session in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/navigation-tool-waste.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+      "expected_output": "Evidence-based navigation and tool-economy recommendations, reusing existing billing docs.",
+      "files": [
+        "evals/files/navigation-tool-waste.md"
+      ],
+      "assertions": [
+        "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.",
+        "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.",
+        "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.",
+        "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported."
+      ],
+      "eval_name": "navigation-tool-waste"
+    },
+    {
+      "id": 2,
+      "prompt": "Conduct a retrospective on the coding session in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/missed-checks-review.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+      "expected_output": "Prioritize tenant isolation; automate existing checks, improve review standards, reduce steering bloat, and address restricted logs safely.",
+      "files": [
+        "evals/files/missed-checks-review.md"
+      ],
+      "assertions": [
+        "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.",
+        "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.",
+        "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.",
+        "Recommends removing or relocating repeated style instructions from AGENTS.md.",
+        "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.",
+        "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.",
+        "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported."
+      ],
+      "eval_name": "missed-checks-review"
+    },
+    {
+      "id": 3,
+      "prompt": "Conduct a retrospective on the coding session in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/clean-session-ci-confirmed.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+      "expected_output": "Recognize no material environment changes are justified; avoid inventing problems.",
+      "files": [
+        "evals/files/clean-session-ci-confirmed.md"
+      ],
+      "assertions": [
+        "Explicitly concludes that no material environment changes are justified by this session.",
+        "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.",
+        "Grounds the conclusion in existing navigation, passing checks, and review evidence.",
+        "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported."
+      ],
+      "eval_name": "clean-session"
+    },
+    {
+      "id": 4,
+      "prompt": "Conduct a retrospective on the coding sessions in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/cross-session-handoff.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+      "expected_output": "Evidence-based process improvement across projects, supported by documented extension capabilities, with validation scope/freshness and user-control boundaries.",
+      "files": [
+        "evals/files/cross-session-handoff.md"
+      ],
+      "eval_name": "cross-session-handoff",
+      "assertions": [
+        "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.",
+        "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.",
+        "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.",
+        "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.",
+        "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.",
+        "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.",
+        "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported."
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "Conduct a retrospective on the coding sessions in /Users/adampaterson/Projects/skills/skills/software/retro/evals/files/existing-capability.md. Suggest improvements to the coding agent environment for future sessions. Treat the supplied packet as the complete available evidence; fictional project paths are not files to locate on this machine. Return your recommendations, without implementing changes.",
+      "expected_output": "Use existing global bounded-output configuration rather than build a plugin; explain cross-project benefit and how to verify it without invented API names.",
+      "files": [
+        "evals/files/existing-capability.md"
+      ],
+      "eval_name": "existing-capability",
+      "assertions": [
+        "Identifies existing global bounded-output mode as the first change rather than recommending a new custom plugin or project-by-project rules.",
+        "Explains why the environment-level change applies across repositories using the two supplied output-flooding incidents.",
+        "Describes how to verify reduced context consumption or repeated work while preserving full-output retrieval and exit status.",
+        "Preserves private log access and retention controls, without inventing configuration keys or claiming changes were applied.",
+        "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported."
+      ]
+    }
+  ]
+}

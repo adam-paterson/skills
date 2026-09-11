@@ -1,0 +1,57 @@
+{
+  "expectations": [
+    {
+      "text": "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.",
+      "passed": true,
+      "evidence": "\"Session summaries are not a reliable record\" \u2014 Explains loss of scope, deferral and freshness across the supplied incidents, not absent project commands."
+    },
+    {
+      "text": "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.",
+      "passed": true,
+      "evidence": "\"Add a Workshop extension\" \u2014 Proposes local state from tool completion and a resume message using supplied capabilities."
+    },
+    {
+      "text": "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.",
+      "passed": true,
+      "evidence": "\"On resume, inject a short, explicit status block\" \u2014 Covers scope, stale results after edits, and deferred checks without fixed project commands. Capturing all pending work still needs design."
+    },
+    {
+      "text": "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.",
+      "passed": true,
+      "evidence": "\"Interrupt and resume sessions containing\" \u2014 Specifies concrete replay cases and checking status against actual run/edit history."
+    },
+    {
+      "text": "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.",
+      "passed": true,
+      "evidence": "\"preserve command approval flow\" \u2014 Keeps user-inspectable/deletable local metadata and avoids raw sensitive output retention."
+    },
+    {
+      "text": "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.",
+      "passed": true,
+      "evidence": "\"observes tool completion\" \u2014 Uses documented capabilities descriptively, not invented API identifiers; no implementation claim."
+    },
+    {
+      "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+      "passed": true,
+      "evidence": "Changes heading present; report identifies project/process changes or unsupported work."
+    }
+  ],
+  "summary": {
+    "passed": 7,
+    "failed": 0,
+    "total": 7,
+    "pass_rate": 1.0
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 3,
+      "write": 1
+    },
+    "total_tool_calls": 4,
+    "errors_encountered": 0,
+    "output_chars": 4728
+  },
+  "eval_feedback": {
+    "overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."
+  }
+}
