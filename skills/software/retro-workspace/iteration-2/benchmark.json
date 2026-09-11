@@ -1,0 +1,548 @@
+{
+  "metadata": {
+    "skill_name": "retro",
+    "skill_path": "skills/software/retro",
+    "executor_model": "openai-codex/gpt-5.6-luna",
+    "analyzer_model": "parent session; inline semantic grading",
+    "timestamp": "2026-09-11T22:34:39Z",
+    "evals_run": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "runs_per_configuration": 3,
+    "repetitions_per_eval": 1,
+    "baseline": "Original skill snapshot before iteration 1, not the immediate pre-extension revision",
+    "acceptance_scaffolding": false
+  },
+  "runs": [
+    {
+      "eval_id": 1,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 27.045,
+        "tokens": 23419,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.",
+          "passed": true,
+          "evidence": "\"Add one conditional line to `AGENTS.md`\" \u2014 Routes billing work to existing docs and explicitly keeps policy details there."
+        },
+        {
+          "text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.",
+          "passed": true,
+          "evidence": "\"change the query or scope before repeating a search\" \u2014 Links scoped searches to repeated, truncated broad calls."
+        },
+        {
+          "text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.",
+          "passed": true,
+          "evidence": "\"no review miss is shown\" \u2014 Does not invent a testing or reviewer failure."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": true,
+          "evidence": "Changes heading present; report identifies project/process changes or unsupported work."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 33.749,
+        "tokens": 24549,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.",
+          "passed": true,
+          "evidence": "\"High \u2014 make tenant identity and authorization an explicit review invariant\" \u2014 Security precedes style/navigation as specified. Typecheck nevertheless comes first, an unscored prioritization concern."
+        },
+        {
+          "text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.",
+          "passed": true,
+          "evidence": "\"Add `npm run typecheck` to the existing CI workflow\" \u2014 Also requires a cross-tenant negative test."
+        },
+        {
+          "text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.",
+          "passed": true,
+          "evidence": "\"`reviewer.md` (or the existing reviewer standards entry point)\" \u2014 Places review policy in reviewer guidance, with a pointer to domain docs."
+        },
+        {
+          "text": "Recommends removing or relocating repeated style instructions from AGENTS.md.",
+          "passed": true,
+          "evidence": "\"Remove duplicated naming/import/comment/reviewer prose\" \u2014 Explicitly removes duplicated always-loaded guidance."
+        },
+        {
+          "text": "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.",
+          "passed": true,
+          "evidence": "\"replace vague always-loaded steering\" \u2014 Identifies Think carefully/Write good code as no-op candidates. Does not claim a controlled experiment; causal language is stronger than the evidence."
+        },
+        {
+          "text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.",
+          "passed": true,
+          "evidence": "\"use the approved sanitized read-only support path\" \u2014 Keeps access controls and leaves timeout cause unknown."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": true,
+          "evidence": "Changes heading present; report identifies project/process changes or unsupported work."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 4,
+        "failed": 0,
+        "total": 4,
+        "time_seconds": 21.399,
+        "tokens": 35855,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Explicitly concludes that no material environment changes are justified by this session.",
+          "passed": true,
+          "evidence": "\"No environment changes are supported\" \u2014 Explicit no-change conclusion."
+        },
+        {
+          "text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.",
+          "passed": true,
+          "evidence": "\"Adding new rules or tooling would be speculative\" \u2014 No unsupported new process."
+        },
+        {
+          "text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.",
+          "passed": true,
+          "evidence": "\"Local checks and the full required CI suite passed\" \u2014 Also cites navigation and review criteria."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": true,
+          "evidence": "Changes heading present; report identifies project/process changes or unsupported work."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 7,
+        "failed": 0,
+        "total": 7,
+        "time_seconds": 32.806,
+        "tokens": 37666,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.",
+          "passed": true,
+          "evidence": "\"Session summaries are not a reliable record\" \u2014 Explains loss of scope, deferral and freshness across the supplied incidents, not absent project commands."
+        },
+        {
+          "text": "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.",
+          "passed": true,
+          "evidence": "\"Add a Workshop extension\" \u2014 Proposes local state from tool completion and a resume message using supplied capabilities."
+        },
+        {
+          "text": "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.",
+          "passed": true,
+          "evidence": "\"On resume, inject a short, explicit status block\" \u2014 Covers scope, stale results after edits, and deferred checks without fixed project commands. Capturing all pending work still needs design."
+        },
+        {
+          "text": "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.",
+          "passed": true,
+          "evidence": "\"Interrupt and resume sessions containing\" \u2014 Specifies concrete replay cases and checking status against actual run/edit history."
+        },
+        {
+          "text": "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.",
+          "passed": true,
+          "evidence": "\"preserve command approval flow\" \u2014 Keeps user-inspectable/deletable local metadata and avoids raw sensitive output retention."
+        },
+        {
+          "text": "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.",
+          "passed": true,
+          "evidence": "\"observes tool completion\" \u2014 Uses documented capabilities descriptively, not invented API identifiers; no implementation claim."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": true,
+          "evidence": "Changes heading present; report identifies project/process changes or unsupported work."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 5,
+      "configuration": "with_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 1.0,
+        "passed": 5,
+        "failed": 0,
+        "total": 5,
+        "time_seconds": 27.395,
+        "tokens": 23431,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Identifies existing global bounded-output mode as the first change rather than recommending a new custom plugin or project-by-project rules.",
+          "passed": true,
+          "evidence": "\"rather than adding a new plugin or project rule\" \u2014 First recommendation uses existing global bounded mode."
+        },
+        {
+          "text": "Explains why the environment-level change applies across repositories using the two supplied output-flooding incidents.",
+          "passed": true,
+          "evidence": "\"Passthrough output caused context flooding in both sessions\" \u2014 Connects both incidents to reusable environment behavior."
+        },
+        {
+          "text": "Describes how to verify reduced context consumption or repeated work while preserving full-output retrieval and exit status.",
+          "passed": true,
+          "evidence": "\"Run a deliberately noisy command\" \u2014 Tests excerpt limits, full-output range retrieval, exit status, and repeated work."
+        },
+        {
+          "text": "Preserves private log access and retention controls, without inventing configuration keys or claiming changes were applied.",
+          "passed": true,
+          "evidence": "\"Preserve the existing file permissions and retention controls\" \u2014 No invented option keys or implementation claims."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": true,
+          "evidence": "Changes heading present; report identifies project/process changes or unsupported work."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 1,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.75,
+        "passed": 3,
+        "failed": 1,
+        "total": 4,
+        "time_seconds": 22.846,
+        "tokens": 22639,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.",
+          "passed": true,
+          "evidence": "\"read `docs/billing.md` first\" \u2014 Provides a short conditional pointer; includes implementation paths but does not duplicate the full guide."
+        },
+        {
+          "text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.",
+          "passed": true,
+          "evidence": "\"widening only when necessary\" \u2014 Recommends source directories, exclusions and globs based on the noisy repeated search."
+        },
+        {
+          "text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.",
+          "passed": true,
+          "evidence": "\"No automated-check gap was demonstrated\" \u2014 Retains successful testing and review."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": false,
+          "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 2,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8571428571428571,
+        "passed": 6,
+        "failed": 1,
+        "total": 7,
+        "time_seconds": 30.49,
+        "tokens": 23614,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.",
+          "passed": true,
+          "evidence": "\"Make tenant isolation a mandatory automated invariant\" \u2014 Ranks isolation first."
+        },
+        {
+          "text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.",
+          "passed": true,
+          "evidence": "\"run both `npm test` and `npm run typecheck`\" \u2014 Also requires tenant-isolation regression tests."
+        },
+        {
+          "text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.",
+          "passed": true,
+          "evidence": "\"Move authoritative review rules to `CODING_STANDARDS.md`\" \u2014 Locates security review policy in review guidance."
+        },
+        {
+          "text": "Recommends removing or relocating repeated style instructions from AGENTS.md.",
+          "passed": true,
+          "evidence": "\"150 lines duplicating reviewer style rules\" \u2014 Moves the authoritative rules out of the steering file."
+        },
+        {
+          "text": "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.",
+          "passed": true,
+          "evidence": "\"delete the generic no-op instructions\" \u2014 Names Think carefully/Write good code. No experimental result is claimed, though ineffectiveness is asserted more strongly than established."
+        },
+        {
+          "text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.",
+          "passed": true,
+          "evidence": "\"approved read-only support path for sanitized export-job logs\" \u2014 Retains approval, least privilege, and unknown timeout cause."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": false,
+          "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 3,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.75,
+        "passed": 3,
+        "failed": 1,
+        "total": 4,
+        "time_seconds": 25.093,
+        "tokens": 35055,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Explicitly concludes that no material environment changes are justified by this session.",
+          "passed": true,
+          "evidence": "\"No actionable environment changes are warranted\" \u2014 Explicit no-change conclusion."
+        },
+        {
+          "text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.",
+          "passed": true,
+          "evidence": "\"Keep the current setup unchanged\" \u2014 No unsupported new process."
+        },
+        {
+          "text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.",
+          "passed": true,
+          "evidence": "\"the reviewer and full CI confirmed the result\" \u2014 Also cites navigation and focused checks."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": false,
+          "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 4,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.7142857142857143,
+        "passed": 5,
+        "failed": 2,
+        "total": 7,
+        "time_seconds": 32.915,
+        "tokens": 23748,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.",
+          "passed": true,
+          "evidence": "\"loss of validation scope, deferral, and freshness\" \u2014 Identifies a cross-session process cause despite existing project instructions."
+        },
+        {
+          "text": "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.",
+          "passed": true,
+          "evidence": "\"validation ledger to Workshop\" \u2014 Environment mechanism uses tool completion, local project state and resume messages."
+        },
+        {
+          "text": "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.",
+          "passed": true,
+          "evidence": "\"Treat a validation result as stale when the project changes\" \u2014 Preserves scope and deferred checks; acknowledges edit-observation uncertainty and proposes checkpoint fallback."
+        },
+        {
+          "text": "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.",
+          "passed": false,
+          "evidence": "\"This is a useful environment guard\" \u2014 Proposes mechanisms and desired effects, but gives no experiment, replay, or observable evaluation procedure for future sessions."
+        },
+        {
+          "text": "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.",
+          "passed": true,
+          "evidence": "\"Any extension must preserve command approval\" \u2014 Preserves approval, metadata-only retention, and user-inspectable/deletable local state."
+        },
+        {
+          "text": "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.",
+          "passed": true,
+          "evidence": "\"if Workshop cannot observe edits directly\" \u2014 Qualifies capability uncertainty and avoids fabricated API names or implementation claims."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": false,
+          "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "eval_id": 5,
+      "configuration": "old_skill",
+      "run_number": 1,
+      "result": {
+        "pass_rate": 0.8,
+        "passed": 4,
+        "failed": 1,
+        "total": 5,
+        "time_seconds": 23.018,
+        "tokens": 22545,
+        "tool_calls": 4,
+        "errors": 0
+      },
+      "expectations": [
+        {
+          "text": "Identifies existing global bounded-output mode as the first change rather than recommending a new custom plugin or project-by-project rules.",
+          "passed": true,
+          "evidence": "\"Change the global default\" \u2014 Uses existing bounded mode and explicitly rejects custom plugins."
+        },
+        {
+          "text": "Explains why the environment-level change applies across repositories using the two supplied output-flooding incidents.",
+          "passed": true,
+          "evidence": "\"This addresses both observed failures\" \u2014 Connects two different repositories to output handling in the environment."
+        },
+        {
+          "text": "Describes how to verify reduced context consumption or repeated work while preserving full-output retrieval and exit status.",
+          "passed": true,
+          "evidence": "\"Success criterion: verbose commands no longer consume\" \u2014 Observable reduced context cost with full retrieval and correct result, without rerunning."
+        },
+        {
+          "text": "Preserves private log access and retention controls, without inventing configuration keys or claiming changes were applied.",
+          "passed": true,
+          "evidence": "\"retain the existing permission and retention safeguards\" \u2014 Acknowledges missing option identifiers and privacy controls."
+        },
+        {
+          "text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.",
+          "passed": false,
+          "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."
+        }
+      ],
+      "notes": []
+    }
+  ],
+  "run_summary": {
+    "with_skill": {
+      "pass_rate": {
+        "mean": 1.0,
+        "stddev": 0.0,
+        "min": 1.0,
+        "max": 1.0
+      },
+      "time_seconds": {
+        "mean": 28.4788,
+        "stddev": 4.9963,
+        "min": 21.399,
+        "max": 33.749
+      },
+      "tokens": {
+        "mean": 28984.0,
+        "stddev": 7142.514,
+        "min": 23419,
+        "max": 37666
+      }
+    },
+    "old_skill": {
+      "pass_rate": {
+        "mean": 0.7743,
+        "stddev": 0.0555,
+        "min": 0.7143,
+        "max": 0.8571
+      },
+      "time_seconds": {
+        "mean": 26.8724,
+        "stddev": 4.5781,
+        "min": 22.846,
+        "max": 32.915
+      },
+      "tokens": {
+        "mean": 25520.2,
+        "stddev": 5358.1674,
+        "min": 22545,
+        "max": 35055
+      }
+    },
+    "delta": {
+      "pass_rate": "+0.23",
+      "time_seconds": "+1.6",
+      "tokens": "+3464"
+    }
+  },
+  "notes": [
+    "Five synthetic cases, one run per case/version. Baseline is the original pre-iteration-1 skill. This measures the combined rewrite and cross-session additions, not the extension section in isolation.",
+    "Overall macro pass rate is 100% current vs 77.4% original; pooled checks are 27/27 vs 21/27. Most of the difference is the new Changes-section requirement: 5/5 vs 0/5. Substantive checks are 22/22 vs 21/22. Do not interpret the headline difference as a large reasoning improvement.",
+    "Both versions proposed a reusable Workshop validation-state extension/ledger, chose existing bounded-output configuration instead of a plugin in the second workflow case, and recommended no changes for the clean session. The original skill already found the principal cross-session opportunities in these explicit fixtures.",
+    "The substantive gain was verification: the current handoff report proposed interruption/resume replay cases and comparison with the command/edit timeline. The original described mechanisms and intended outcomes but no evaluation procedure.",
+    "Unscored prioritization concern: the current missed-checks report puts typecheck before tenant isolation. The original puts tenant isolation first. The existing assertion only compares security against style/navigation/token economy, so it does not catch this difference.",
+    "Both versions identified generic no-op steering in this run. Some language asserts ineffectiveness or causal impact more strongly than a synthetic transcript establishes. Neither version claims an actual controlled experiment; the assertion passes, but this is not evidence that the instruction is a real no-op.",
+    "The new handoff recommendation leaves details unresolved: tool completion alone does not explain capturing deferred work, reliable edit detection, or whether session-local output references survive. The original explicitly acknowledges edit-observation uncertainty. These are design follow-ups, not a verified extension implementation.",
+    "The current navigation report says Use npm/run relevant tests affected behavior based on observed compliance alone. That does not establish causal effect. No assertion tested this causal wording; it is a qualitative review concern.",
+    "The new handoff report conditionally suggests another project instruction despite adequate existing guidance. The output-flooding report makes follow-on guidance conditional on observed need. Review whether those optional recommendations add useful information or noise.",
+    "Fixture changes: clean case now explicitly confirms full CI passed; duplication and generic no-op detection scored separately. Pi acceptance scaffolding was disabled in both arms, removing the prior demand for concrete findings. Iteration-1 percentages are not directly comparable.",
+    "All ten transcripts read only their assigned skill, writing-for-agents, and evidence packet, and wrote only the assigned report. Each used four tool calls; no tool errors observed. Same fresh-context model in both arms; no automatic-trigger testing.",
+    "Tokens are summed Pi assistant usage including cached input; durations include harness/report overhead. One run per case cannot establish reliability or statistical significance. Standard deviations reflect different cases, not repeat-run variance.",
+    "Grading is inline and unblinded. Exact evidence quotes and heading presence checked programmatically; semantic scope and recommendation quality judged by the benchmark author. These results need human review before skill revision."
+  ],
+  "subscores": {
+    "with_skill": {
+      "substantive_passed": 22,
+      "substantive_total": 22,
+      "structure_passed": 5,
+      "structure_total": 5
+    },
+    "old_skill": {
+      "substantive_passed": 21,
+      "substantive_total": 22,
+      "structure_passed": 0,
+      "structure_total": 5
+    }
+  }
+}

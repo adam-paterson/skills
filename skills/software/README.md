@@ -8,7 +8,7 @@ Software agent skills live in `skills/software/<skill-name>/`.
 | --- | --- |
 | `delivery-workflow` | Route a spec package to the next owned or external workflow stage. |
 | `setup-agent-workflow` | Prepare a repository with the enterprise spec-package convention. |
-| `feature-discovery` | Discover feature opportunities from current product fit, user jobs, and adjacent product research. |
+| `feature-discovery` | Discover feature/capability opportunities from product fit, user jobs, adjacent research, and commercial canvas hypotheses. |
 | `requirements-intake` | Create the initial spec package and capture source request context. |
 | `requirements-capture` | Persist clarified change requirements after external project-language review. |
 | `spec-generation` | Create or update implementation-ready design in `SPEC.md`. |

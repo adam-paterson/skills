@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eval Review</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600&family=Lora:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" integrity="sha384-EnyY0/GSHQGSxSgMwaIPzSESbqoOLSexfnSMN2AP+39Ckmn92stwABZynq1JyzdT" crossorigin="anonymous"></script>
+  <style>
+    :root {
+      --bg: #faf9f5;
+      --surface: #ffffff;
+      --border: #e8e6dc;
+      --text: #141413;
+      --text-muted: #b0aea5;
+      --accent: #d97757;
+      --accent-hover: #c4613f;
+      --green: #788c5d;
+      --green-bg: #eef2e8;
+      --red: #c44;
+      --red-bg: #fceaea;
+      --header-bg: #141413;
+      --header-text: #faf9f5;
+      --radius: 6px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lora', Georgia, serif;
+      background: var(--bg);
+      color: var(--text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ---- Header ---- */
+    .header {
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    .header .instructions {
+      font-size: 0.8rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+    .header .progress {
+      font-size: 0.875rem;
+      opacity: 0.8;
+      text-align: right;
+    }
+
+    /* ---- Main content ---- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    /* ---- Sections ---- */
+    .section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      flex-shrink: 0;
+    }
+    .section-header {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.75rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .section-body {
+      padding: 1rem;
+    }
+
+    /* ---- Config badge ---- */
+    .config-badge {
+      display: inline-block;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-left: 0.75rem;
+      vertical-align: middle;
+    }
+    .config-badge.config-primary {
+      background: rgba(33, 150, 243, 0.12);
+      color: #1976d2;
+    }
+    .config-badge.config-baseline {
+      background: rgba(255, 193, 7, 0.15);
+      color: #f57f17;
+    }
+
+    /* ---- Prompt ---- */
+    .prompt-text {
+      white-space: pre-wrap;
+      font-size: 0.9375rem;
+      line-height: 1.6;
+    }
+
+    /* ---- Outputs ---- */
+    .output-file {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .output-file + .output-file {
+      margin-top: 1rem;
+    }
+    .output-file-header {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .output-file-header .dl-btn {
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      cursor: pointer;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 500;
+      opacity: 0.8;
+    }
+    .output-file-header .dl-btn:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+    .output-file-content {
+      padding: 0.75rem;
+      overflow-x: auto;
+    }
+    .output-file-content pre {
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: 'SF Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo, monospace;
+    }
+    .output-file-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 4px;
+    }
+    .output-file-content iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+    .output-file-content table {
+      border-collapse: collapse;
+      font-size: 0.8125rem;
+      width: 100%;
+    }
+    .output-file-content table td,
+    .output-file-content table th {
+      border: 1px solid var(--border);
+      padding: 0.375rem 0.5rem;
+      text-align: left;
+    }
+    .output-file-content table th {
+      background: var(--bg);
+      font-weight: 600;
+    }
+    .output-file-content .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.875rem;
+      cursor: pointer;
+    }
+    .output-file-content .download-link:hover {
+      background: var(--border);
+    }
+    .empty-state {
+      color: var(--text-muted);
+      font-style: italic;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    /* ---- Feedback ---- */
+    .prev-feedback {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.625rem 0.75rem;
+      margin-top: 0.75rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .prev-feedback-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+      color: var(--text-muted);
+    }
+    .feedback-textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      line-height: 1.5;
+      resize: vertical;
+      color: var(--text);
+    }
+    .feedback-textarea:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+    .feedback-status {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+      min-height: 1.1em;
+    }
+
+    /* ---- Grades (collapsible) ---- */
+    .grades-toggle {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+    .grades-toggle:hover {
+      color: var(--accent);
+    }
+    .grades-toggle .arrow {
+      margin-right: 0.5rem;
+      transition: transform 0.15s;
+      font-size: 0.75rem;
+    }
+    .grades-toggle .arrow.open {
+      transform: rotate(90deg);
+    }
+    .grades-content {
+      display: none;
+      margin-top: 0.75rem;
+    }
+    .grades-content.open {
+      display: block;
+    }
+    .grades-summary {
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .grade-badge {
+      display: inline-block;
+      padding: 0.125rem 0.5rem;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .grade-pass { background: var(--green-bg); color: var(--green); }
+    .grade-fail { background: var(--red-bg); color: var(--red); }
+    .assertion-list {
+      list-style: none;
+    }
+    .assertion-item {
+      padding: 0.625rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8125rem;
+    }
+    .assertion-item:last-child { border-bottom: none; }
+    .assertion-status {
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .assertion-status.pass { color: var(--green); }
+    .assertion-status.fail { color: var(--red); }
+    .assertion-evidence {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+      padding-left: 1.5rem;
+    }
+
+    /* ---- View tabs ---- */
+    .view-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 2rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .view-tab {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.625rem 1.25rem;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      background: none;
+      color: var(--text-muted);
+      border-bottom: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .view-tab:hover { color: var(--text); }
+    .view-tab.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+    .view-panel { display: none; }
+    .view-panel.active { display: flex; flex-direction: column; flex: 1; overflow: hidden; }
+
+    /* ---- Benchmark view ---- */
+    .benchmark-view {
+      padding: 1.5rem 2rem;
+      overflow-y: auto;
+      flex: 1;
+    }
+    .benchmark-table {
+      border-collapse: collapse;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.8125rem;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+    .benchmark-table th, .benchmark-table td {
+      padding: 0.625rem 0.75rem;
+      text-align: left;
+      border: 1px solid var(--border);
+    }
+    .benchmark-table th {
+      font-family: 'Poppins', sans-serif;
+      background: var(--header-bg);
+      color: var(--header-text);
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .benchmark-table tr:hover { background: var(--bg); }
+    .benchmark-table tr.benchmark-row-with { background: rgba(33, 150, 243, 0.06); }
+    .benchmark-table tr.benchmark-row-without { background: rgba(255, 193, 7, 0.06); }
+    .benchmark-table tr.benchmark-row-with:hover { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-without:hover { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-table tr.benchmark-row-avg { font-weight: 600; border-top: 2px solid var(--border); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-with { background: rgba(33, 150, 243, 0.12); }
+    .benchmark-table tr.benchmark-row-avg.benchmark-row-without { background: rgba(255, 193, 7, 0.12); }
+    .benchmark-delta-positive { color: var(--green); font-weight: 600; }
+    .benchmark-delta-negative { color: var(--red); font-weight: 600; }
+    .benchmark-notes {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+    }
+    .benchmark-notes h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 0.875rem;
+      margin-bottom: 0.75rem;
+    }
+    .benchmark-notes ul {
+      list-style: disc;
+      padding-left: 1.25rem;
+    }
+    .benchmark-notes li {
+      font-size: 0.8125rem;
+      line-height: 1.6;
+      margin-bottom: 0.375rem;
+    }
+    .benchmark-empty {
+      color: var(--text-muted);
+      font-style: italic;
+      text-align: center;
+      padding: 3rem;
+    }
+
+    /* ---- Navigation ---- */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      border-top: 1px solid var(--border);
+      background: var(--surface);
+      flex-shrink: 0;
+    }
+    .nav-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+      transition: all 0.15s;
+    }
+    .nav-btn:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .done-btn {
+      font-family: 'Poppins', sans-serif;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s;
+    }
+    .done-btn:hover {
+      background: var(--bg);
+      border-color: var(--text-muted);
+    }
+    .done-btn.ready {
+      border: none;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+    }
+    .done-btn.ready:hover {
+      background: var(--accent-hover);
+    }
+    /* ---- Done overlay ---- */
+    .done-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 100;
+      justify-content: center;
+      align-items: center;
+    }
+    .done-overlay.visible {
+      display: flex;
+    }
+    .done-card {
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2rem 3rem;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+    }
+    .done-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .done-card p {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+    .done-card .btn-row {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .done-card button {
+      padding: 0.5rem 1.25rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+      cursor: pointer;
+      font-size: 0.875rem;
+    }
+    .done-card button:hover {
+      background: var(--bg);
+    }
+    /* ---- Toast ---- */
+    .toast {
+      position: fixed;
+      bottom: 5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--header-bg);
+      color: var(--header-text);
+      padding: 0.625rem 1.25rem;
+      border-radius: var(--radius);
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+      z-index: 200;
+    }
+    .toast.visible {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div id="app" style="height:100vh; display:flex; flex-direction:column;">
+    <div class="header">
+      <div>
+        <h1>Eval Review: <span id="skill-name"></span></h1>
+        <div class="instructions">Review each output and leave feedback below. Navigate with arrow keys or buttons. When done, copy feedback and paste into Claude Code.</div>
+      </div>
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <!-- View tabs (only shown when benchmark data exists) -->
+    <div class="view-tabs" id="view-tabs" style="display:none;">
+      <button class="view-tab active" onclick="switchView('outputs')">Outputs</button>
+      <button class="view-tab" onclick="switchView('benchmark')">Benchmark</button>
+    </div>
+
+    <!-- Outputs panel (qualitative review) -->
+    <div class="view-panel active" id="panel-outputs">
+    <div class="main">
+      <!-- Prompt -->
+      <div class="section">
+        <div class="section-header">Prompt <span class="config-badge" id="config-badge" style="display:none;"></span></div>
+        <div class="section-body">
+          <div class="prompt-text" id="prompt-text"></div>
+        </div>
+      </div>
+
+      <!-- Outputs -->
+      <div class="section">
+        <div class="section-header">Output</div>
+        <div class="section-body" id="outputs-body">
+          <div class="empty-state">No output files found</div>
+        </div>
+      </div>
+
+      <!-- Previous Output (collapsible) -->
+      <div class="section" id="prev-outputs-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="togglePrevOutputs()">
+            <span class="arrow" id="prev-outputs-arrow">&#9654;</span>
+            Previous Output
+          </div>
+        </div>
+        <div class="grades-content" id="prev-outputs-content"></div>
+      </div>
+
+      <!-- Grades (collapsible) -->
+      <div class="section" id="grades-section" style="display:none;">
+        <div class="section-header">
+          <div class="grades-toggle" onclick="toggleGrades()">
+            <span class="arrow" id="grades-arrow">&#9654;</span>
+            Formal Grades
+          </div>
+        </div>
+        <div class="grades-content" id="grades-content"></div>
+      </div>
+
+      <!-- Feedback -->
+      <div class="section">
+        <div class="section-header">Your Feedback</div>
+        <div class="section-body">
+          <textarea
+            class="feedback-textarea"
+            id="feedback"
+            placeholder="What do you think of this output? Any issues, suggestions, or things that look great?"
+          ></textarea>
+          <div class="feedback-status" id="feedback-status"></div>
+          <div class="prev-feedback" id="prev-feedback" style="display:none;">
+            <div class="prev-feedback-label">Previous feedback</div>
+            <div id="prev-feedback-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav" id="outputs-nav">
+      <button class="nav-btn" id="prev-btn" onclick="navigate(-1)">&#8592; Previous</button>
+      <button class="done-btn" id="done-btn" onclick="showDoneDialog()">Submit All Reviews</button>
+      <button class="nav-btn" id="next-btn" onclick="navigate(1)">Next &#8594;</button>
+    </div>
+    </div><!-- end panel-outputs -->
+
+    <!-- Benchmark panel (quantitative stats) -->
+    <div class="view-panel" id="panel-benchmark">
+      <div class="benchmark-view" id="benchmark-content">
+        <div class="benchmark-empty">No benchmark data available. Run a benchmark to see quantitative results here.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Done overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-card">
+      <h2>Review Complete</h2>
+      <p>Your feedback has been saved. Go back to your Claude Code session and tell Claude you're done reviewing.</p>
+      <div class="btn-row">
+        <button onclick="closeDoneDialog()">OK</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ---- Embedded data (injected by generate_review.py) ----
+    const EMBEDDED_DATA = {"skill_name": "retro", "runs": [{"id": "eval-1-navigation-tool-waste-old_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: navigation-tool-waste\n\n## 1. Add a navigation pointer for billing work (high)\n\nThe session spent two broad searches (`rg retry .`) and 8 minutes before discovering the existing `docs/billing.md` pointer. That document directly identified the shared policy (`packages/payments/src/retry.ts`) and its delegating caller.\n\nImprove the repository navigation surface with a targeted pointer, preferably in the already-loaded `AGENTS.md`:\n\n> For billing, payment retry, gateway status, or `Retry-After` work, read `docs/billing.md` first; the shared policy is in `packages/payments/src/retry.ts` and API billing delegates to it.\n\nThis is a good use of an AGENTS pointer because it encodes a task trigger and avoids duplicating general repository documentation. If billing-specific work is common, a small domain navigation index could hold similar pointers; do not add one solely for this case unless more domains have the same discovery problem.\n\n## 2. Make repository search narrow by default (medium)\n\nThe first search returned 28,400 lines, including vendor and lock files, was truncated, and was repeated unchanged. This produced no useful new information and obscured the relevant source.\n\nAdd a tool-use convention to the coding-agent guidance: start with known documentation and targeted source directories, then use `rg` with repository exclusions and file globs (for example, source extensions and `packages/`/`apps/`), widening only when necessary. A search helper or custom CLI is unnecessary here; concise search guidance is enough.\n\n## 3. Preserve the existing test guidance (low)\n\nNo automated-check gap was demonstrated. The agent added a focused regression test and ran `npm run test:billing`; the reviewer confirmed the shared-policy fix. The existing `AGENTS.md` instruction to run relevant tests and `docs/billing.md` test command were sufficient.\n\n## Not recommended from this evidence\n\n- No new coding-standard rule: the reviewer caught no defect.\n- No information-access or third-party-service change: the necessary repository evidence was available.\n- No global AGENTS rewrite beyond a compact navigation/search pointer; the current file is small and already appropriately minimal.\n"}], "grading": {"expectations": [{"text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.", "passed": true, "evidence": "\"read `docs/billing.md` first\" \u2014 Provides a short conditional pointer; includes implementation paths but does not duplicate the full guide."}, {"text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.", "passed": true, "evidence": "\"widening only when necessary\" \u2014 Recommends source directories, exclusions and globs based on the noisy repeated search."}, {"text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.", "passed": true, "evidence": "\"No automated-check gap was demonstrated\" \u2014 Retains successful testing and review."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "summary": {"passed": 3, "failed": 1, "total": 4, "pass_rate": 0.75}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 2216}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-1-navigation-tool-waste-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: navigation-tool-waste\n\n## Evidence boundary\n\nThis review uses only the supplied session packet. It shows two identical, repository-wide `rg retry .` searches (28,400 truncated lines), followed by a claim that the policy could not be located. The user then pointed to `docs/billing.md`, which identified the shared policy and test command. The fix was made in the shared policy, and `npm run test:billing` passed (14 tests).\n\n## Changes\n\n### 1. Make the billing documentation pointer discoverable before source search\n\n- **Severity:** High\n- **Type:** Project guidance\n- **Evidence:** `docs/billing.md` already mapped billing retry work to `packages/payments/src/retry.ts`, but the agent did not read it until the user intervened.\n- **Problem:** The session spent two broad searches and still reached the wrong conclusion, despite an existing authoritative pointer.\n- **Smallest change:** Add one conditional line to `AGENTS.md`: \u201cFor billing, payment, or retry changes, read `docs/billing.md` before searching source.\u201d Keep the policy details in `docs/billing.md`; do not duplicate them in `AGENTS.md`.\n- **Why this wording:** It is a narrow context pointer with a clear trigger, rather than an always-loaded billing procedure.\n\n### 2. Prefer scoped searches and do not repeat an unchanged search\n\n- **Severity:** Medium\n- **Type:** Cross-project process\n- **Evidence:** `rg retry .` searched vendor and lock files, produced truncated output, and was run again unchanged at 09:05.\n- **Problem:** The search was high-noise and the repeated call added no information.\n- **Smallest change:** Add a general workflow rule to the agent\u2019s process guidance: inspect repository guidance/docs first; when searching, exclude generated, vendor, and lock paths or scope to likely source directories; change the query or scope before repeating a search.\n- **Verification:** In a similar session, compare whether the first source-navigation attempt reaches the documented owner without a duplicate full-tree search. This is a process recommendation, not a request for custom tooling.\n\n## What does not need changing\n\n- **Automated checks:** No new check is supported by this evidence. The existing `npm run test:billing` caught/validated the regression, and it was run successfully.\n- **Coding standards or review guidance:** The reviewer explicitly approved the shared-policy fix and regression test; no review miss is shown.\n- **Information access:** The needed information was available in `docs/billing.md`; the failure was navigation, not missing access.\n- **No-ops:** \u201cUse npm\u201d and \u201crun relevant tests before finishing\u201d affected behavior: the agent used `npm run test:billing`. No removal is supported.\n\n## Unknowns\n\nThe packet does not show whether the environment can automatically rank repository docs, filter `rg` defaults, or detect duplicate tool calls. Those capabilities should be checked before considering an extension; the evidence supports the two instruction-level changes above, not new tooling.\n"}], "grading": {"expectations": [{"text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.", "passed": true, "evidence": "\"Add one conditional line to `AGENTS.md`\" \u2014 Routes billing work to existing docs and explicitly keeps policy details there."}, {"text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.", "passed": true, "evidence": "\"change the query or scope before repeating a search\" \u2014 Links scoped searches to repeated, truncated broad calls."}, {"text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.", "passed": true, "evidence": "\"no review miss is shown\" \u2014 Does not invent a testing or reviewer failure."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 3018}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-2-missed-checks-review-old_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: missed checks review\n\n## Highest severity\n\n### 1. Make tenant isolation a mandatory automated invariant\n**Evidence:** The handler trusted `request.body.tenantId`, allowing a staging cross-tenant export. The original test covered headers and row formatting only; the isolation test was added after the incident.\n\n**Recommendation:** Add a regression test for every tenant-scoped export path: the authenticated tenant must determine the query, and a requested tenant ID cannot broaden access. Prefer a shared test helper or fixture if multiple handlers exist. This is the primary control because it catches the security failure before review or staging.\n\n### 2. Run typecheck in CI and in the default verification command\n**Evidence:** `TS2322` in `csvRows.ts` was not found because the session ran tests only; typecheck was run only after the user reported the error. CI runs `npm test` but not `npm run typecheck`.\n\n**Recommendation:** Update CI to run both `npm test` and `npm run typecheck` (and lint if it is a supported required check). Make the agent\u2019s completion checklist require all repository verification scripts, with a clear pass/fail result.\n\n### 3. Require security-boundary review for reviewer approval\n**Evidence:** The reviewer read the standards and approved naming/formatting while missing the trust-boundary error. The standards only mention compatibility for public APIs and do not require authorization/data-isolation review.\n\n**Recommendation:** Add a reviewer rule: for tenant- or user-scoped data, identify the authoritative identity source, verify client input cannot select another scope, and require a negative authorization test. Reviewers should not approve until that check is evidenced.\n\n## Medium severity\n\n### 4. Expose approved, sanitized operational diagnostics\n**Evidence:** The timeout remained unresolved because developers received a 403 and had no log file. Documentation says sanitized logs are operator-only, while the user identified a possible read-only support role after approval.\n\n**Recommendation:** Provide an approved read-only support path for sanitized export-job logs, with least privilege, auditability, and redaction. Document how an agent requests or consumes that evidence. This would improve diagnosis without granting raw operator access.\n\n### 5. Reduce always-loaded steering-file noise\n**Evidence:** `AGENTS.md` is 190 lines, including about 150 lines duplicating reviewer style rules. It also contains \u201cThink carefully\u201d and \u201cWrite good code,\u201d which add no actionable behavior.\n\n**Recommendation:** Keep `AGENTS.md` to concise repository navigation and task-specific invariants. Move authoritative review rules to `CODING_STANDARDS.md` (or a focused security-review section), and delete the generic no-op instructions. This lowers context load and makes the important tenant boundary easier to notice.\n\n### 6. Add a navigation pointer for export invariants\n**Evidence:** `docs/exports.md` contains the crucial rule that tenant ID comes from authenticated context, but the session implementation violated it. The packet does not show a strong pointer from the always-loaded guidance to that document.\n\n**Recommendation:** Add one explicit pointer in the concise repository guidance: when changing exports, tenant identity, authorization, or export logs, read `docs/exports.md` before editing. Keep the detailed rule in that document as the source of truth.\n\n## Skipped\n\nNo separate tool-economy change is evidenced beyond shortening `AGENTS.md`; no additional navigation or tooling proposal is justified by the packet."}], "grading": {"expectations": [{"text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.", "passed": true, "evidence": "\"Make tenant isolation a mandatory automated invariant\" \u2014 Ranks isolation first."}, {"text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.", "passed": true, "evidence": "\"run both `npm test` and `npm run typecheck`\" \u2014 Also requires tenant-isolation regression tests."}, {"text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.", "passed": true, "evidence": "\"Move authoritative review rules to `CODING_STANDARDS.md`\" \u2014 Locates security review policy in review guidance."}, {"text": "Recommends removing or relocating repeated style instructions from AGENTS.md.", "passed": true, "evidence": "\"150 lines duplicating reviewer style rules\" \u2014 Moves the authoritative rules out of the steering file."}, {"text": "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.", "passed": true, "evidence": "\"delete the generic no-op instructions\" \u2014 Names Think carefully/Write good code. No experimental result is claimed, though ineffectiveness is asserted more strongly than established."}, {"text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.", "passed": true, "evidence": "\"approved read-only support path for sanitized export-job logs\" \u2014 Retains approval, least privilege, and unknown timeout cause."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "summary": {"passed": 6, "failed": 1, "total": 7, "pass_rate": 0.8571428571428571}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 3596}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-2-missed-checks-review-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: missed checks review\n\n## Summary\n\nThe session shipped a tenant-isolation vulnerability and a type error because implementation and review covered formatting, but not the documented tenant identity boundary or the available typecheck. The later fix was effective and verified; the timeout remains unresolved because the available evidence did not include authorized logs.\n\n## Changes\n\n### High \u2014 enforce the existing typecheck in CI\n\n- **Evidence:** `npm run typecheck` was explicitly skipped before approval and later reported `TS2322`; the existing script passed after the fix, while CI runs only `npm test`.\n- **Problem:** A repository check existed but was neither part of CI nor the session's completion gate.\n- **Smallest change:** Add `npm run typecheck` to the existing CI workflow. Keep the implementation workflow's final check aligned with the CI commands.\n- **Where:** CI workflow; optionally a short completion checklist in reviewer guidance.\n- **Verification:** A future intentionally introduced type mismatch should make CI red.\n\n### High \u2014 make tenant identity and authorization an explicit review invariant\n\n- **Evidence:** The handler trusted `request.body.tenantId`, despite `docs/exports.md` stating that tenant ID comes from authenticated context. The initial export test checked only headers and row formatting; a cross-tenant test was added only after staging exposure.\n- **Problem:** User-controlled identity data crossed a trust boundary without a negative authorization test.\n- **Smallest change:** Add reviewer guidance requiring checks that resource ownership comes from authenticated context, plus a test where an authenticated tenant requests another tenant's rows. Point the guidance to `docs/exports.md` rather than duplicating its details.\n- **Where:** `reviewer.md` (or the existing reviewer standards entry point), with the feature documentation as the source of truth.\n- **Verification:** Future export changes should show the isolation test before approval; review should reject handlers deriving tenant scope from request payloads.\n\n### Medium \u2014 replace vague always-loaded steering with a feature-doc pointer\n\n- **Evidence:** `AGENTS.md` is 190 lines, including roughly 150 lines repeating reviewer style rules and vague instructions such as \u201cThink carefully\u201d and \u201cWrite good code.\u201d The session read it, but the relevant export rule in `docs/exports.md` was not consulted.\n- **Problem:** Context is spent on repeated/no-op prose while the high-value branch-specific constraint remains undisclosed to the implementation path.\n- **Smallest change:** Remove duplicated naming/import/comment/reviewer prose from `AGENTS.md`; retain navigation and add a sharp pointer such as: \u201cFor invoice/export work, read `docs/exports.md` before changing tenant selection, access control, or export logging.\u201d Keep detailed review rules in `reviewer.md`/`CODING_STANDARDS.md`.\n- **Where:** `AGENTS.md`; preserve the existing docs rather than creating another policy file.\n- **Verification:** Compare a future export session's reads and behavior with the pointer present; the agent should consult the export doc before implementation, without carrying the full repeated style block on every turn.\n\n### Medium \u2014 add a security-boundary test expectation to the existing export test path\n\n- **Evidence:** The initial test suite passed 62 tests despite the vulnerability because the export test covered only CSV headers and row formatting.\n- **Problem:** Tests asserted presentation output but not the core authorization invariant.\n- **Smallest change:** Extend the existing export test with one authenticated-tenant/requested-other-tenant case, asserting no rows from the other tenant (or the repository's established authorization error behavior). Do not add a new test framework or abstraction.\n- **Where:** Existing export test file.\n- **Verification:** Temporarily reverting the handler to use `request.body.tenantId` must fail the test.\n\n### Low \u2014 preserve approved, controlled access for timeout diagnosis\n\n- **Evidence:** Developer log access returned 403; documentation says sanitized export logs are operator-only; an operator offered read-only support access after approval. The timeout cause therefore remains unknown.\n- **Recommendation:** Do not weaken access controls or expose raw logs. If diagnosis is required, use the approved sanitized read-only support path and record the permission/retention boundary. This is a process/access change, not a code change supported by the current evidence.\n- **Verification:** Confirm that approved support access yields enough sanitized evidence to identify the timeout without granting developers broader log access.\n\n## Not recommended from this packet\n\n- No timeout implementation change: its cause is unknown.\n- No new logging system or plugin: the packet provides no evidence that existing logging is insufficient, only that access was correctly restricted.\n- No additional style rules in `AGENTS.md`: the repeated style guidance did not prevent the defect and belongs in reviewer-oriented documentation or automated checks.\n"}], "grading": {"expectations": [{"text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.", "passed": true, "evidence": "\"High \u2014 make tenant identity and authorization an explicit review invariant\" \u2014 Security precedes style/navigation as specified. Typecheck nevertheless comes first, an unscored prioritization concern."}, {"text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.", "passed": true, "evidence": "\"Add `npm run typecheck` to the existing CI workflow\" \u2014 Also requires a cross-tenant negative test."}, {"text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.", "passed": true, "evidence": "\"`reviewer.md` (or the existing reviewer standards entry point)\" \u2014 Places review policy in reviewer guidance, with a pointer to domain docs."}, {"text": "Recommends removing or relocating repeated style instructions from AGENTS.md.", "passed": true, "evidence": "\"Remove duplicated naming/import/comment/reviewer prose\" \u2014 Explicitly removes duplicated always-loaded guidance."}, {"text": "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.", "passed": true, "evidence": "\"replace vague always-loaded steering\" \u2014 Identifies Think carefully/Write good code as no-op candidates. Does not claim a controlled experiment; causal language is stronger than the evidence."}, {"text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.", "passed": true, "evidence": "\"use the approved sanitized read-only support path\" \u2014 Keeps access controls and leaves timeout cause unknown."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "summary": {"passed": 7, "failed": 0, "total": 7, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 5116}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-3-clean-session-old_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: empty search state\n\n## Outcome\nNo actionable environment changes are warranted from this session. The run was short and direct: the agent followed the navigation pointers, reused the existing `EmptyState`, added behavior coverage, ran targeted checks, and the reviewer and full CI confirmed the result.\n\n## Candidates, by severity\n\n### None observed\n- **Navigation:** `AGENTS.md` pointed to `docs/search.md`, which identified the implementation and relevant checks. No search friction or hidden dependency appeared.\n- **Automated checks:** The targeted test, typecheck, lint, and required full CI all passed. The new zero-result and recovery behavior was covered.\n- **Coding standards:** The reviewer explicitly checked accessibility, design tokens, and state transitions and approved the diff.\n- **Tool economy:** Calls were minimal and purposeful; there were no repeated searches or failed tools.\n- **Information access:** All information needed to implement and validate the change was available.\n- **Global instructions and no-ops:** Nothing in the supplied evidence indicates oversized, redundant, or ineffective steering instructions.\n\n## Recommendation\nKeep the current setup unchanged. Revisit only if later sessions show recurring search friction, missed accessibility/state regressions, or checks that fail to cover the empty-state contract.\n"}], "grading": {"expectations": [{"text": "Explicitly concludes that no material environment changes are justified by this session.", "passed": true, "evidence": "\"No actionable environment changes are warranted\" \u2014 Explicit no-change conclusion."}, {"text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.", "passed": true, "evidence": "\"Keep the current setup unchanged\" \u2014 No unsupported new process."}, {"text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.", "passed": true, "evidence": "\"the reviewer and full CI confirmed the result\" \u2014 Also cites navigation and focused checks."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "summary": {"passed": 3, "failed": 1, "total": 4, "pass_rate": 0.75}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 1369}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-3-clean-session-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective\n\n## Evidence boundary\n\nThe supplied packet is complete. It shows one successful session and provides no evidence of navigation difficulty, missed checks, coding-standard issues, tool waste, workflow failure, missing information, user correction, or ineffective steering instructions.\n\n## Changes\n\nNo environment changes are supported by this session.\n\n- **Project guidance:** Keep `AGENTS.md`, `docs/search.md`, and `CODING_STANDARDS.md` as-is. The agent found the relevant guidance, reused the existing `EmptyState` and design tokens, and addressed accessibility and state transitions.\n- **Automated checks:** Keep the existing test, typecheck, lint, and CI requirements. Local checks and the full required CI suite passed, including the new empty-state and recovery behavior.\n- **Process/tooling:** No change is justified. The session had no failed tools, repeated searches, excessive output, handoff problems, or permission issues.\n\nAdding new rules or tooling would be speculative on this evidence. Validate any proposed change against a session that exhibits a recurring failure mode first.\n"}], "grading": {"expectations": [{"text": "Explicitly concludes that no material environment changes are justified by this session.", "passed": true, "evidence": "\"No environment changes are supported\" \u2014 Explicit no-change conclusion."}, {"text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.", "passed": true, "evidence": "\"Adding new rules or tooling would be speculative\" \u2014 No unsupported new process."}, {"text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.", "passed": true, "evidence": "\"Local checks and the full required CI suite passed\" \u2014 Also cites navigation and review criteria."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "summary": {"passed": 4, "failed": 0, "total": 4, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 1112}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-4-cross-session-handoff-old_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: cross-session handoff\n\n## 1. Persist validation state across sessions (high severity)\n\nAdd a local, per-project validation ledger to Workshop, populated from tool-completion events. Each entry should retain:\n\n- command and working directory;\n- timestamp and exit status;\n- validation scope (for example, targeted test versus full suite);\n- output-file reference, subject to the existing retention and privacy controls;\n- deferred or unavailable checks.\n\nExpose the ledger in the resume message and make the distinction between **last run**, **passed**, and **currently valid** explicit. The current extension capabilities support local project state and resume messages, while the built-in session-local output retention does not provide this continuity.\n\nEvidence: Session A lost the failed/unrerun `npm run check`; Session B lost that only a targeted pytest command ran and the full suite was deferred; Session C retained a green result from before a parser edit.\n\n## 2. Invalidate validation evidence after subsequent changes (high severity)\n\nTreat a validation result as stale when the project changes after it ran. The handoff should say, for example, \u201cpassed before latest edit,\u201d rather than \u201ctests green.\u201d Prefer a change-generation or dirty-state marker tied to the validation record; if Workshop cannot observe edits directly, provide an explicit agent-facing checkpoint that records the current generation and require validation after it changes.\n\nEvidence: Session C relied on `cargo test` from before the parser modification. Session A likewise patched the error without rerunning the check.\n\n## 3. Make resume/compaction summaries structured, not prose-only (medium severity)\n\nRequire summaries and resume notices to carry a small status block with separate fields for:\n\n- checks run and exact scope;\n- pass/fail status and command status;\n- checks not run, including reason and prerequisite;\n- changes made after the last check;\n- next validation action.\n\nThis should be generated or displayed by the environment so an informal phrase such as \u201ctests passed\u201d cannot erase scope or deferred work. It complements, rather than duplicates, the projects\u2019 existing instruction to report tested and deferred checks.\n\nEvidence: compaction converted \u201ctargeted pytest passed; full suite deferred\u201d into \u201ctests passed,\u201d and interruption summaries called work fixed or green without current command evidence.\n\n## 4. Add a review-facing stale-evidence warning (medium severity)\n\nWhen a review starts, surface validation records whose scope is narrower than the project\u2019s documented checks, whose output is unavailable, or whose run predates the latest change. This is a useful environment guard even though reviewers already corrected all three incidents; it prevents false completion claims from reaching review and keeps project-specific validation commands authoritative.\n\n## Scope decisions\n\nNo navigation, coding-standard, global `AGENTS.md`, or new project validation-command recommendation is supported by this packet. The projects already document their commands and reporting expectations; the recurring failure is loss of validation scope, deferral, and freshness across interruption/compaction/resume boundaries. Any extension must preserve command approval and avoid copying sensitive tool output into durable state; store metadata and user-inspectable/deletable local state by default.\n"}], "grading": {"expectations": [{"text": "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.", "passed": true, "evidence": "\"loss of validation scope, deferral, and freshness\" \u2014 Identifies a cross-session process cause despite existing project instructions."}, {"text": "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.", "passed": true, "evidence": "\"validation ledger to Workshop\" \u2014 Environment mechanism uses tool completion, local project state and resume messages."}, {"text": "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.", "passed": true, "evidence": "\"Treat a validation result as stale when the project changes\" \u2014 Preserves scope and deferred checks; acknowledges edit-observation uncertainty and proposes checkpoint fallback."}, {"text": "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.", "passed": false, "evidence": "\"This is a useful environment guard\" \u2014 Proposes mechanisms and desired effects, but gives no experiment, replay, or observable evaluation procedure for future sessions."}, {"text": "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.", "passed": true, "evidence": "\"Any extension must preserve command approval\" \u2014 Preserves approval, metadata-only retention, and user-inspectable/deletable local state."}, {"text": "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.", "passed": true, "evidence": "\"if Workshop cannot observe edits directly\" \u2014 Qualifies capability uncertainty and avoids fabricated API names or implementation claims."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "summary": {"passed": 5, "failed": 2, "total": 7, "pass_rate": 0.7142857142857143}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 3415}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-4-cross-session-handoff-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: interrupted sessions\n\n## Evidence boundary\n\nThe packet shows three cross-session validation-status errors. It does not establish source-code defects, missing commands, or failures in the projects' documented validation guidance.\n\n## Changes\n\n### 1. Process change \u2014 persist validation state across sessions (high)\n\n**Evidence:** Session A resumed from \u201ctype issue fixed\u201d and claimed checks passed before rerunning. Session B\u2019s summary changed a targeted pytest result plus a deferred full suite into \u201ctests passed.\u201d Session C treated pre-edit `cargo test` results as current after the parser changed.\n\n**Problem:** Session summaries are not a reliable record of validation scope, status, or freshness. A pass can become stale after edits, and deferred work disappears during compaction.\n\n**Smallest change:** Add a Workshop extension that observes tool completion and records, per project/session, validation commands with command, working directory, exit status, output reference, and the last edit/validation relationship. On resume, inject a short, explicit status block: passed checks, checks run before the latest edit, and deferred/unknown checks. Mark results stale whenever a subsequent tool indicates a relevant file change. Keep this local and user-inspectable/deletable, and preserve command approval flow; do not copy tool output into cross-session state because it may contain credentials or customer data.\n\n**Verification:** Interrupt and resume sessions containing (a) an unrerun failed check, (b) a targeted pass with a deferred full suite, and (c) an edit after a pass. Confirm the resume message preserves scope and labels stale/deferred results, and that no claim of current success is made without a fresh successful command.\n\n### 2. Process change \u2014 make completion claims freshness-aware (high)\n\n**Evidence:** All three sessions made a false \u201call/current checks passed\u201d claim from stale or incomplete evidence, despite project instructions to report tested commands and deferred checks.\n\n**Problem:** Existing prose guidance relies on memory at exactly the point where interruption and compaction remove context. The environment has no built-in cross-session validation or pending-work record.\n\n**Smallest change:** Have the resume/status mechanism expose three distinct states\u2014`passed`, `stale (changed since run)`, and `not run/deferred`\u2014and require the agent\u2019s final validation summary to use those states. Treat a session summary\u2019s generic \u201ctests passed\u201d as insufficient evidence unless it includes command scope and a run after the latest relevant edit.\n\n**Verification:** In future interrupted sessions, compare the generated status with the command log and the edit timeline; reviewers should no longer need to reconstruct whether a pass predates an edit.\n\n### 3. Project guidance change \u2014 clarify, only if the projects want a fallback (medium)\n\n**Evidence:** Each project already says to report exactly what was tested and flag deferred checks, yet the errors persisted. No project-specific wording is identified as the cause.\n\n**Problem:** Repeating or expanding `AGENTS.md` instructions is unlikely to fix a state-management problem and would add always-loaded context.\n\n**Smallest change:** Do not change project files initially. If an environment extension cannot be shipped, add one concise completion rule to the existing validation guidance: \u201cAfter any code/config edit, earlier validation is historical; report the exact command and scope, and label anything not rerun as stale or deferred.\u201d Keep detailed workflow in a referenced document rather than duplicating it across projects.\n\n**Verification:** A/B test the wording in comparable interrupted sessions. Remove it if behavior does not differ from the current guidance; the extension remains the stronger remedy.\n\n## Other review categories\n\n- **Navigation:** No information-discovery problem is shown; validation commands were already documented.\n- **Automated checks:** The excerpts do not establish a missing test, type check, or linter. The failure is reporting freshness, not validation coverage.\n- **Coding standards:** Reviewer guidance need not add a source-code rule; it should consume the structured status above.\n- **Tool economy:** No excessive or repeated tool calls are established.\n- **Information access/privacy:** The extension needs metadata, not raw output. Restrict state to local project storage, expose inspection/deletion, and retain existing approvals.\n- **No-ops:** The current \u201creport exactly what was tested and flag deferred checks\u201d instruction has an intended effect, but it is insufficient without durable state. Do not add duplicate always-loaded rules until the extension is evaluated.\n"}], "grading": {"expectations": [{"text": "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.", "passed": true, "evidence": "\"Session summaries are not a reliable record\" \u2014 Explains loss of scope, deferral and freshness across the supplied incidents, not absent project commands."}, {"text": "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.", "passed": true, "evidence": "\"Add a Workshop extension\" \u2014 Proposes local state from tool completion and a resume message using supplied capabilities."}, {"text": "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.", "passed": true, "evidence": "\"On resume, inject a short, explicit status block\" \u2014 Covers scope, stale results after edits, and deferred checks without fixed project commands. Capturing all pending work still needs design."}, {"text": "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.", "passed": true, "evidence": "\"Interrupt and resume sessions containing\" \u2014 Specifies concrete replay cases and checking status against actual run/edit history."}, {"text": "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.", "passed": true, "evidence": "\"preserve command approval flow\" \u2014 Keeps user-inspectable/deletable local metadata and avoids raw sensitive output retention."}, {"text": "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.", "passed": true, "evidence": "\"observes tool completion\" \u2014 Uses documented capabilities descriptively, not invented API identifiers; no implementation claim."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "summary": {"passed": 7, "failed": 0, "total": 7, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 4728}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-5-existing-capability-old_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: output flooding\n\n## Highest priority: make bounded tool output the default\n\n**Evidence:** Session A emitted 8,000 repeated progress lines, filled the context, and caused the agent to rerun the command. Session B consumed most of the remaining context with verbose fixture output, triggered compaction, and led to rereading already-inspected files. The environment already provides bounded mode with local retention, range retrieval, permission handling, retention controls, and preserved exit status; the operator currently selects passthrough.\n\n**Recommendation:** Change the global default (or this operator\u2019s default profile) from passthrough to bounded mode. Keep passthrough as an explicit opt-in for small, intentionally inspected output. This addresses both observed failures without requiring project changes or a new tool.\n\n## Medium priority: make the bounded excerpt useful for diagnostics\n\nConfigure the bounded presentation to retain enough beginning and ending output to expose command setup and the final error/summary, while keeping the complete log available by reference. For long-running commands, prefer a concise live tail rather than streaming every repeated progress line. Preserve the command\u2019s exit status prominently so truncation cannot be mistaken for success.\n\nExact thresholds and option identifiers are not in the evidence packet, so they should be selected from the environment\u2019s existing bounded-mode configuration rather than invented here.\n\n## Low priority: improve the recovery path\u2019s discoverability\n\nWhen output is bounded, expose a clear file reference and a simple way to request a line range or the tail. This lets an agent investigate the retained log once, instead of repeating the command. A short tool-result hint should state that the output is truncated and how to retrieve more.\n\n## Not recommended from this evidence\n\n- Do not modify project build/test commands: existing docs already provide focused commands, and the problem is environment-level output handling.\n- Do not add a new plugin or custom output pipeline: existing bounded mode covers the demonstrated need, and no evidence shows it is insufficient.\n- Do not add linting or coding-standard rules: the failures concern tool-output transport, not code correctness.\n- Do not expose logs indiscriminately: build/test output may contain private data; retain the existing permission and retention safeguards.\n\nSuccess criterion: verbose commands no longer consume the agent\u2019s context wholesale, while an agent can retrieve the full retained output and identify the command\u2019s failure or final result without rerunning it.\n"}], "grading": {"expectations": [{"text": "Identifies existing global bounded-output mode as the first change rather than recommending a new custom plugin or project-by-project rules.", "passed": true, "evidence": "\"Change the global default\" \u2014 Uses existing bounded mode and explicitly rejects custom plugins."}, {"text": "Explains why the environment-level change applies across repositories using the two supplied output-flooding incidents.", "passed": true, "evidence": "\"This addresses both observed failures\" \u2014 Connects two different repositories to output handling in the environment."}, {"text": "Describes how to verify reduced context consumption or repeated work while preserving full-output retrieval and exit status.", "passed": true, "evidence": "\"Success criterion: verbose commands no longer consume\" \u2014 Observable reduced context cost with full retrieval and correct result, without rerunning."}, {"text": "Preserves private log access and retention controls, without inventing configuration keys or claiming changes were applied.", "passed": true, "evidence": "\"retain the existing permission and retention safeguards\" \u2014 Acknowledges missing option identifiers and privacy controls."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "summary": {"passed": 4, "failed": 1, "total": 5, "pass_rate": 0.8}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 2643}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}, {"id": "eval-5-existing-capability-with_skill-run-1", "prompt": "(No prompt found)", "eval_id": null, "outputs": [{"name": "retro.md", "type": "text", "content": "# Retrospective: output flooding\n\n## Evidence and limits\n\nThe packet shows two sessions where tool output consumed useful context:\n\n- Session A emitted 8,000 repeated progress lines before the actual error. The agent then repeated the command, although a targeted read located the error at 09:13.\n- Session B passed its tests, but verbose fixture output consumed most of the remaining context. Compaction caused the agent to reread files and repeat work.\n\nThe environment already has a bounded output mode that retains complete output locally, returns a bounded excerpt and file reference, supports retrieving ranges, preserves permissions and exit status, and has retention controls. The current configuration uses passthrough. The packet does not provide exact option/API names, and it provides no evidence that bounded mode is insufficient. Logs can contain private data.\n\n## Changes\n\n### High \u2014 make bounded tool output the default\n\n- **Type:** Cross-project environment/configuration change.\n- **Evidence:** Passthrough output caused context flooding in both sessions, repeated commands in A, and compaction/rereading in B. The existing bounded mode directly addresses this and preserves retrieval and exit status.\n- **Smallest change:** Change the operator's global tool-output setting from passthrough to bounded mode. Keep full output in the existing local reference mechanism rather than adding a new plugin or project rule.\n- **Verification:** Run a deliberately noisy command and confirm the model receives only the bounded excerpt plus a usable file reference; retrieve the error range and confirm the command's original exit status is still visible. Repeat with a verbose test run.\n- **Control/privacy:** Preserve the existing file permissions and retention controls. Confirm the user can opt into passthrough for an exceptional debugging run, and define/verify retention behavior for logs containing private data.\n\n### Medium \u2014 add an output-aware recovery behavior if configuration alone is not enough\n\n- **Type:** Cross-project process/environment change; hypothesis to test.\n- **Evidence:** In A the agent reran the noisy command to find the error, and in B context compaction triggered redundant rereading. Bounded mode should reduce both risks, but the packet does not show behavior after switching modes.\n- **Smallest change:** First test bounded mode. If agents still rerun commands or fail to use the file reference, add a short global instruction or environment affordance for tool output: inspect the bounded excerpt/reference and retrieve a narrow range before rerunning a command. Put this in the global agent guidance only if the experiment demonstrates a gap; do not duplicate project build/test instructions.\n- **Verification:** Compare equivalent noisy runs before/after the change for reruns, unnecessary rereads, and task completion. Treat benefit as unproven until observed.\n\n## Not recommended\n\n- No project-specific build/test changes: existing project docs already provide focused commands, while flooding originates in the coding environment's tool-output handling.\n- No new output plugin: an existing bounded capability covers the observed problem, and no evidence shows it is inadequate.\n- No blanket rule to suppress all logs: agents need targeted ranges for diagnosis, and build/test output may contain private data.\n\n## Unknowns\n\nThe packet does not establish the bounded excerpt size, how the file reference is presented to agents, whether the global setting can be changed without source edits, or whether agents reliably retrieve ranges. Those should be checked during the verification experiment rather than guessed in documentation.\n"}], "grading": {"expectations": [{"text": "Identifies existing global bounded-output mode as the first change rather than recommending a new custom plugin or project-by-project rules.", "passed": true, "evidence": "\"rather than adding a new plugin or project rule\" \u2014 First recommendation uses existing global bounded mode."}, {"text": "Explains why the environment-level change applies across repositories using the two supplied output-flooding incidents.", "passed": true, "evidence": "\"Passthrough output caused context flooding in both sessions\" \u2014 Connects both incidents to reusable environment behavior."}, {"text": "Describes how to verify reduced context consumption or repeated work while preserving full-output retrieval and exit status.", "passed": true, "evidence": "\"Run a deliberately noisy command\" \u2014 Tests excerpt limits, full-output range retrieval, exit status, and repeated work."}, {"text": "Preserves private log access and retention controls, without inventing configuration keys or claiming changes were applied.", "passed": true, "evidence": "\"Preserve the existing file permissions and retention controls\" \u2014 No invented option keys or implementation claims."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "summary": {"passed": 5, "failed": 0, "total": 5, "pass_rate": 1.0}, "execution_metrics": {"tool_calls": {"read": 3, "write": 1}, "total_tool_calls": 4, "errors_encountered": 0, "output_chars": 3680}, "eval_feedback": {"overall": "Inline, unblinded semantic judgments with verified evidence quotations. Format/scope criterion analyzed separately. Prioritization assertion does not compare security with typechecking; neither this run nor the fixtures establish causal no-op behavior."}}}], "previous_feedback": {}, "previous_outputs": {"eval-1-navigation-tool-waste-with_skill-run-1": [{"name": "retro.md", "type": "text", "content": "# Retrospective: billing retry fix\n\n## Findings and recommendations\n\n### High \u2014 navigation pointer was too weak for the task\n\n- **Evidence:** `AGENTS.md` only says to use npm and run relevant tests. The authoritative location was documented in `docs/billing.md`, but the agent spent time searching broadly, then reported it could not locate the policy until the user supplied the docs pointer.\n- **Recommendation:** Add a compact task-oriented pointer to `AGENTS.md`: for billing/retry changes, read `docs/billing.md` first; the shared policy is `packages/payments/src/retry.ts`, while `apps/api/src/billing.ts` delegates to it. Keep the implementation detail in the doc rather than expanding `AGENTS.md`.\n- **Expected effect:** Prevents edits or investigations in the delegating API layer and removes the user intervention needed to find the shared policy.\n\n### Medium \u2014 broad search caused avoidable tool waste\n\n- **Evidence:** `rg retry .` searched vendor and lock files, returned 28,400 lines, was truncated, and was repeated unchanged. Neither call surfaced the relevant file.\n- **Recommendation:** Add a repository search convention or wrapper that excludes generated/dependency/lock content by default, and prefer the documented billing path before repository-wide search. If a broad search is necessary, use targeted globs such as source and docs directories and search for the policy symbol (`retryPayment`) rather than the generic word `retry`.\n- **Expected effect:** Smaller outputs, fewer repeated calls, and faster convergence under context pressure.\n\n### Low \u2014 no additional automated-check change indicated\n\n- **Evidence:** The agent added a regression test for 429 with `Retry-After`; `npm run test:billing` passed with 14 tests, and the reviewer approved the shared-policy fix. The supplied evidence shows no missed defect that a new check would catch.\n- **Recommendation:** Keep `npm run test:billing` as the prescribed focused check. Do not add a speculative lint/type-check rule based on this session alone.\n\n## Areas with no supported change\n\n- **Coding standards:** The reviewer caught/approved the correct shared-policy change; no standards failure is evidenced.\n- **Global `AGENTS.md` sprawl/no-ops:** The supplied file is short. The useful change is a single navigation pointer, not a larger instruction set.\n- **Information access:** The needed information already existed in `docs/billing.md`; this was a routing failure, not a missing-access problem.\n\n## Residual risks\n\n- A pointer can become stale if billing ownership moves; keep it limited to the authoritative doc and update it when that doc moves.\n- Excluding dependency and lock files by default could hide an intentional search target; retain an explicit opt-in for full-tree searches.\n- The evidence covers one successful retry fix only; it does not establish whether the environment has a general search wrapper or whether other domains need navigation pointers.\n\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"Concrete severity-ranked findings cite AGENTS.md, docs/billing.md, apps/api/src/billing.ts, packages/payments/src/retry.ts, and the repeated broad rg search; recommendations are environment-focused.\"\n    }\n  ],\n  \"changedFiles\": [],\n  \"testsAddedOrUpdated\": [],\n  \"commandsRun\": [],\n  \"validationOutput\": [\n    \"Reviewed only the supplied complete evidence packet and the required skill/style guidance; no project commands were run.\"\n  ],\n  \"residualRisks\": [\n    \"Navigation pointers may become stale when billing ownership moves.\",\n    \"Default search exclusions need an explicit full-tree opt-in for exceptional searches.\",\n    \"The packet does not show whether a reusable repository search wrapper already exists.\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"No repository changes; retrospective report only.\",\n  \"reviewFindings\": [\n    \"high: AGENTS.md - lacks a task-oriented pointer to docs/billing.md and the shared retry policy.\",\n    \"medium: session transcript - repeated rg retry . searched 28,400 lines including vendor and lock files and produced truncated output.\",\n    \"low: no automated-check gap evidenced; focused billing tests passed and review approved the fix.\"\n  ],\n  \"manualNotes\": \"Report recommendations are based exclusively on the supplied packet; fictional paths were not inspected on disk.\"\n}\n```"}], "eval-1-navigation-tool-waste-without_skill-run-1": [{"name": "retro.md", "type": "text", "content": "# Retrospective: navigation-tool waste\n\n## Findings\n\n- **Medium \u2014 `apps/api/src/billing.ts` / `packages/payments/src/retry.ts`:** The agent correctly inspected the API caller and ultimately fixed the shared retry policy, but it first searched the entire repository twice (`rg retry .`), producing 28,400 lines and truncating the result. The first search did not establish a useful navigation path and led to the incorrect conclusion that the policy could not be located.\n- **Low \u2014 `docs/billing.md`:** The repository already documented the ownership boundary and the exact test command, but the agent did not consult documentation until prompted by the user. This added avoidable latency and a false \u201ccannot locate\u201d status.\n\n## Environment improvements\n\n1. **Make repository search scoped by default.** Configure the search helper to respect ignore rules and exclude vendor/lock/generated files, with an explicit opt-in for whole-tree searches. For this task, searching `packages/`, `apps/`, and `docs/` would have avoided the 28,400-line result.\n2. **Expose truncation prominently and offer narrowing hints.** When output is truncated, report the omitted count and suggest file-type/path filters (for example, `rg retry packages apps docs`). Do not let a truncated search support a \u201cnot found\u201d conclusion.\n3. **Surface repository guidance early.** At session start, show or index `AGENTS.md` and relevant docs, or provide a lightweight \u201cwhere is this subsystem?\u201d lookup. `docs/billing.md` explicitly identified both the implementation and `npm run test:billing`.\n4. **Add a navigation checkpoint before failure claims.** Before reporting that a symbol or policy cannot be located, require checking documented paths and following imports/references from the first relevant caller.\n\n## Residual risks\n\n- The packet confirms the regression test passed (`14 passed`), but provides no test diff or details about malformed/missing `Retry-After` behavior. Broader gateway-response edge cases remain unverified.\n- The evidence does not show whether the search tool can already be configured with ignore-aware defaults; the recommendations may be configuration rather than new functionality.\n\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"Concrete severity-rated findings cite the supplied fictional paths apps/api/src/billing.ts, packages/payments/src/retry.ts, and docs/billing.md.\"\n    }\n  ],\n  \"changedFiles\": [],\n  \"testsAddedOrUpdated\": [],\n  \"commandsRun\": [],\n  \"validationOutput\": [\n    \"Reviewed only the supplied evidence packet; no sibling benchmark inputs, metadata, or outputs were inspected.\"\n  ],\n  \"residualRisks\": [\n    \"The packet does not expose regression-test cases beyond 14 passed, so malformed or missing Retry-After behavior is unverified.\",\n    \"It is unknown whether ignore-aware search defaults already exist in the environment.\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"No project changes; retrospective report only.\",\n  \"reviewFindings\": [\n    \"medium: apps/api/src/billing.ts and packages/payments/src/retry.ts - repeated unrestricted search wasted time and caused a false inability-to-locate conclusion.\",\n    \"low: docs/billing.md - existing subsystem documentation was consulted only after user intervention.\"\n  ],\n  \"manualNotes\": \"The final implementation was approved and npm run test:billing reported 14 passed in the supplied transcript.\"\n}\n```"}], "eval-2-missed-checks-review-with_skill-run-1": [{"name": "retro.md", "type": "text", "content": "# Retrospective: missed checks review\n\n## Review findings\n\n1. **Critical \u2014 tenant authorization was implemented from untrusted input.** `export handler` used `request.body.tenantId` instead of the authenticated tenant context described in `docs/exports.md`, allowing cross-tenant invoice exposure. Add a reviewer rule for authorization boundaries: identity/tenant scope must come from authenticated context, never request-controlled fields. Require a negative isolation test for every tenant-scoped endpoint.\n\n2. **High \u2014 the required type check was omitted.** `csvRows.ts` contained a `string`/`number` mismatch, but the session stopped after `npm test`; the failure was only found later by staging. Make the normal completion check run both `npm test` and `npm run typecheck` (or make CI run both). `package.json` already exposes both checks, so this needs no new tooling.\n\n3. **High \u2014 automated tests covered formatting, not the security invariant.** The export test checked headers and row formatting only, so all 62 tests passed despite the authorization defect. Add a review/implementation checklist requiring tests for authenticated scope, attempted scope override, and denial/no data leakage. The later tenant-A/tenant-B test demonstrates the missing check.\n\n4. **High \u2014 CI did not enforce type safety.** The CI workflow runs only `npm test`, allowing the `csvRows.ts` defect to merge. Change the CI check to run the existing typecheck alongside tests, preferably through one repository verification script so local and CI completion criteria cannot diverge.\n\n5. **Medium \u2014 reviewer guidance was too focused on style and API compatibility.** `CODING_STANDARDS.md` says to use naming conventions, group imports, and review public API compatibility; `reviewer.md` only directs the reviewer to read it. Add concise reviewer standards for authorization/data isolation, trust boundaries, and required validation commands. The reviewer should inspect security-sensitive inputs even when formatting is clean.\n\n6. **Medium \u2014 `AGENTS.md` spends most of its 190 lines repeating reviewer style rules.** 150 lines duplicate naming/import/comment guidance, consuming implementation context while failing to surface the more important tenant-boundary and verification requirements. Remove duplicated reviewer rules from `AGENTS.md`; retain short navigation pointers and put review-only rules in `CODING_STANDARDS.md`/`reviewer.md`.\n\n7. **Medium \u2014 timeout diagnosis lacked approved observability access.** The agent could not inspect worker logs (`fetch logs` returned 403), leaving the timeout unresolved. Provide a documented, read-only support-role path for sanitized export-worker logs, with explicit approval and redaction controls, and point agents to it when diagnosing operational failures.\n\n## Residual risks\n\n- The timeout cause remains unknown because sanitized worker logs were unavailable during the session.\n- The packet does not establish whether CI or staging currently runs the corrected isolation test; this should be verified after the environment changes.\n- A single negative test may not cover every tenant-scoped export path or background worker; reviewers should trace all callers and authorization boundaries.\n\n## Prioritized environment changes\n\n1. Enforce `npm test` plus `npm run typecheck` in CI and in the agent's standard completion command.\n2. Add reviewer standards/checklist items for authenticated tenant scope and negative cross-tenant tests.\n3. Reduce `AGENTS.md` to navigation and unique, implementation-relevant instructions; move review policy to review documentation.\n4. Establish approved read-only access to sanitized worker logs for timeout diagnosis.\n\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"Concrete severity-ranked findings cite the supplied fictional paths and identify missed authorization, typecheck, test, reviewer, AGENTS.md, CI, and observability checks.\"\n    }\n  ],\n  \"changedFiles\": [],\n  \"testsAddedOrUpdated\": [],\n  \"commandsRun\": [],\n  \"validationOutput\": [\n    \"Reviewed only the supplied complete evidence packet and the required writing-for-agents guidance; no project files or sibling benchmark artifacts were inspected.\"\n  ],\n  \"residualRisks\": [\n    \"Timeout cause remains unresolved due to unavailable sanitized worker logs.\",\n    \"Coverage of all tenant-scoped export paths is not established by the packet.\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"No project changes; retrospective report written to the required output path.\",\n  \"reviewFindings\": [\n    \"critical: export handler - request.body.tenantId enabled cross-tenant invoice exposure.\",\n    \"high: csvRows.ts - type error escaped because typecheck was not run and CI runs tests only.\",\n    \"high: export test - formatting-only assertions missed tenant isolation.\",\n    \"medium: AGENTS.md - 150 of 190 lines repeat reviewer style rules.\",\n    \"medium: worker logs - 403 prevented timeout diagnosis.\"\n  ],\n  \"manualNotes\": \"Recommendations are environment changes only; no implementation changes were made.\"\n}\n```"}], "eval-2-missed-checks-review-without_skill-run-1": [{"name": "retro.md", "type": "text", "content": "# Retrospective: missed checks review\n\n## Review findings\n\n- **Critical \u2014 fictional `handler` source (path not specified in packet):** The implementation trusted `request.body.tenantId` even though `docs/exports.md` explicitly states tenant identity comes from authenticated context. This created a cross-tenant data exposure. Add an environment-level security checklist or task-specific preflight that flags identity/authorization sources and requires a negative authorization test before approval.\n- **High \u2014 fictional `csvRows.ts`:** The agent did not run the available `typecheck` script, leaving a `TS2322` defect undiscovered. The environment should make the standard verification commands (`npm test`, `npm run typecheck`, and `npm run lint`) discoverable and require or strongly prompt the relevant checks before claiming completion. CI should run typecheck and lint, not only tests.\n- **High \u2014 fictional export test file (path not specified):** Tests covered headers and formatting but not tenant isolation. For endpoints involving tenant or user boundaries, provide a reusable review prompt/test template requiring an adversarial cross-tenant case (tenant A requesting tenant B) and authenticated-context assertions.\n- **Medium \u2014 fictional `AGENTS.md`:** 150 of 190 lines repeat reviewer style rules, while the security-relevant navigation is comparatively easy to miss. Reduce duplicated guidance and put short, high-priority trust-boundary rules near the top; link to detailed style rules instead of burying task-critical constraints.\n- **Medium \u2014 fictional `reviewer.md`:** The review checked naming and formatting but did not verify behavior against `docs/exports.md` or test coverage. Update reviewer instructions to verify requirements documentation, authorization boundaries, negative cases, and all available validation scripts\u2014not just style.\n- **Low \u2014 fictional `package.json`:** The scripts existed but were not surfaced as a required validation matrix. Add a concise mapping from change type to commands, with a default full local check when the cost is acceptable.\n\n## Environment improvements\n\n1. Add a pre-completion checklist that asks: \u201cWhat is the trusted source for identity/authorization?\u201d, \u201cWhat abuse or isolation test fails before the fix?\u201d, and \u201cWhich package scripts were not run, and why?\u201d\n2. Change CI to run `npm test`, `npm run typecheck`, and `npm run lint` (or explicitly document justified exclusions).\n3. Make reviewers inspect the relevant requirements docs and require tests for security boundaries, not only happy-path formatting.\n4. Keep high-signal security and validation guidance concise and prominent in `AGENTS.md`; remove repeated style prose.\n5. Add a safe support/logging workflow: the timeout remained unresolved because logs were inaccessible. Permit sanitized, read-only logs only after explicit approval, with least-privilege access and documented redaction boundaries.\n\n## Residual risks\n\n- The timeout cause is still unknown; no remediation can be validated from the packet. A future session should obtain approved sanitized logs or add observable, privacy-safe timeout diagnostics.\n- The packet does not identify exact source/test paths beyond `csvRows.ts`; findings use the fictional names supplied and do not infer missing paths.\n- The transcript does not confirm lint was run after the fix, so lint regressions may remain despite tests and typecheck passing.\n\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"Concrete severity-rated findings cite the supplied fictional paths `AGENTS.md`, `CODING_STANDARDS.md`, `reviewer.md`, `package.json`, `docs/exports.md`, `handler`, `csvRows.ts`, and the export test artifact; residual risks are listed separately.\"\n    }\n  ],\n  \"changedFiles\": [],\n  \"testsAddedOrUpdated\": [],\n  \"commandsRun\": [],\n  \"validationOutput\": [\n    \"Retrospective derived solely from the supplied complete evidence packet; no repository or sibling benchmark files were inspected.\"\n  ],\n  \"residualRisks\": [\n    \"Timeout cause remains unresolved because logs were inaccessible.\",\n    \"Lint was not reported as run after the fix.\",\n    \"Exact paths for handler and export test are unspecified in the packet.\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"No project changes recommended or implemented; report-only retrospective.\",\n  \"reviewFindings\": [\n    \"critical: handler - request.body.tenantId enabled cross-tenant invoice exposure.\",\n    \"high: csvRows.ts - typecheck was skipped and TS2322 reached staging.\",\n    \"high: export test - lacked a cross-tenant isolation case.\",\n    \"medium: AGENTS.md/reviewer.md - duplicated style guidance obscured security and behavioral review checks.\"\n  ],\n  \"manualNotes\": \"The report was written to the authoritative output path by the runtime requirement; no coding-agent environment changes were made.\"\n}\n```"}], "eval-3-clean-session-with_skill-run-1": [{"name": "retro.md", "type": "text", "content": "# Retrospective\n\n## Findings (ordered by severity)\n\n- **No actionable issues observed (informational).** The session followed the repository navigation pointers in `AGENTS.md` to `docs/search.md`, inspected the relevant implementation and test files (`src/search/Results.tsx`, `src/search/Results.test.tsx`), and used the documented checks. No failed tools, repeated searches, missing information, or user corrections were reported.\n- **No environment change recommended (informational).** `docs/search.md` already identifies the feature location and focused validation commands; `CODING_STANDARDS.md` gives the reviewer explicit accessibility and design-token criteria; CI requires the broader test, typecheck, and lint checks. The reviewer also verified state transitions before approving.\n\n## Recommendations\n\nKeep the current pattern: short navigation pointers in `AGENTS.md`, feature-specific validation guidance in `docs/search.md`, and review-focused rules in `CODING_STANDARDS.md`. The supplied evidence does not justify adding tooling, instructions, or information access.\n\n## Residual risks\n\nThe packet contains no evidence about failures outside this clean session, so it cannot establish whether the environment handles unusual search states or regressions not covered by the added test. No concrete remediation is supported by the supplied evidence.\n\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"Reviewed the complete supplied session packet and reported severity-labeled findings with concrete repository paths: AGENTS.md, docs/search.md, CODING_STANDARDS.md, src/search/Results.tsx, and src/search/Results.test.tsx.\"\n    }\n  ],\n  \"changedFiles\": [],\n  \"testsAddedOrUpdated\": [],\n  \"commandsRun\": [],\n  \"validationOutput\": [\n    \"Evidence packet reports 18 tests passed; typecheck and lint passed.\"\n  ],\n  \"residualRisks\": [\n    \"The clean-session packet provides no evidence about untested unusual states or regressions outside this task.\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"No project changes recommended; retrospective report only.\",\n  \"reviewFindings\": [\n    \"No blockers or actionable defects observed in the supplied session evidence.\"\n  ],\n  \"manualNotes\": \"The supplied packet was treated as complete evidence; no sibling inputs, metadata, or outputs were inspected.\"\n}\n```"}], "eval-3-clean-session-without_skill-run-1": [{"name": "retro.md", "type": "text", "content": "# Retrospective: clean session\n\n## What went well\n\n- The agent followed the repository guidance by reading `AGENTS.md` and `docs/search.md` before editing.\n- It inspected both implementation and tests: `src/search/Results.tsx` and `src/search/Results.test.tsx`.\n- The change reused the existing `EmptyState` component and addressed accessibility, design tokens, and result-state recovery.\n- The reviewer independently read `CODING_STANDARDS.md`, reviewed the diff, and approved the result.\n- The session was efficient: no failed tools, repeated searches, missing information, or user corrections.\n\n## Findings\n\n- **Medium \u2014 incomplete CI verification:** `docs/search.md` requires `npm test -- search` and `npm run typecheck`, while the repository CI requires `npm test`, `npm run typecheck`, and `npm run lint`. The session ran the targeted test command plus typecheck and lint, but did not run the full `npm test` suite. The environment should distinguish targeted validation from required repository-wide CI validation and prompt for the missing full test run before declaring completion.\n  - Evidence: `docs/search.md`; repository CI requirements in the supplied `AGENTS.md` packet; session command at 11:06.\n\n## Environment recommendations\n\n1. Add a completion checklist derived from repository guidance, with separate targeted checks and CI checks. A completion claim should flag `npm test` as outstanding when only `npm test -- search` ran.\n2. Make the final agent summary report exact commands and scope (for example, \u201csearch tests passed; full suite not run\u201d) so reviewers can assess residual coverage immediately.\n3. Preserve the current workflow of reading local guidance and relevant implementation/tests before editing; it worked well and should remain the default.\n\n## Residual risks\n\n- The full test suite was not executed, so unrelated regressions outside the search tests could remain undetected.\n- The packet does not include the actual diff or test contents; the accessibility and state-transition approval is reviewer evidence, not independently reproducible evidence from this packet.\n\n```acceptance-report\n{\n  \"criteriaSatisfied\": [\n    {\n      \"id\": \"criterion-1\",\n      \"status\": \"satisfied\",\n      \"evidence\": \"Concrete retrospective finding identifies a medium-severity validation gap and cites the fictional evidence paths docs/search.md and AGENTS.md, with residual risks and environment recommendations.\"\n    }\n  ],\n  \"changedFiles\": [],\n  \"testsAddedOrUpdated\": [],\n  \"commandsRun\": [],\n  \"validationOutput\": [\n    \"Reviewed the supplied clean-session evidence packet only; no project commands were run.\"\n  ],\n  \"residualRisks\": [\n    \"Full npm test was not run; only the targeted search tests were reported.\",\n    \"The packet omits the actual diff and test contents, limiting independent verification.\"\n  ],\n  \"noStagedFiles\": true,\n  \"diffSummary\": \"No implementation changes; retrospective report only.\",\n  \"reviewFindings\": [\n    \"medium: docs/search.md and the supplied CI requirements - targeted tests passed, but the required full npm test suite was not reported as run.\"\n  ],\n  \"manualNotes\": \"The supplied packet was treated as complete evidence; fictional project paths were not inspected.\"\n}\n```"}]}, "benchmark": {"metadata": {"skill_name": "retro", "skill_path": "skills/software/retro", "executor_model": "openai-codex/gpt-5.6-luna", "analyzer_model": "parent session; inline semantic grading", "timestamp": "2026-09-11T22:34:39Z", "evals_run": [1, 2, 3, 4, 5], "runs_per_configuration": 3, "repetitions_per_eval": 1, "baseline": "Original skill snapshot before iteration 1, not the immediate pre-extension revision", "acceptance_scaffolding": false}, "runs": [{"eval_id": 1, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": 27.045, "tokens": 23419, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.", "passed": true, "evidence": "\"Add one conditional line to `AGENTS.md`\" \u2014 Routes billing work to existing docs and explicitly keeps policy details there."}, {"text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.", "passed": true, "evidence": "\"change the query or scope before repeating a search\" \u2014 Links scoped searches to repeated, truncated broad calls."}, {"text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.", "passed": true, "evidence": "\"no review miss is shown\" \u2014 Does not invent a testing or reviewer failure."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "notes": []}, {"eval_id": 2, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 7, "failed": 0, "total": 7, "time_seconds": 33.749, "tokens": 24549, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.", "passed": true, "evidence": "\"High \u2014 make tenant identity and authorization an explicit review invariant\" \u2014 Security precedes style/navigation as specified. Typecheck nevertheless comes first, an unscored prioritization concern."}, {"text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.", "passed": true, "evidence": "\"Add `npm run typecheck` to the existing CI workflow\" \u2014 Also requires a cross-tenant negative test."}, {"text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.", "passed": true, "evidence": "\"`reviewer.md` (or the existing reviewer standards entry point)\" \u2014 Places review policy in reviewer guidance, with a pointer to domain docs."}, {"text": "Recommends removing or relocating repeated style instructions from AGENTS.md.", "passed": true, "evidence": "\"Remove duplicated naming/import/comment/reviewer prose\" \u2014 Explicitly removes duplicated always-loaded guidance."}, {"text": "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.", "passed": true, "evidence": "\"replace vague always-loaded steering\" \u2014 Identifies Think carefully/Write good code as no-op candidates. Does not claim a controlled experiment; causal language is stronger than the evidence."}, {"text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.", "passed": true, "evidence": "\"use the approved sanitized read-only support path\" \u2014 Keeps access controls and leaves timeout cause unknown."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "notes": []}, {"eval_id": 3, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 4, "failed": 0, "total": 4, "time_seconds": 21.399, "tokens": 35855, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Explicitly concludes that no material environment changes are justified by this session.", "passed": true, "evidence": "\"No environment changes are supported\" \u2014 Explicit no-change conclusion."}, {"text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.", "passed": true, "evidence": "\"Adding new rules or tooling would be speculative\" \u2014 No unsupported new process."}, {"text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.", "passed": true, "evidence": "\"Local checks and the full required CI suite passed\" \u2014 Also cites navigation and review criteria."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "notes": []}, {"eval_id": 4, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 7, "failed": 0, "total": 7, "time_seconds": 32.806, "tokens": 37666, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.", "passed": true, "evidence": "\"Session summaries are not a reliable record\" \u2014 Explains loss of scope, deferral and freshness across the supplied incidents, not absent project commands."}, {"text": "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.", "passed": true, "evidence": "\"Add a Workshop extension\" \u2014 Proposes local state from tool completion and a resume message using supplied capabilities."}, {"text": "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.", "passed": true, "evidence": "\"On resume, inject a short, explicit status block\" \u2014 Covers scope, stale results after edits, and deferred checks without fixed project commands. Capturing all pending work still needs design."}, {"text": "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.", "passed": true, "evidence": "\"Interrupt and resume sessions containing\" \u2014 Specifies concrete replay cases and checking status against actual run/edit history."}, {"text": "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.", "passed": true, "evidence": "\"preserve command approval flow\" \u2014 Keeps user-inspectable/deletable local metadata and avoids raw sensitive output retention."}, {"text": "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.", "passed": true, "evidence": "\"observes tool completion\" \u2014 Uses documented capabilities descriptively, not invented API identifiers; no implementation claim."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "notes": []}, {"eval_id": 5, "configuration": "with_skill", "run_number": 1, "result": {"pass_rate": 1.0, "passed": 5, "failed": 0, "total": 5, "time_seconds": 27.395, "tokens": 23431, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Identifies existing global bounded-output mode as the first change rather than recommending a new custom plugin or project-by-project rules.", "passed": true, "evidence": "\"rather than adding a new plugin or project rule\" \u2014 First recommendation uses existing global bounded mode."}, {"text": "Explains why the environment-level change applies across repositories using the two supplied output-flooding incidents.", "passed": true, "evidence": "\"Passthrough output caused context flooding in both sessions\" \u2014 Connects both incidents to reusable environment behavior."}, {"text": "Describes how to verify reduced context consumption or repeated work while preserving full-output retrieval and exit status.", "passed": true, "evidence": "\"Run a deliberately noisy command\" \u2014 Tests excerpt limits, full-output range retrieval, exit status, and repeated work."}, {"text": "Preserves private log access and retention controls, without inventing configuration keys or claiming changes were applied.", "passed": true, "evidence": "\"Preserve the existing file permissions and retention controls\" \u2014 No invented option keys or implementation claims."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": true, "evidence": "Changes heading present; report identifies project/process changes or unsupported work."}], "notes": []}, {"eval_id": 1, "configuration": "old_skill", "run_number": 1, "result": {"pass_rate": 0.75, "passed": 3, "failed": 1, "total": 4, "time_seconds": 22.846, "tokens": 22639, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.", "passed": true, "evidence": "\"read `docs/billing.md` first\" \u2014 Provides a short conditional pointer; includes implementation paths but does not duplicate the full guide."}, {"text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.", "passed": true, "evidence": "\"widening only when necessary\" \u2014 Recommends source directories, exclusions and globs based on the noisy repeated search."}, {"text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.", "passed": true, "evidence": "\"No automated-check gap was demonstrated\" \u2014 Retains successful testing and review."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "notes": []}, {"eval_id": 2, "configuration": "old_skill", "run_number": 1, "result": {"pass_rate": 0.8571428571428571, "passed": 6, "failed": 1, "total": 7, "time_seconds": 30.49, "tokens": 23614, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Ranks prevention of cross-tenant exposure ahead of style, navigation, and token-economy improvements.", "passed": true, "evidence": "\"Make tenant isolation a mandatory automated invariant\" \u2014 Ranks isolation first."}, {"text": "Recommends a tenant-isolation regression check and running the existing typecheck command automatically.", "passed": true, "evidence": "\"run both `npm test` and `npm run typecheck`\" \u2014 Also requires tenant-isolation regression tests."}, {"text": "Places tenant-boundary review guidance in CODING_STANDARDS.md or the reviewer instructions, rather than expanding always-loaded AGENTS.md.", "passed": true, "evidence": "\"Move authoritative review rules to `CODING_STANDARDS.md`\" \u2014 Locates security review policy in review guidance."}, {"text": "Recommends removing or relocating repeated style instructions from AGENTS.md.", "passed": true, "evidence": "\"150 lines duplicating reviewer style rules\" \u2014 Moves the authoritative rules out of the steering file."}, {"text": "Identifies generic steering as a candidate for pruning or a with/without comparison, without claiming its ineffectiveness was experimentally established.", "passed": true, "evidence": "\"delete the generic no-op instructions\" \u2014 Names Think carefully/Write good code. No experimental result is claimed, though ineffectiveness is asserted more strongly than established."}, {"text": "Recommends approved read-only sanitized log access and does not invent the unresolved timeout cause.", "passed": true, "evidence": "\"approved read-only support path for sanitized export-job logs\" \u2014 Retains approval, least privilege, and unknown timeout cause."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "notes": []}, {"eval_id": 3, "configuration": "old_skill", "run_number": 1, "result": {"pass_rate": 0.75, "passed": 3, "failed": 1, "total": 4, "time_seconds": 25.093, "tokens": 35055, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Explicitly concludes that no material environment changes are justified by this session.", "passed": true, "evidence": "\"No actionable environment changes are warranted\" \u2014 Explicit no-change conclusion."}, {"text": "Avoids prescribing new rules, tools, checks, or documentation without an observed deficiency.", "passed": true, "evidence": "\"Keep the current setup unchanged\" \u2014 No unsupported new process."}, {"text": "Grounds the conclusion in existing navigation, passing checks, and review evidence.", "passed": true, "evidence": "\"the reviewer and full CI confirmed the result\" \u2014 Also cites navigation and focused checks."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "notes": []}, {"eval_id": 4, "configuration": "old_skill", "run_number": 1, "result": {"pass_rate": 0.7142857142857143, "passed": 5, "failed": 2, "total": 7, "time_seconds": 32.915, "tokens": 23748, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Distinguishes a cross-project session continuity problem from missing project-specific validation instructions, citing the interruption or compaction evidence.", "passed": true, "evidence": "\"loss of validation scope, deferral, and freshness\" \u2014 Identifies a cross-session process cause despite existing project instructions."}, {"text": "Proposes a reusable environment mechanism through documented extension capabilities or a justified core change, rather than only adding instructions to each project.", "passed": true, "evidence": "\"validation ledger to Workshop\" \u2014 Environment mechanism uses tool completion, local project state and resume messages."}, {"text": "Describes when the mechanism records or restores information and how it preserves check scope, pending work, and stale results after edits without hardcoding one project command.", "passed": true, "evidence": "\"Treat a validation result as stale when the project changes\" \u2014 Preserves scope and deferred checks; acknowledges edit-observation uncertainty and proposes checkpoint fallback."}, {"text": "Gives an observable way to test whether the proposed process change reduces unsupported completion claims in future sessions.", "passed": false, "evidence": "\"This is a useful environment guard\" \u2014 Proposes mechanisms and desired effects, but gives no experiment, replay, or observable evaluation procedure for future sessions."}, {"text": "Preserves user approval and limits sensitive retained data; does not propose automatically rerunning commands without approval.", "passed": true, "evidence": "\"Any extension must preserve command approval\" \u2014 Preserves approval, metadata-only retention, and user-inspectable/deletable local state."}, {"text": "Avoids presenting invented Workshop API names as established facts and avoids claiming the proposal has already been implemented.", "passed": true, "evidence": "\"if Workshop cannot observe edits directly\" \u2014 Qualifies capability uncertainty and avoids fabricated API names or implementation claims."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "notes": []}, {"eval_id": 5, "configuration": "old_skill", "run_number": 1, "result": {"pass_rate": 0.8, "passed": 4, "failed": 1, "total": 5, "time_seconds": 23.018, "tokens": 22545, "tool_calls": 4, "errors": 0}, "expectations": [{"text": "Identifies existing global bounded-output mode as the first change rather than recommending a new custom plugin or project-by-project rules.", "passed": true, "evidence": "\"Change the global default\" \u2014 Uses existing bounded mode and explicitly rejects custom plugins."}, {"text": "Explains why the environment-level change applies across repositories using the two supplied output-flooding incidents.", "passed": true, "evidence": "\"This addresses both observed failures\" \u2014 Connects two different repositories to output handling in the environment."}, {"text": "Describes how to verify reduced context consumption or repeated work while preserving full-output retrieval and exit status.", "passed": true, "evidence": "\"Success criterion: verbose commands no longer consume\" \u2014 Observable reduced context cost with full retrieval and correct result, without rerunning."}, {"text": "Preserves private log access and retention controls, without inventing configuration keys or claiming changes were applied.", "passed": true, "evidence": "\"retain the existing permission and retention safeguards\" \u2014 Acknowledges missing option identifiers and privacy controls."}, {"text": "Includes a Changes section that distinguishes project changes from cross-session process changes, or explains why one or both are unsupported.", "passed": false, "evidence": "No Changes section. Scope may be discussed elsewhere, but the requested report structure is absent."}], "notes": []}], "run_summary": {"with_skill": {"pass_rate": {"mean": 1.0, "stddev": 0.0, "min": 1.0, "max": 1.0}, "time_seconds": {"mean": 28.4788, "stddev": 4.9963, "min": 21.399, "max": 33.749}, "tokens": {"mean": 28984.0, "stddev": 7142.514, "min": 23419, "max": 37666}}, "old_skill": {"pass_rate": {"mean": 0.7743, "stddev": 0.0555, "min": 0.7143, "max": 0.8571}, "time_seconds": {"mean": 26.8724, "stddev": 4.5781, "min": 22.846, "max": 32.915}, "tokens": {"mean": 25520.2, "stddev": 5358.1674, "min": 22545, "max": 35055}}, "delta": {"pass_rate": "+0.23", "time_seconds": "+1.6", "tokens": "+3464"}}, "notes": ["Five synthetic cases, one run per case/version. Baseline is the original pre-iteration-1 skill. This measures the combined rewrite and cross-session additions, not the extension section in isolation.", "Overall macro pass rate is 100% current vs 77.4% original; pooled checks are 27/27 vs 21/27. Most of the difference is the new Changes-section requirement: 5/5 vs 0/5. Substantive checks are 22/22 vs 21/22. Do not interpret the headline difference as a large reasoning improvement.", "Both versions proposed a reusable Workshop validation-state extension/ledger, chose existing bounded-output configuration instead of a plugin in the second workflow case, and recommended no changes for the clean session. The original skill already found the principal cross-session opportunities in these explicit fixtures.", "The substantive gain was verification: the current handoff report proposed interruption/resume replay cases and comparison with the command/edit timeline. The original described mechanisms and intended outcomes but no evaluation procedure.", "Unscored prioritization concern: the current missed-checks report puts typecheck before tenant isolation. The original puts tenant isolation first. The existing assertion only compares security against style/navigation/token economy, so it does not catch this difference.", "Both versions identified generic no-op steering in this run. Some language asserts ineffectiveness or causal impact more strongly than a synthetic transcript establishes. Neither version claims an actual controlled experiment; the assertion passes, but this is not evidence that the instruction is a real no-op.", "The new handoff recommendation leaves details unresolved: tool completion alone does not explain capturing deferred work, reliable edit detection, or whether session-local output references survive. The original explicitly acknowledges edit-observation uncertainty. These are design follow-ups, not a verified extension implementation.", "The current navigation report says Use npm/run relevant tests affected behavior based on observed compliance alone. That does not establish causal effect. No assertion tested this causal wording; it is a qualitative review concern.", "The new handoff report conditionally suggests another project instruction despite adequate existing guidance. The output-flooding report makes follow-on guidance conditional on observed need. Review whether those optional recommendations add useful information or noise.", "Fixture changes: clean case now explicitly confirms full CI passed; duplication and generic no-op detection scored separately. Pi acceptance scaffolding was disabled in both arms, removing the prior demand for concrete findings. Iteration-1 percentages are not directly comparable.", "All ten transcripts read only their assigned skill, writing-for-agents, and evidence packet, and wrote only the assigned report. Each used four tool calls; no tool errors observed. Same fresh-context model in both arms; no automatic-trigger testing.", "Tokens are summed Pi assistant usage including cached input; durations include harness/report overhead. One run per case cannot establish reliability or statistical significance. Standard deviations reflect different cases, not repeat-run variance.", "Grading is inline and unblinded. Exact evidence quotes and heading presence checked programmatically; semantic scope and recommendation quality judged by the benchmark author. These results need human review before skill revision."], "subscores": {"with_skill": {"substantive_passed": 22, "substantive_total": 22, "structure_passed": 5, "structure_total": 5}, "old_skill": {"substantive_passed": 21, "substantive_total": 22, "structure_passed": 0, "structure_total": 5}}}};
+
+    // ---- State ----
+    let feedbackMap = {};  // run_id -> feedback text
+    let currentIndex = 0;
+    let visitedRuns = new Set();
+
+    // ---- Init ----
+    async function init() {
+      // Load saved feedback from server — but only if this isn't a fresh
+      // iteration (indicated by previous_feedback being present). When
+      // previous feedback exists, the feedback.json on disk is stale from
+      // the prior iteration and should not pre-fill the textareas.
+      const hasPrevious = Object.keys(EMBEDDED_DATA.previous_feedback || {}).length > 0
+        || Object.keys(EMBEDDED_DATA.previous_outputs || {}).length > 0;
+      if (!hasPrevious) {
+        try {
+          const resp = await fetch("/api/feedback");
+          const data = await resp.json();
+          if (data.reviews) {
+            for (const r of data.reviews) feedbackMap[r.run_id] = r.feedback;
+          }
+        } catch { /* first run, no feedback yet */ }
+      }
+
+      document.getElementById("skill-name").textContent = EMBEDDED_DATA.skill_name;
+      showRun(0);
+
+      // Wire up feedback auto-save
+      const textarea = document.getElementById("feedback");
+      let saveTimeout = null;
+      textarea.addEventListener("input", () => {
+        clearTimeout(saveTimeout);
+        document.getElementById("feedback-status").textContent = "";
+        saveTimeout = setTimeout(() => saveCurrentFeedback(), 800);
+      });
+    }
+
+    // ---- Navigation ----
+    function navigate(delta) {
+      const newIndex = currentIndex + delta;
+      if (newIndex >= 0 && newIndex < EMBEDDED_DATA.runs.length) {
+        saveCurrentFeedback();
+        showRun(newIndex);
+      }
+    }
+
+    function updateNavButtons() {
+      document.getElementById("prev-btn").disabled = currentIndex === 0;
+      document.getElementById("next-btn").disabled =
+        currentIndex === EMBEDDED_DATA.runs.length - 1;
+    }
+
+    // ---- Show a run ----
+    function showRun(index) {
+      currentIndex = index;
+      const run = EMBEDDED_DATA.runs[index];
+
+      // Progress
+      document.getElementById("progress").textContent =
+        `${index + 1} of ${EMBEDDED_DATA.runs.length}`;
+
+      // Prompt
+      document.getElementById("prompt-text").textContent = run.prompt;
+
+      // Config badge
+      const badge = document.getElementById("config-badge");
+      const configMatch = run.id.match(/(with_skill|without_skill|new_skill|old_skill)/);
+      if (configMatch) {
+        const config = configMatch[1];
+        const isBaseline = config === "without_skill" || config === "old_skill";
+        badge.textContent = config.replace(/_/g, " ");
+        badge.className = "config-badge " + (isBaseline ? "config-baseline" : "config-primary");
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+
+      // Outputs
+      renderOutputs(run);
+
+      // Previous outputs
+      renderPrevOutputs(run);
+
+      // Grades
+      renderGrades(run);
+
+      // Previous feedback
+      const prevFb = (EMBEDDED_DATA.previous_feedback || {})[run.id];
+      const prevEl = document.getElementById("prev-feedback");
+      if (prevFb) {
+        document.getElementById("prev-feedback-text").textContent = prevFb;
+        prevEl.style.display = "block";
+      } else {
+        prevEl.style.display = "none";
+      }
+
+      // Feedback
+      document.getElementById("feedback").value = feedbackMap[run.id] || "";
+      document.getElementById("feedback-status").textContent = "";
+
+      updateNavButtons();
+
+      // Track visited runs and promote done button when all visited
+      visitedRuns.add(index);
+      const doneBtn = document.getElementById("done-btn");
+      if (visitedRuns.size >= EMBEDDED_DATA.runs.length) {
+        doneBtn.classList.add("ready");
+      }
+
+      // Scroll main content to top
+      document.querySelector(".main").scrollTop = 0;
+    }
+
+    // ---- Render outputs ----
+    function renderOutputs(run) {
+      const container = document.getElementById("outputs-body");
+      container.innerHTML = "";
+
+      const outputs = run.outputs || [];
+      if (outputs.length === 0) {
+        container.innerHTML = '<div class="empty-state">No output files</div>';
+        return;
+      }
+
+      for (const file of outputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        // Always show file header with download link
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const content = document.createElement("div");
+        content.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          content.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          content.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          content.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(content, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          content.appendChild(a);
+        } else if (file.type === "error") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          pre.style.color = "var(--red)";
+          content.appendChild(pre);
+        }
+
+        fileDiv.appendChild(content);
+        container.appendChild(fileDiv);
+      }
+    }
+
+    // ---- XLSX rendering via SheetJS ----
+    function renderXlsx(container, b64Data) {
+      try {
+        const raw = Uint8Array.from(atob(b64Data), c => c.charCodeAt(0));
+        const wb = XLSX.read(raw, { type: "array" });
+
+        for (let i = 0; i < wb.SheetNames.length; i++) {
+          const sheetName = wb.SheetNames[i];
+          const ws = wb.Sheets[sheetName];
+
+          if (wb.SheetNames.length > 1) {
+            const sheetLabel = document.createElement("div");
+            sheetLabel.style.cssText =
+              "font-weight:600; font-size:0.8rem; color:#b0aea5; margin-top:0.5rem; margin-bottom:0.25rem;";
+            sheetLabel.textContent = "Sheet: " + sheetName;
+            container.appendChild(sheetLabel);
+          }
+
+          const htmlStr = XLSX.utils.sheet_to_html(ws, { editable: false });
+          const wrapper = document.createElement("div");
+          wrapper.innerHTML = htmlStr;
+          container.appendChild(wrapper);
+        }
+      } catch (err) {
+        container.textContent = "Error rendering spreadsheet: " + err.message;
+      }
+    }
+
+    // ---- Grades ----
+    function renderGrades(run) {
+      const section = document.getElementById("grades-section");
+      const content = document.getElementById("grades-content");
+
+      if (!run.grading) {
+        section.style.display = "none";
+        return;
+      }
+
+      const grading = run.grading;
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("grades-arrow").classList.remove("open");
+
+      const summary = grading.summary || {};
+      const expectations = grading.expectations || [];
+
+      let html = '<div style="padding: 1rem;">';
+
+      // Summary line
+      const passRate = summary.pass_rate != null
+        ? Math.round(summary.pass_rate * 100) + "%"
+        : "?";
+      const badgeClass = summary.pass_rate >= 0.8 ? "grade-pass" : summary.pass_rate >= 0.5 ? "" : "grade-fail";
+      html += '<div class="grades-summary">';
+      html += '<span class="grade-badge ' + badgeClass + '">' + passRate + '</span>';
+      html += '<span>' + (summary.passed || 0) + ' passed, ' + (summary.failed || 0) + ' failed of ' + (summary.total || 0) + '</span>';
+      html += '</div>';
+
+      // Assertions list
+      html += '<ul class="assertion-list">';
+      for (const exp of expectations) {
+        const statusClass = exp.passed ? "pass" : "fail";
+        const statusIcon = exp.passed ? "\u2713" : "\u2717";
+        html += '<li class="assertion-item">';
+        html += '<span class="assertion-status ' + statusClass + '">' + statusIcon + '</span>';
+        html += '<span>' + escapeHtml(exp.text) + '</span>';
+        if (exp.evidence) {
+          html += '<div class="assertion-evidence">' + escapeHtml(exp.evidence) + '</div>';
+        }
+        html += '</li>';
+      }
+      html += '</ul>';
+
+      html += '</div>';
+      content.innerHTML = html;
+    }
+
+    function toggleGrades() {
+      const content = document.getElementById("grades-content");
+      const arrow = document.getElementById("grades-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Previous outputs (collapsible) ----
+    function renderPrevOutputs(run) {
+      const section = document.getElementById("prev-outputs-section");
+      const content = document.getElementById("prev-outputs-content");
+      const prevOutputs = (EMBEDDED_DATA.previous_outputs || {})[run.id];
+
+      if (!prevOutputs || prevOutputs.length === 0) {
+        section.style.display = "none";
+        return;
+      }
+
+      section.style.display = "block";
+      // Reset to collapsed
+      content.classList.remove("open");
+      document.getElementById("prev-outputs-arrow").classList.remove("open");
+
+      // Render the files into the content area
+      content.innerHTML = "";
+      const wrapper = document.createElement("div");
+      wrapper.style.padding = "1rem";
+
+      for (const file of prevOutputs) {
+        const fileDiv = document.createElement("div");
+        fileDiv.className = "output-file";
+
+        const header = document.createElement("div");
+        header.className = "output-file-header";
+        const nameSpan = document.createElement("span");
+        nameSpan.textContent = file.name;
+        header.appendChild(nameSpan);
+        const dlBtn = document.createElement("a");
+        dlBtn.className = "dl-btn";
+        dlBtn.textContent = "Download";
+        dlBtn.download = file.name;
+        dlBtn.href = getDownloadUri(file);
+        header.appendChild(dlBtn);
+        fileDiv.appendChild(header);
+
+        const fc = document.createElement("div");
+        fc.className = "output-file-content";
+
+        if (file.type === "text") {
+          const pre = document.createElement("pre");
+          pre.textContent = file.content;
+          fc.appendChild(pre);
+        } else if (file.type === "image") {
+          const img = document.createElement("img");
+          img.src = file.data_uri;
+          img.alt = file.name;
+          fc.appendChild(img);
+        } else if (file.type === "pdf") {
+          const iframe = document.createElement("iframe");
+          iframe.src = file.data_uri;
+          fc.appendChild(iframe);
+        } else if (file.type === "xlsx") {
+          renderXlsx(fc, file.data_b64);
+        } else if (file.type === "binary") {
+          const a = document.createElement("a");
+          a.className = "download-link";
+          a.href = file.data_uri;
+          a.download = file.name;
+          a.textContent = "Download " + file.name;
+          fc.appendChild(a);
+        }
+
+        fileDiv.appendChild(fc);
+        wrapper.appendChild(fileDiv);
+      }
+
+      content.appendChild(wrapper);
+    }
+
+    function togglePrevOutputs() {
+      const content = document.getElementById("prev-outputs-content");
+      const arrow = document.getElementById("prev-outputs-arrow");
+      content.classList.toggle("open");
+      arrow.classList.toggle("open");
+    }
+
+    // ---- Feedback (saved to server -> feedback.json) ----
+    function saveCurrentFeedback() {
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // Build reviews array from map
+      const reviews = [];
+      for (const [run_id, feedback] of Object.entries(feedbackMap)) {
+        if (feedback.trim()) {
+          reviews.push({ run_id, feedback, timestamp: new Date().toISOString() });
+        }
+      }
+
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reviews, status: "in_progress" }),
+      }).then(() => {
+        document.getElementById("feedback-status").textContent = "Saved";
+      }).catch(() => {
+        // Static mode or server unavailable — no-op on auto-save,
+        // feedback will be downloaded on final submit
+        document.getElementById("feedback-status").textContent = "Will download on submit";
+      });
+    }
+
+    // ---- Done ----
+    function showDoneDialog() {
+      // Save current textarea to feedbackMap (but don't POST yet)
+      const run = EMBEDDED_DATA.runs[currentIndex];
+      const text = document.getElementById("feedback").value;
+      if (text.trim() === "") {
+        delete feedbackMap[run.id];
+      } else {
+        feedbackMap[run.id] = text;
+      }
+
+      // POST once with status: complete — include ALL runs so the model
+      // can distinguish "no feedback" (looks good) from "not reviewed"
+      const reviews = [];
+      const ts = new Date().toISOString();
+      for (const r of EMBEDDED_DATA.runs) {
+        reviews.push({ run_id: r.id, feedback: feedbackMap[r.id] || "", timestamp: ts });
+      }
+      const payload = JSON.stringify({ reviews, status: "complete" }, null, 2);
+      fetch("/api/feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      }).then(() => {
+        document.getElementById("done-overlay").classList.add("visible");
+      }).catch(() => {
+        // Server not available (static mode) — download as file
+        const blob = new Blob([payload], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "feedback.json";
+        a.click();
+        URL.revokeObjectURL(url);
+        document.getElementById("done-overlay").classList.add("visible");
+      });
+    }
+
+    function closeDoneDialog() {
+      // Reset status back to in_progress
+      saveCurrentFeedback();
+      document.getElementById("done-overlay").classList.remove("visible");
+    }
+
+    // ---- Toast ----
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.classList.add("visible");
+      setTimeout(() => toast.classList.remove("visible"), 2000);
+    }
+
+    // ---- Keyboard nav ----
+    document.addEventListener("keydown", (e) => {
+      // Don't capture when typing in textarea
+      if (e.target.tagName === "TEXTAREA") return;
+
+      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        navigate(-1);
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        navigate(1);
+      }
+    });
+
+    // ---- Util ----
+    function getDownloadUri(file) {
+      if (file.data_uri) return file.data_uri;
+      if (file.data_b64) return "data:application/octet-stream;base64," + file.data_b64;
+      if (file.type === "text") return "data:text/plain;charset=utf-8," + encodeURIComponent(file.content);
+      return "#";
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement("div");
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // ---- View switching ----
+    function switchView(view) {
+      document.querySelectorAll(".view-tab").forEach(t => t.classList.remove("active"));
+      document.querySelectorAll(".view-panel").forEach(p => p.classList.remove("active"));
+      document.querySelector(`[onclick="switchView('${view}')"]`).classList.add("active");
+      document.getElementById("panel-" + view).classList.add("active");
+    }
+
+    // ---- Benchmark rendering ----
+    function renderBenchmark() {
+      const data = EMBEDDED_DATA.benchmark;
+      if (!data) return;
+
+      // Show the tabs
+      document.getElementById("view-tabs").style.display = "flex";
+
+      const container = document.getElementById("benchmark-content");
+      const summary = data.run_summary || {};
+      const metadata = data.metadata || {};
+      const notes = data.notes || [];
+
+      let html = "";
+
+      // Header
+      html += "<h2 style='font-family: Poppins, sans-serif; margin-bottom: 0.5rem;'>Benchmark Results</h2>";
+      html += "<p style='color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;'>";
+      if (metadata.skill_name) html += "<strong>" + escapeHtml(metadata.skill_name) + "</strong> &mdash; ";
+      if (metadata.timestamp) html += metadata.timestamp + " &mdash; ";
+      if (metadata.evals_run) html += "Evals: " + metadata.evals_run.join(", ") + " &mdash; ";
+      html += (metadata.runs_per_configuration || "?") + " runs per configuration";
+      html += "</p>";
+
+      // Summary table
+      html += '<table class="benchmark-table">';
+
+      function fmtStat(stat, pct) {
+        if (!stat) return "—";
+        const suffix = pct ? "%" : "";
+        const m = pct ? (stat.mean * 100).toFixed(0) : stat.mean.toFixed(1);
+        const s = pct ? (stat.stddev * 100).toFixed(0) : stat.stddev.toFixed(1);
+        return m + suffix + " ± " + s + suffix;
+      }
+
+      function deltaClass(val) {
+        if (!val) return "";
+        const n = parseFloat(val);
+        if (n > 0) return "benchmark-delta-positive";
+        if (n < 0) return "benchmark-delta-negative";
+        return "";
+      }
+
+      // Discover config names dynamically (everything except "delta")
+      const configs = Object.keys(summary).filter(k => k !== "delta");
+      const configA = configs[0] || "config_a";
+      const configB = configs[1] || "config_b";
+      const labelA = configA.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const labelB = configB.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+      const a = summary[configA] || {};
+      const b = summary[configB] || {};
+      const delta = summary.delta || {};
+
+      html += "<thead><tr><th>Metric</th><th>" + escapeHtml(labelA) + "</th><th>" + escapeHtml(labelB) + "</th><th>Delta</th></tr></thead>";
+      html += "<tbody>";
+
+      html += "<tr><td><strong>Pass Rate</strong></td>";
+      html += "<td>" + fmtStat(a.pass_rate, true) + "</td>";
+      html += "<td>" + fmtStat(b.pass_rate, true) + "</td>";
+      html += '<td class="' + deltaClass(delta.pass_rate) + '">' + (delta.pass_rate || "—") + "</td></tr>";
+
+      // Time (only show row if data exists)
+      if (a.time_seconds || b.time_seconds) {
+        html += "<tr><td><strong>Time (s)</strong></td>";
+        html += "<td>" + fmtStat(a.time_seconds, false) + "</td>";
+        html += "<td>" + fmtStat(b.time_seconds, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.time_seconds) + '">' + (delta.time_seconds ? delta.time_seconds + "s" : "—") + "</td></tr>";
+      }
+
+      // Tokens (only show row if data exists)
+      if (a.tokens || b.tokens) {
+        html += "<tr><td><strong>Tokens</strong></td>";
+        html += "<td>" + fmtStat(a.tokens, false) + "</td>";
+        html += "<td>" + fmtStat(b.tokens, false) + "</td>";
+        html += '<td class="' + deltaClass(delta.tokens) + '">' + (delta.tokens || "—") + "</td></tr>";
+      }
+
+      html += "</tbody></table>";
+
+      // Per-eval breakdown (if runs data available)
+      const runs = data.runs || [];
+      if (runs.length > 0) {
+        const evalIds = [...new Set(runs.map(r => r.eval_id))].sort((a, b) => a - b);
+
+        html += "<h3 style='font-family: Poppins, sans-serif; margin-bottom: 0.75rem;'>Per-Eval Breakdown</h3>";
+
+        const hasTime = runs.some(r => r.result && r.result.time_seconds != null);
+        const hasErrors = runs.some(r => r.result && r.result.errors > 0);
+
+        for (const evalId of evalIds) {
+          const evalRuns = runs.filter(r => r.eval_id === evalId);
+          const evalName = evalRuns[0] && evalRuns[0].eval_name ? evalRuns[0].eval_name : "Eval " + evalId;
+
+          html += "<h4 style='font-family: Poppins, sans-serif; margin: 1rem 0 0.5rem; color: var(--text);'>" + escapeHtml(evalName) + "</h4>";
+          html += '<table class="benchmark-table">';
+          html += "<thead><tr><th>Config</th><th>Run</th><th>Pass Rate</th>";
+          if (hasTime) html += "<th>Time (s)</th>";
+          if (hasErrors) html += "<th>Crashes During Execution</th>";
+          html += "</tr></thead>";
+          html += "<tbody>";
+
+          // Group by config and render with average rows
+          const configGroups = [...new Set(evalRuns.map(r => r.configuration))];
+          for (let ci = 0; ci < configGroups.length; ci++) {
+            const config = configGroups[ci];
+            const configRuns = evalRuns.filter(r => r.configuration === config);
+            if (configRuns.length === 0) continue;
+
+            const rowClass = ci === 0 ? "benchmark-row-with" : "benchmark-row-without";
+            const configLabel = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+            for (const run of configRuns) {
+              const r = run.result || {};
+              const prClass = r.pass_rate >= 0.8 ? "benchmark-delta-positive" : r.pass_rate < 0.5 ? "benchmark-delta-negative" : "";
+              html += '<tr class="' + rowClass + '">';
+              html += "<td>" + configLabel + "</td>";
+              html += "<td>" + run.run_number + "</td>";
+              html += '<td class="' + prClass + '">' + ((r.pass_rate || 0) * 100).toFixed(0) + "% (" + (r.passed || 0) + "/" + (r.total || 0) + ")</td>";
+              if (hasTime) html += "<td>" + (r.time_seconds != null ? r.time_seconds.toFixed(1) : "—") + "</td>";
+              if (hasErrors) html += "<td>" + (r.errors || 0) + "</td>";
+              html += "</tr>";
+            }
+
+            // Average row
+            const rates = configRuns.map(r => (r.result || {}).pass_rate || 0);
+            const avgRate = rates.reduce((a, b) => a + b, 0) / rates.length;
+            const avgPrClass = avgRate >= 0.8 ? "benchmark-delta-positive" : avgRate < 0.5 ? "benchmark-delta-negative" : "";
+            html += '<tr class="benchmark-row-avg ' + rowClass + '">';
+            html += "<td>" + configLabel + "</td>";
+            html += "<td>Avg</td>";
+            html += '<td class="' + avgPrClass + '">' + (avgRate * 100).toFixed(0) + "%</td>";
+            if (hasTime) {
+              const times = configRuns.map(r => (r.result || {}).time_seconds).filter(t => t != null);
+              html += "<td>" + (times.length ? (times.reduce((a, b) => a + b, 0) / times.length).toFixed(1) : "—") + "</td>";
+            }
+            if (hasErrors) html += "<td></td>";
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+
+          // Per-assertion detail for this eval
+          const runsWithExpectations = {};
+          for (const config of configGroups) {
+            runsWithExpectations[config] = evalRuns.filter(r => r.configuration === config && r.expectations && r.expectations.length > 0);
+          }
+          const hasAnyExpectations = Object.values(runsWithExpectations).some(runs => runs.length > 0);
+          if (hasAnyExpectations) {
+            // Collect all unique assertion texts across all configs
+            const allAssertions = [];
+            const seen = new Set();
+            for (const config of configGroups) {
+              for (const run of runsWithExpectations[config]) {
+                for (const exp of (run.expectations || [])) {
+                  if (!seen.has(exp.text)) {
+                    seen.add(exp.text);
+                    allAssertions.push(exp.text);
+                  }
+                }
+              }
+            }
+
+            html += '<table class="benchmark-table" style="margin-top: 0.5rem;">';
+            html += "<thead><tr><th>Assertion</th>";
+            for (const config of configGroups) {
+              const label = config.replace(/_/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+              html += "<th>" + escapeHtml(label) + "</th>";
+            }
+            html += "</tr></thead><tbody>";
+
+            for (const assertionText of allAssertions) {
+              html += "<tr><td>" + escapeHtml(assertionText) + "</td>";
+
+              for (const config of configGroups) {
+                html += "<td>";
+                for (const run of runsWithExpectations[config]) {
+                  const exp = (run.expectations || []).find(e => e.text === assertionText);
+                  if (exp) {
+                    const cls = exp.passed ? "benchmark-delta-positive" : "benchmark-delta-negative";
+                    const icon = exp.passed ? "\u2713" : "\u2717";
+                    html += '<span class="' + cls + '" title="Run ' + run.run_number + ': ' + escapeHtml(exp.evidence || "") + '">' + icon + "</span> ";
+                  } else {
+                    html += "— ";
+                  }
+                }
+                html += "</td>";
+              }
+              html += "</tr>";
+            }
+            html += "</tbody></table>";
+          }
+        }
+      }
+
+      // Notes
+      if (notes.length > 0) {
+        html += '<div class="benchmark-notes">';
+        html += "<h3>Analysis Notes</h3>";
+        html += "<ul>";
+        for (const note of notes) {
+          html += "<li>" + escapeHtml(note) + "</li>";
+        }
+        html += "</ul></div>";
+      }
+
+      container.innerHTML = html;
+    }
+
+    // ---- Start ----
+    init();
+    renderBenchmark();
+  </script>
+</body>
+</html>

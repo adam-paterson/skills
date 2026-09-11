@@ -1,0 +1,6 @@
+{
+  "total_tokens": 35055,
+  "duration_ms": 25093,
+  "total_duration_seconds": 25.093,
+  "token_accounting": "Persisted Pi assistant usage.totalTokens including cached input; workflow step duration"
+}

@@ -1,0 +1,13 @@
+interface:
+  display_name: Teach Others
+  short_description: Design evidence-backed teaching for any subject
+  default_prompt: Help me teach this subject to other people. Build the learning plan,
+    deck-ready slide manuscript, speaker notes, learner materials, activities, assessment,
+    and facilitator notes around my audience and goal.
+policy:
+  products:
+  - chatgpt
+  - codex
+  - api
+  - atlas
+  allow_implicit_invocation: true

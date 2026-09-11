@@ -1,0 +1,4 @@
+interface:
+  display_name: "Stakeholder Translation"
+  short_description: "Reframe one idea for different stakeholders"
+  default_prompt: "Use stakeholder-translation to reframe this information for the requested stakeholders."

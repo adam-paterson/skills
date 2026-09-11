@@ -1,0 +1,5 @@
+interface:
+  display_name: "Huh"
+  short_description: "Explain the last message in simple English."
+policy:
+  allow_implicit_invocation: false

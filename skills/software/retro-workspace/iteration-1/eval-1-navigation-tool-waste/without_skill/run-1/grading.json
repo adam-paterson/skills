@@ -1,0 +1,37 @@
+{
+  "expectations": [
+    {
+      "text": "Proposes a short navigation pointer to existing docs/billing.md rather than duplicating the billing guide.",
+      "passed": false,
+      "evidence": "\"At session start, show or index `AGENTS.md` and relevant docs\" \u2014 Suggests indexing/lookup rather than a short pointer to the existing billing guide."
+    },
+    {
+      "text": "Connects repeated truncated repository-wide searches to a concrete scoped-search or bounded-output improvement.",
+      "passed": true,
+      "evidence": "\"rg retry packages apps docs\" \u2014 Concrete scoped search replaces repeated unrestricted searches."
+    },
+    {
+      "text": "Grounds recommendations in observed session events and does not invent a testing or reviewer failure.",
+      "passed": true,
+      "evidence": "\"ultimately fixed the shared retry policy\" \u2014 Notes limited evidence of edge-case coverage, but does not claim a test or review failure."
+    }
+  ],
+  "summary": {
+    "passed": 2,
+    "failed": 1,
+    "total": 3,
+    "pass_rate": 0.6666666666666666
+  },
+  "execution_metrics": {
+    "tool_calls": {
+      "read": 1,
+      "write": 1
+    },
+    "total_tool_calls": 2,
+    "errors_encountered": 0,
+    "output_chars": 3466
+  },
+  "eval_feedback": {
+    "overall": "Semantic assertions graded inline by benchmark author, not blinded. Clean-session case has an ambiguous absent CI result; pointer/reviewer criteria intentionally test retro policy, not universally necessary correctness. Compound pruning assertion masks partial credit."
+  }
+}

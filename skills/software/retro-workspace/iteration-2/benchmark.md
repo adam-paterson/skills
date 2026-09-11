@@ -1,0 +1,29 @@
+# Skill Benchmark: retro
+
+**Model**: openai-codex/gpt-5.6-luna
+**Date**: 2026-09-11T22:34:39Z
+**Evals**: 1, 2, 3, 4, 5 (3 runs each per configuration)
+
+## Summary
+
+| Metric | With Skill | Old Skill | Delta |
+|--------|------------|---------------|-------|
+| Pass Rate | 100% ± 0% | 77% ± 6% | +0.23 |
+| Time | 28.5s ± 5.0s | 26.9s ± 4.6s | +1.6s |
+| Tokens | 28984 ± 7143 | 25520 ± 5358 | +3464 |
+
+## Notes
+
+- Five synthetic cases, one run per case/version. Baseline is the original pre-iteration-1 skill. This measures the combined rewrite and cross-session additions, not the extension section in isolation.
+- Overall macro pass rate is 100% current vs 77.4% original; pooled checks are 27/27 vs 21/27. Most of the difference is the new Changes-section requirement: 5/5 vs 0/5. Substantive checks are 22/22 vs 21/22. Do not interpret the headline difference as a large reasoning improvement.
+- Both versions proposed a reusable Workshop validation-state extension/ledger, chose existing bounded-output configuration instead of a plugin in the second workflow case, and recommended no changes for the clean session. The original skill already found the principal cross-session opportunities in these explicit fixtures.
+- The substantive gain was verification: the current handoff report proposed interruption/resume replay cases and comparison with the command/edit timeline. The original described mechanisms and intended outcomes but no evaluation procedure.
+- Unscored prioritization concern: the current missed-checks report puts typecheck before tenant isolation. The original puts tenant isolation first. The existing assertion only compares security against style/navigation/token economy, so it does not catch this difference.
+- Both versions identified generic no-op steering in this run. Some language asserts ineffectiveness or causal impact more strongly than a synthetic transcript establishes. Neither version claims an actual controlled experiment; the assertion passes, but this is not evidence that the instruction is a real no-op.
+- The new handoff recommendation leaves details unresolved: tool completion alone does not explain capturing deferred work, reliable edit detection, or whether session-local output references survive. The original explicitly acknowledges edit-observation uncertainty. These are design follow-ups, not a verified extension implementation.
+- The current navigation report says Use npm/run relevant tests affected behavior based on observed compliance alone. That does not establish causal effect. No assertion tested this causal wording; it is a qualitative review concern.
+- The new handoff report conditionally suggests another project instruction despite adequate existing guidance. The output-flooding report makes follow-on guidance conditional on observed need. Review whether those optional recommendations add useful information or noise.
+- Fixture changes: clean case now explicitly confirms full CI passed; duplication and generic no-op detection scored separately. Pi acceptance scaffolding was disabled in both arms, removing the prior demand for concrete findings. Iteration-1 percentages are not directly comparable.
+- All ten transcripts read only their assigned skill, writing-for-agents, and evidence packet, and wrote only the assigned report. Each used four tool calls; no tool errors observed. Same fresh-context model in both arms; no automatic-trigger testing.
+- Tokens are summed Pi assistant usage including cached input; durations include harness/report overhead. One run per case cannot establish reliability or statistical significance. Standard deviations reflect different cases, not repeat-run variance.
+- Grading is inline and unblinded. Exact evidence quotes and heading presence checked programmatically; semantic scope and recommendation quality judged by the benchmark author. These results need human review before skill revision.
