@@ -1,0 +1,4 @@
+Question asked: no; destination was not ambiguous because no session integration was available.
+Secrets redacted: yes; no secrets or unnecessary personal data included.
+Receipt verified: no.
+Transfer status: no transfer attempted; receipt reported unverified in output.md.

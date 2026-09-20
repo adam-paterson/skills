@@ -1,0 +1,3 @@
+Asked a question: no.
+Secrets: none were provided; the handoff explicitly instructs against exposing them.
+Receipt: unverified; no receiving session was available to acknowledge the handoff.

@@ -1,0 +1,5 @@
+interface:
+  display_name: "Revisit a plan"
+  short_description: "Resolve a planning question or revise priorities and scope"
+policy:
+  allow_implicit_invocation: false
