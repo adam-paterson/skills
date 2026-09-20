@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "ff5aa05c-a6d8-4c7e-8d51-d3f228ae66ff",
+  "path": "skills/software/release-readiness",
+  "path_key": "skills/software/release-readiness",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

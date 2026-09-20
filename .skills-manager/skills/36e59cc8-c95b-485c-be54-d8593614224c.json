@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "36e59cc8-c95b-485c-be54-d8593614224c",
+  "path": "skills/software/setup-agent-workflow",
+  "path_key": "skills/software/setup-agent-workflow",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

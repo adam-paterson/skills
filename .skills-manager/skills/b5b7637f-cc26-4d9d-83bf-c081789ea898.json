@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "b5b7637f-cc26-4d9d-83bf-c081789ea898",
+  "path": "skills/software/requirements-intake",
+  "path_key": "skills/software/requirements-intake",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

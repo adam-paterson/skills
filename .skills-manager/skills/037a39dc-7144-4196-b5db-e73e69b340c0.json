@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "037a39dc-7144-4196-b5db-e73e69b340c0",
+  "path": "skills/software/property-testing",
+  "path_key": "skills/software/property-testing",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

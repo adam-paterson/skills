@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "e8a1bfda-2dab-4c43-8417-da573bd3f0c7",
+  "path": "skills/software/to-gherkin",
+  "path_key": "skills/software/to-gherkin",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

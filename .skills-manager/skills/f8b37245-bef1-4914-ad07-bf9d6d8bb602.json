@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "f8b37245-bef1-4914-ad07-bf9d6d8bb602",
+  "path": "skills/software/changelog",
+  "path_key": "skills/software/changelog",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

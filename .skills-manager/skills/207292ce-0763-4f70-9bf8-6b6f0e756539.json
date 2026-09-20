@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "207292ce-0763-4f70-9bf8-6b6f0e756539",
+  "path": "skills/software/spec-generation",
+  "path_key": "skills/software/spec-generation",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

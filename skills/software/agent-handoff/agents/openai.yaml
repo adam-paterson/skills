@@ -1,0 +1,5 @@
+interface:
+  display_name: "Agent Handoff"
+  short_description: "Hand off the conversation to another agent."
+policy:
+  allow_implicit_invocation: true

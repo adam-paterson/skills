@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "b26ca3bc-ed57-4c39-950f-c13320a9103e",
+  "path": "skills/research/skill-distillation",
+  "path_key": "skills/research/skill-distillation",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

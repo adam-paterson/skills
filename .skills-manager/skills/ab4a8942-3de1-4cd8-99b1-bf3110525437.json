@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "ab4a8942-3de1-4cd8-99b1-bf3110525437",
+  "path": "skills/software/verify-spec",
+  "path_key": "skills/software/verify-spec",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

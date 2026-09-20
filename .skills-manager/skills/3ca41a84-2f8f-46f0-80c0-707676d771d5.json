@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "3ca41a84-2f8f-46f0-80c0-707676d771d5",
+  "path": "skills/software/mutation-testing",
+  "path_key": "skills/software/mutation-testing",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "ade458ad-8bd6-4664-a261-06fa0cd88370",
+  "path": "skills/software/requirements-capture",
+  "path_key": "skills/software/requirements-capture",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}
