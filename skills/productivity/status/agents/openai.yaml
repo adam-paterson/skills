@@ -1,0 +1,5 @@
+interface:
+  display_name: "Status"
+  short_description: "Show current task progress as a terminal board."
+policy:
+  allow_implicit_invocation: false

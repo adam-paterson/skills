@@ -1,0 +1,4 @@
+interface:
+  display_name: "To acceptance"
+  short_description: "Create precise Gherkin scenarios and assess BDD suite setup"
+  default_prompt: "Use $to-acceptance to turn these agreed acceptance criteria and examples into Gherkin scenarios and assess BDD suite setup."

@@ -1,0 +1,3 @@
+Asked a question: no.
+Secrets redacted: yes; no API key value was provided or recorded.
+Receipt: unverified; no new-session acknowledgement was available.
